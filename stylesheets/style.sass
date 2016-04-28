@@ -1,0 +1,28 @@
+@import "bourbon/bourbon"
+@import "neat/neat"
+
+@import "vars"
+
+.wrapper
+  +display(flex)
+  flex-direction: column
+  justify-content: center
+  align-items: center
+
+  .container
+    width: 960px
+    margin: 0 auto
+
+  #favorites
+    +display(flex)
+    flex-wrap: wrap
+    align-items: center
+    justify-content: center
+    a
+      padding: 80px 125px
+      background: red
+      border: 1px solid black
+      text-decoration: none
+    #fav-fb
+      background: url("images/fb.png") no-repeat
+      background-size: cover
