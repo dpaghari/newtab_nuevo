@@ -27,7 +27,7 @@
     "persistent": false
   },
   "permissions": ["http://*/*", "https://*/*", "cookies", "storage", "tabs"],
-  "content_security_policy": "script-src https://ajax.googleapis.com 'self'; object-src 'self';child-src http://*/*;",
+  "content_security_policy": "script-src https://*.googleapis.com https://maxcdn.bootstrapcdn.com 'self'; object-src 'self';child-src http://*/*;",
   "manifest_version": 2,
   "web_accessible_resources": ["icons/16.png", "newtab/blank.html"]
 }

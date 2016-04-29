@@ -6,49 +6,108 @@
 body, ul, ol
   padding: 0
   margin: 0
+  font-family: $font-stack
 
 .wrapper
   +display(flex)
   flex-direction: row
+  justify-content: center
 
   .content-wrapper
     +display(flex)
     flex-direction: column
     justify-content: center
-    width: 80%
+    // width: 80%
     .container
       width: 960px
       margin: 0 auto
 
     .heading
-      text-align: center
+      margin-left: 40px
+      margin-top: 40px
+      text-align: left
+      font-family: $font-stack
+
       h1
+        margin: 0
         font:
-          size: 3em
-          family: $helvetica
+          size: 5em
+      p
+        font:
+          weight: 700
+          size: 2.5em
 
     .addFavorite
       width: 70px
       display: block
       padding: 10px
+      font-size: 16px
       text-decoration: none
+      color: black
       border: 1px solid black
+      +transition
+      &:hover
+        color: white
+        background: #777
 
     #favorites
       margin-top: 40px
       +display(flex)
       flex-wrap: wrap
-      align-items: center
-      justify-content: center
+      align-items: space-around
+      justify-content:center
       width: 80%
+      // max-width: 486px
       a
-        flex-grow: 1
-        padding: 80px 125px
+        flex-shrink: 2
+        padding: 80px 120px
         border: 1px solid black
         text-decoration: none
+
       #fav-fb
-        background: url("images/fb.png") no-repeat
+        background: url("images/facebook.jpg") no-repeat
         background-size: cover
+
+      #fav-gmail
+        background: url("images/gmail.png") no-repeat
+        background-size: cover
+        background-position: center center
+      #fav-nba
+        background: url("images/nba.png") no-repeat
+        background-size: cover
+        background-position: center center
+      #fav-trello
+        background: url("images/trello.jpg") no-repeat
+        background-size: cover
+        background-position: center center
+      #fav-twitter
+        background: url("images/twitter.jpg") no-repeat
+        background-size: cover
+        background-position: center center
+      #fav-twitch
+        background: url("images/twitch.png") no-repeat
+        background-size: cover
+        background-position: center center
+      #fav-wf
+        background: url("images/wf.jpg") no-repeat
+        background-size: cover
+        background-position: center center
+      #fav-yt
+        background: url("images/youtube.png") no-repeat
+        background-size: cover
+        background-position: center center
+      #fav-flix
+        background: url("images/netflix.png") no-repeat
+        background-size: cover
+        background-position: center center
+      #fav-reddit
+        background: url("images/reddit.png") no-repeat
+        background-size: cover
+        background-position: center center
+      #fav-hbo
+        background: url("images/hbo.png") no-repeat
+        background-size: cover
+        background-position: center center
 
   .sidebar
       position: fixed
@@ -76,3 +135,8 @@ body, ul, ol
             flex-wrap: wrap
             margin-left: 5px
             text-align: left
+
+.lightbox
+  +display(none)
+  background: rgba(0, 0, 0, 0.6)
+  +position(absolute, 0px 0px 0px 0px)

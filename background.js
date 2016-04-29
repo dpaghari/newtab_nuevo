@@ -1,3 +1,16 @@
+localStorage.set("firstRun", true);
+chrome.runtime.onMessage.addListener(function(req, sender, sendResponse)
+{
+  var res = {};
+    switch(req.task)
+  	{
+  		case "checkFirstRun":
+        var status = localStorage.getItem("firstRun");
+        console.log(status);
+  			sendResponse(res);
+  		break;
+    }
+}
 // var TILIB=function(){	}
 // TILIB.prototype.StorageObjects=null;
 // TILIB.prototype.CookieObjects=null;
