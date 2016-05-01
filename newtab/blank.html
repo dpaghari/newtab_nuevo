@@ -5,7 +5,7 @@
 <title>My New Tab</title>
 <script type="text/javascript" src="./vendor/jquery/jquery-2.2.3.min.js"></script>
 <script type="text/javascript" src="./vendor/font-awesome-4.6.1/css/font-awesome.min.css"></script>
-<link href='https://fonts.googleapis.com/css?family=Fira+Sans' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
 <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon" />
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -14,9 +14,10 @@
     <div class="content-wrapper">
       <div class="heading">
 
-        <p id="time">5:45pm</span>
-        <p id="date">April 27, 2016</span>
+        <p id="time">5:45pm</p>
+        <p id="date">April 27, 2016</p>
       </div>
+
       <a class="addFavorite" href="#">Add +</a>
       <div class="container" id="favorites">
         <a href="http://facebook.com" class="favorite" id="fav-fb"></a>
@@ -30,8 +31,12 @@
         <a href="http://youtube.com" class="favorite" id="fav-yt"></a>
         <a href="http://reddit.com" class="favorite" id="fav-reddit"></a>
         <a href="http://hbogo.com" class="favorite" id="fav-hbo"></a>
+        <a href="http://yelp.com" class="favorite" id="fav-yelp"></a>
+
       </div>
+
     </div>
+
   </div>
   <!-- <div class="sidebar">
     <p>Breaking News</p>
@@ -47,7 +52,18 @@
       <li><img src="images/logo.png"/><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic quis obcaecati sint omnis ducimus provident, expedita ex quisquam voluptatibus facilis nihil eius reprehenderit animi facere, sunt quam dolore asperiores earum.</p></li>
     </ul>
   </div> -->
+
   <div class="lightbox"></div>
+  <div class="addModal">
+    <p>Add a new Favorite</p>
+    <form>
+      <label for="faveUrl">Url:</label>
+      <input type="text" name="faveUrl"/><br>
+      <label for="faveImg">Image Url:</label>
+      <input type="text" name="faveImg"/><br>
+      <input name="Add" type="submit"/>
+    </form>
+  </div>
   <script type="text/javascript" src="blank.js"></script>
 </body>
 </html>

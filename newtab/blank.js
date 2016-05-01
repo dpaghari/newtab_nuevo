@@ -9,20 +9,8 @@ $(document).ready(function() {
   $('#date').html(currentDate);
   $(".addFavorite").on("click", function(e){
     e.preventDefault();
-    console.log('add');
-    var newFavorite = "<a href='#'></a>";
-    $("#favorites").append(newFavorite);
+    addFavorite();
   });
-
-
-  setTimeout(function() {
-    chrome.runtime.sendMessage({task: "checkFirstRun"}, function(res){
-      // var firstRun = res.firstRun;
-      console.log(res);
-      // if(res)
-      // $(".lightbox").fadeIn("slow");
-    });
-  }, 1800);
 
 });
 
@@ -35,5 +23,9 @@ function firstRun() {
 // Prompt user for image to use for bookmark
 // and also the url.  Append to favorites
 function addFavorite() {
+  $('.lightbox').fadeIn();
+  $('.addModal').fadeIn();
 
+  // var newFavorite = "<a href='#'></a>";
+  // $("#favorites").append(newFavorite);
 }

@@ -22,19 +22,22 @@ body, ul, ol
       margin: 0 auto
 
     .heading
-      margin-left: 40px
-      margin-top: 40px
+      margin-left: 30px
+      margin-top: 30px
       text-align: left
       font-family: $font-stack
-
+      // position: absolute
+      // top: 30px
+      // left: 30px
       h1
         margin: 0
         font:
           size: 5em
       p
+        margin: 0
         font:
-          weight: 700
-          size: 2.5em
+          weight: 400
+          size: 4.5em
 
     .addFavorite
       width: 70px
@@ -120,6 +123,10 @@ body, ul, ol
         background: url("images/hbo.png") no-repeat
         background-size: cover
         background-position: center center
+      #fav-yelp
+        background: url("images/yelp.png") no-repeat
+        background-size: cover
+        background-position: center center
 
   .sidebar
       position: fixed
@@ -152,3 +159,21 @@ body, ul, ol
   +display(none)
   background: rgba(0, 0, 0, 0.6)
   +position(absolute, 0px 0px 0px 0px)
+
+.addModal
+  font-size: 2em
+  font-family: $font-stack
+  padding: 30px
+  position: absolute
+  left: 50%
+  top: 50%
+  min-width: 300px
+  max-height: 600px
+  +transform(translate(-50%, -50%))
+  z-index: 100
+  +display(none)
+  background: white
+
+  input[type="text"]
+    padding: 10px
+    margin: 10px 0px
