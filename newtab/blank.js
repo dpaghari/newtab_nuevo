@@ -7,19 +7,25 @@ $(document).ready(function() {
   $('#time').html(currentTime);
   var currentDate = new Date().toDateString();
   $('#date').html(currentDate);
-
   $(".addFavorite").on("click", function(e){
     e.preventDefault();
     console.log('add');
     var newFavorite = "<a href='#'></a>";
     $("#favorites").append(newFavorite);
   });
+
+
+  setTimeout(function() {
+    chrome.runtime.sendMessage({task: "checkFirstRun"}, function(res){
+      // var firstRun = res.firstRun;
+      console.log(res);
+      // if(res)
+      // $(".lightbox").fadeIn("slow");
+    });
+  }, 1800);
+
 });
 
-chrome.runtime.onMessage.addListener(function(req, sender, sendResponse)
-{
-  
-});
 
 // Prompt user for Name
 function firstRun() {

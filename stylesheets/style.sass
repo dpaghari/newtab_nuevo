@@ -17,7 +17,6 @@ body, ul, ol
     +display(flex)
     flex-direction: column
     justify-content: center
-    // width: 80%
     .container
       width: 960px
       margin: 0 auto
@@ -52,17 +51,30 @@ body, ul, ol
 
     #favorites
       margin-top: 40px
+      margin-bottom: 40px
       +display(flex)
       flex-wrap: wrap
-      align-items: space-around
-      justify-content:center
-      width: 80%
-      // max-width: 486px
+      justify-content: center
+      width: 100%
       a
+        position: relative
         flex-shrink: 2
         padding: 80px 120px
-        border: 1px solid black
+        border: 1.5px solid black
         text-decoration: none
+        +transition
+
+      a:hover
+        z-index: 10
+        transform: scale(1.1,1.1)
+      a:active:before
+        background: rgba(1,1,1,0.4)
+        content: ""
+        width: 100%
+        height: 100%
+        position: absolute
+        left: 0
+        top: 0
 
       #fav-fb
         background: url("images/facebook.jpg") no-repeat
