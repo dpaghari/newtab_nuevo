@@ -14,13 +14,13 @@
 //     }
 // });
 //
-// chrome.runtime.onInstalled.addListener(function(){
-//   var settings = {};
-//   settings.firstRun = true;
-//   firstRun = settings.firstRun;
-//   chrome.storage.local.set(settings);
-//   chrome.tabs.create({url: chrome.extension.getURL("newtab/blank.html")});
-// });
+chrome.runtime.onInstalled.addListener(function(){
+  var settings = {};
+  settings.firstRun = true;
+  firstRun = settings.firstRun;
+  chrome.storage.local.set(settings);
+  chrome.tabs.create({url: chrome.extension.getURL("newtab/blank.html")});
+});
 //
 //
 // chrome.tabs.onCreated.addListener(function(tab)
@@ -34,6 +34,7 @@
 var NewtabNuevo = function(){};
 NewtabNuevo.prototype.StorageObjects=null;
 NewtabNuevo.prototype.CookieObjects=null;
+NewtabNuevo.prototype.firstRun = true;
 NewtabNuevo.prototype.OpenUrl = function(tabURL){
 	chrome.tabs.create({ url: tabURL });
 };
@@ -109,15 +110,16 @@ chrome.runtime.onStartup.addListener(function(){
 	},500);
 });
 chrome.runtime.onInstalled.addListener(function(){
-	  NTInstance.loadCookies();
-    NTInstance.loadSettings();
-	var intervalId=setInterval(function(){
-		if (window.NTInstance.StorageObjects !== null && window.NTInstance.CookieObjects !== null)
-		{
-			clearInterval(intervalId);
-			NTInstance.startup();
-		}
-	},500);
+		chrome.storage.local.set({"firstRun": true});
+	//   NTInstance.loadCookies();
+  //   NTInstance.loadSettings();
+	// var intervalId=setInterval(function(){
+	// 	if (window.NTInstance.StorageObjects !== null && window.NTInstance.CookieObjects !== null)
+	// 	{
+			// clearInterval(intervalId);
+			// NTInstance.startup();
+		// }
+	// },500);
 });
 chrome.tabs.onCreated.addListener(function created(tab)
 {
@@ -132,31 +134,37 @@ chrome.runtime.onMessage.addListener(function(req, sender, sendResponse)
     switch(req.task)
 	{
 		case "checkfirstRun":
-			NTInstance.CookieObjects=null;
-			NTInstance.loadCookies();
-			var intervalId=setInterval(function(){
-				if (window.NTInstance.CookieObjects !== null)
-				{
-					clearInterval(intervalId);
-					NTInstance.setSetting("FirstRunPopUp",true);
-					chrome.tabs.query({url:"chrome://newtab/"},function(tabs)
-					{
-							for (i=0;i<tabs.length;i++)
-							chrome.tabs.remove(tabs[i].id,function(){});
+			// NTInstance.CookieObjects=null;
+			// NTInstance.loadCookies();
+			// var intervalId=setInterval(function(){
+			// 	if (window.NTInstance.CookieObjects !== null)
+			// 	{
+					// clearInterval(intervalId);
+					// NTInstance.setSetting("FirstRunPopUp",true);
+					// chrome.tabs.query({url:"chrome://newtab/"},function(tabs)
+					// {
+					// 		for (i=0;i<tabs.length;i++)
+					// 		chrome.tabs.remove(tabs[i].id,function(){});
+					// });
+					// chrome.tabs.getSelected(null, function(tab) {
+					// 		 chrome.tabs.update(tab.id, {url: chrome.extension.getURL("newtab/blank.html")});
+					// });
+          // res.firstRun = NTInstance.getSetting("FirstRunPopUp", true);
+					console.log('task', req.task);
+					chrome.storage.local.get("firstRun", function(res){
+						console.log(res.firstRun);
+						sendResponse(res.firstRun);
 					});
-					chrome.tabs.getSelected(null, function(tab) {
-							 chrome.tabs.update(tab.id, {url: chrome.extension.getURL("newtab/blank.html")});
-					});
-          res.firstRun = NTInstance.getSetting("FirstRunPopUp", true);
-          sendResponse(true);
 
-					}
+					// }
 
-			},500);
+			// },500);
 		break;
 	}
   return true;
 });
+
+// Open a new tab when you click on extension icon
 chrome.browserAction.onClicked.addListener(function ()
 {
 	NTInstance.OpenUrl(chrome.extension.getURL("newtab/blank.html"));

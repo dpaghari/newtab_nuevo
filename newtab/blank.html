@@ -4,7 +4,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>My New Tab</title>
 <script type="text/javascript" src="./vendor/jquery/jquery-2.2.3.min.js"></script>
-<script type="text/javascript" src="./vendor/font-awesome-4.6.1/css/font-awesome.min.css"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css">
 <link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
 <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon" />
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -13,12 +13,16 @@
   <div class="wrapper">
     <div class="content-wrapper">
       <div class="heading">
+        <div>
+          <p id="time">5:45pm</p>
+          <p id="date">April 27, 2016</p>
+        </div>
+        <div class="options">
+          <a class="addFavorite userAction" href="#"><i class="fa fa-plus fa-lg fa-fw"></i></a>
+          <a class="openSettings userAction" href="#"><i class="fa fa-gear fa-lg fa-fw"></i></a>
+        </div>
+    </div>
 
-        <p id="time">5:45pm</p>
-        <p id="date">April 27, 2016</p>
-      </div>
-
-      <a class="addFavorite" href="#">Add +</a>
       <div class="container" id="favorites">
         <a href="http://facebook.com" class="favorite" id="fav-fb"></a>
         <a href="http://gmail.com" class="favorite" id="fav-gmail"></a>
@@ -32,37 +36,24 @@
         <a href="http://reddit.com" class="favorite" id="fav-reddit"></a>
         <a href="http://hbogo.com" class="favorite" id="fav-hbo"></a>
         <a href="http://yelp.com" class="favorite" id="fav-yelp"></a>
-
       </div>
-
     </div>
-
   </div>
-  <!-- <div class="sidebar">
-    <p>Breaking News</p>
-    <ul class="newsfeed">
-      <li><img src="images/logo.png"/><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequuntur quod, natus ad expedita, ut earum fuga nemo nihil recusandae aut debitis sit officia quasi placeat velit dolor, reprehenderit amet culpa.</p></li>
-      <li><img src="images/logo.png"/><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eligendi, nisi fugit illo voluptatum nemo nobis. Veniam culpa, explicabo itaque perspiciatis iure ratione minus error velit repudiandae reiciendis cumque, non maxime.</p></li>
-      <li><img src="images/logo.png"/><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores accusantium neque enim similique, deleniti nemo dolorum laboriosam explicabo, eligendi vitae porro impedit sed error magnam ullam, maxime tempora! Quod, iste?</p></li>
-      <li><img src="images/logo.png"/><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ipsa quis vitae officia consectetur magnam! Quis labore expedita reprehenderit sint! Eaque dolore illum suscipit libero dignissimos ipsam rem reprehenderit? Quam, labore?</p></li>
-      <li><img src="images/logo.png"/><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quo provident suscipit ab eaque odio laborum ipsam officia deserunt, esse mollitia dignissimos numquam laudantium quas autem eveniet velit quos aspernatur. Ullam!</p></li>
-      <li><img src="images/logo.png"/><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate, perspiciatis, aliquid. Ipsa sint cumque dolores est itaque tenetur quod doloribus repellat aliquam quae, suscipit placeat necessitatibus eveniet distinctio minima saepe.</p></li>
-      <li><img src="images/logo.png"/><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad optio molestias accusantium excepturi tempora quaerat minus, expedita corporis, maiores fuga explicabo earum. Id harum sunt deserunt, ipsum dolor consequatur architecto.</p></li>
-      <li><img src="images/logo.png"/><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptates dolor nobis recusandae ullam, tempora vero deserunt aspernatur cumque non autem optio illo molestiae libero, nihil nulla, ad adipisci necessitatibus. Natus.</p></li>
-      <li><img src="images/logo.png"/><p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic quis obcaecati sint omnis ducimus provident, expedita ex quisquam voluptatibus facilis nihil eius reprehenderit animi facere, sunt quam dolore asperiores earum.</p></li>
-    </ul>
-  </div> -->
 
   <div class="lightbox"></div>
   <div class="addModal">
+    <a href="#" id="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
     <p>Add a new Favorite</p>
     <form>
       <label for="faveUrl">Url:</label>
-      <input type="text" name="faveUrl"/><br>
+      <input type="text" name="faveUrl" id="inputUrl"/><br>
       <label for="faveImg">Image Url:</label>
-      <input type="text" name="faveImg"/><br>
-      <input name="Add" type="submit"/>
+      <input type="text" name="faveImg" id="inputImage"/><br>
+      <a href="#" class="addBtn">Add</a>
     </form>
+    <p> -- Or -- </p>
+    <p>Select from a list of popular favorites</p>
+    <div class="popularFavs"></div>
   </div>
   <script type="text/javascript" src="blank.js"></script>
 </body>

@@ -22,13 +22,13 @@ body, ul, ol
       margin: 0 auto
 
     .heading
+      +display(flex)
       margin-left: 30px
       margin-top: 30px
+      margin-bottom: 30px
       text-align: left
       font-family: $font-stack
-      // position: absolute
-      // top: 30px
-      // left: 30px
+      justify-content: space-between
       h1
         margin: 0
         font:
@@ -36,21 +36,20 @@ body, ul, ol
       p
         margin: 0
         font:
-          weight: 400
-          size: 4.5em
-
-    .addFavorite
-      width: 70px
-      display: block
-      padding: 10px
-      font-size: 16px
-      text-decoration: none
-      color: black
-      border: 1px solid black
-      +transition
-      &:hover
-        color: white
-        background: #777
+          weight: 100
+          size: 5em
+      .options
+        +display(flex)
+        .userAction
+          width: 70px
+          display: block
+          padding: 10px
+          // font-size: 16px
+          text-decoration: none
+          color: #666
+          +transition
+          &:hover
+            color: black
 
     #favorites
       margin-top: 40px
@@ -66,6 +65,7 @@ body, ul, ol
         border: 1.5px solid black
         text-decoration: none
         +transition
+        background: white
 
       a:hover
         z-index: 10
@@ -161,6 +161,7 @@ body, ul, ol
   +position(absolute, 0px 0px 0px 0px)
 
 .addModal
+  text-align: left
   font-size: 2em
   font-family: $font-stack
   padding: 30px
@@ -168,12 +169,43 @@ body, ul, ol
   left: 50%
   top: 50%
   min-width: 300px
-  max-height: 600px
+  max-height: 500px
   +transform(translate(-50%, -50%))
   z-index: 100
   +display(none)
   background: white
+  overflow: hidden
 
   input[type="text"]
+    border: 1px solid black
     padding: 10px
     margin: 10px 0px
+
+  .addBtn
+    display: block
+    padding: 10px 20px
+    background: #6cb2d8
+    text-decoration: none
+    text-align: center
+    color: white
+    +transition
+    &:hover
+      background: #328cbd
+  #closeBtn
+    color: black
+    position: absolute
+    top: 15px
+    right: 10px
+  .popularFavs
+    +display(flex)
+    flex-direction: row
+    flex-wrap: wrap
+    justify-content: center
+
+    .popFav
+      width: 33%
+      padding: 10px
+      border: 1px solid black
+      text-align: center
+      color: black
+      text-decoration: none
