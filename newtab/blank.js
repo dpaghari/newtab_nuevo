@@ -47,7 +47,7 @@ $(document).ready(function() {
   $(document).on("click", ".popFav", function(e){
     e.preventDefault();
     var selection = $(this)[0];
-    console.log(selection);
+    // console.log(selection);
     var urltoAdd = selection.dataset.url;
     var imgtoAdd = selection.dataset.imgurl;
     var newEntry = {
@@ -55,7 +55,6 @@ $(document).ready(function() {
       "imgUrl" : imgtoAdd
     };
     saveFavorite(newEntry);
-    $(this).remove();
   });
 
   /*
@@ -79,6 +78,7 @@ $(document).ready(function() {
     Handlers for edit mode options on the each of the favorites
   */
   $(document).on("click", ".optDel", function(e) {
+    e.preventDefault();
     $(this).parent().remove();
   });
   $(document).on("click", ".optEdit", function(e) {
@@ -172,6 +172,18 @@ function saveFavorite(entry) {
   });
 }
 
+// function saveChangesToFavorites() {
+//   chrome.storage.local.get("savedFavorites", function (res) {
+//     var currentSaved = [];
+//     if(typeof res.savedFavorites !== "undefined"){
+//       currentSaved = res.savedFavorites;
+//     }
+//     chrome.storage.local.set({"savedFavorites" : currentSaved });
+//     addFavorite(entry.url, entry.imgUrl);
+//     $("#inputUrl").val("");
+//     $("#inputImage").val("");
+//   });
+// }
 
 function getPopularFavorites() {
   return $.ajax({
@@ -180,7 +192,9 @@ function getPopularFavorites() {
   });
 }
 function triggerEditMode() {
+  var favorites = $(".favorite");
   $(".favorite").toggleClass("editing");
+
   $(".favorite").children().toggle();
 
 }
