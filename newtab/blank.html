@@ -19,30 +19,67 @@
         </div>
         <div class="options">
           <a class="addFavorite userAction" href="#"><i class="fa fa-plus fa-lg fa-fw"></i></a>
+          <a class="editMode userAction" href="#"><i class="fa fa-pencil-square-o fa-lg fa-fw"></i></a>
           <a class="openSettings userAction" href="#"><i class="fa fa-gear fa-lg fa-fw"></i></a>
         </div>
     </div>
 
       <div class="container" id="favorites">
-        <a href="http://facebook.com" class="favorite" id="fav-fb"></a>
-        <a href="http://gmail.com" class="favorite" id="fav-gmail"></a>
-        <a href="http://nba.com" class="favorite" id="fav-nba"></a>
-        <a href="http://twitter.com" class="favorite" id="fav-twitter"></a>
-        <a href="http://twitch.com" class="favorite" id="fav-twitch"></a>
-        <a href="http://wellsfargo.com" class="favorite" id="fav-wf"></a>
-        <a href="http://trello.com" class="favorite" id="fav-trello"></a>
-        <a href="http://netflix.com" class="favorite" id="fav-flix"></a>
-        <a href="http://youtube.com" class="favorite" id="fav-yt"></a>
-        <a href="http://reddit.com" class="favorite" id="fav-reddit"></a>
-        <a href="http://hbogo.com" class="favorite" id="fav-hbo"></a>
-        <a href="http://yelp.com" class="favorite" id="fav-yelp"></a>
+        <a href="http://facebook.com" class="favorite" id="fav-fb">
+          <i class="fa fa-trash-o fa-lg fa-fw optDel"></i>
+          <i class="fa fa-pencil fa-lg fa-fw optEdit"></i>
+        </a>
+        <a href="http://gmail.com" class="favorite" id="fav-gmail">
+          <i class="fa fa-trash-o fa-lg fa-fw optDel"></i>
+          <i class="fa fa-pencil fa-lg fa-fw optEdit"></i>
+        </a>
+        <a href="http://nba.com" class="favorite" id="fav-nba">
+          <i class="fa fa-trash-o fa-lg fa-fw optDel"></i>
+          <i class="fa fa-pencil fa-lg fa-fw optEdit"></i>
+        </a>
+        <a href="http://twitter.com" class="favorite" id="fav-twitter">
+          <i class="fa fa-trash-o fa-lg fa-fw optDel"></i>
+          <i class="fa fa-pencil fa-lg fa-fw optEdit"></i>
+        </a>
+        <a href="http://twitch.com" class="favorite" id="fav-twitch">
+          <i class="fa fa-trash-o fa-lg fa-fw optDel"></i>
+          <i class="fa fa-pencil fa-lg fa-fw optEdit"></i>
+        </a>
+        <a href="http://wellsfargo.com" class="favorite" id="fav-wf">
+          <i class="fa fa-trash-o fa-lg fa-fw optDel"></i>
+          <i class="fa fa-pencil fa-lg fa-fw optEdit"></i>
+        </a>
+        <a href="http://trello.com" class="favorite" id="fav-trello">
+          <i class="fa fa-trash-o fa-lg fa-fw optDel"></i>
+          <i class="fa fa-pencil fa-lg fa-fw optEdit"></i>
+        </a>
+        <a href="http://netflix.com" class="favorite" id="fav-flix">
+          <i class="fa fa-trash-o fa-lg fa-fw optDel"></i>
+          <i class="fa fa-pencil fa-lg fa-fw optEdit"></i>
+        </a>
+        <a href="http://youtube.com" class="favorite" id="fav-yt">
+          <i class="fa fa-trash-o fa-lg fa-fw optDel"></i>
+          <i class="fa fa-pencil fa-lg fa-fw optEdit"></i>
+        </a>
+        <a href="http://reddit.com" class="favorite" id="fav-reddit">
+          <i class="fa fa-trash-o fa-lg fa-fw optDel"></i>
+          <i class="fa fa-pencil fa-lg fa-fw optEdit"></i>
+        </a>
+        <a href="http://hbogo.com" class="favorite" id="fav-hbo">
+          <i class="fa fa-trash-o fa-lg fa-fw optDel"></i>
+          <i class="fa fa-pencil fa-lg fa-fw optEdit"></i>
+        </a>
+        <a href="http://yelp.com" class="favorite" id="fav-yelp">
+          <i class="fa fa-trash-o fa-lg fa-fw optDel"></i>
+          <i class="fa fa-pencil fa-lg fa-fw optEdit"></i>
+        </a>
       </div>
     </div>
   </div>
 
   <div class="lightbox"></div>
-  <div class="addModal">
-    <a href="#" id="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
+  <div class="addModal modal">
+    <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
     <p>Add a new Favorite</p>
     <form>
       <label for="faveUrl">Url:</label>
@@ -54,6 +91,24 @@
     <p> -- Or -- </p>
     <p>Select from a list of popular favorites</p>
     <div class="popularFavs"></div>
+  </div>
+  <div class="settingsModal modal">
+    <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
+    <p>Settings</p>
+    <form>
+      <p>Theme:
+        <label for="theme-select">Light</label>
+        <input type="radio" name="theme-select" value="light" checked/>
+        <label for="theme-select">Dark</label>
+        <input type="radio" name="theme-select" value="dark"/>
+      </p>
+      <p>Hover Effect:
+        <select>
+          <option value="pop">Pop</option>
+          <option value="highlight">Highlight</option>
+        </select>
+      </p>
+    </form>
   </div>
   <script type="text/javascript" src="blank.js"></script>
 </body>

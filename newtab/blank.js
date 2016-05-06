@@ -4,7 +4,8 @@ chrome.runtime.sendMessage({task: "checkFirstRun"}, function(res) {
 });
 $(document).ready(function() {
   loadSavedFavorites();
-
+  loadPopularFavorites();
+  $(".favorite").children().hide();
   // Refresh time every second
   setInterval(function(e){
     currentTime = new Date().toLocaleTimeString(navigator.language, { hour : '2-digit', minute: '2-digit'} );
@@ -15,15 +16,34 @@ $(document).ready(function() {
   var currentDate = new Date().toDateString();
   $('#date').html(currentDate);
 
+  /*
+    Handlers for the top right main user actions menu
+  */
   $(document).on("click", ".addFavorite", function(e){
     e.preventDefault();
-    triggerFavoriteModal();
-    loadPopularFavorites();
+    var modalToOpen = $(".addModal");
+    triggerModal(modalToOpen);
   });
-  $(document).on("click", "#closeBtn", function(e){
+  $(document).on("click", ".editMode", function(e){
     e.preventDefault();
-    closeModal();
+    triggerEditMode();
   });
+  $(document).on("click", ".openSettings", function(e){
+    e.preventDefault();
+    var modalToOpen = $(".settingsModal");
+    triggerModal(modalToOpen);
+  });
+  /*
+    Handler for the close button on the modals
+  */
+  $(document).on("click", ".closeBtn", function(e){
+    e.preventDefault();
+    var modalToClose = $(this).parent();
+    closeModal(modalToClose);
+  });
+  /*
+    Handler for the suggested favorites in the Add New Favorite menu
+  */
   $(document).on("click", ".popFav", function(e){
     e.preventDefault();
     var selection = $(this)[0];
@@ -37,6 +57,10 @@ $(document).ready(function() {
     saveFavorite(newEntry);
     $(this).remove();
   });
+
+  /*
+    Handler for the add button on the Add a New Favorite menu
+  */
   $(document).on("click", ".addBtn", function(e){
     e.preventDefault();
     var urlVal = $("#inputUrl").val();
@@ -47,7 +71,18 @@ $(document).ready(function() {
       "imgUrl" : imageVal
     };
     saveFavorite(newEntry);
-    closeModal();
+    var modalToClose = $(".addModal");
+    closeModal(modalToClose);
+  });
+
+  /*
+    Handlers for edit mode options on the each of the favorites
+  */
+  $(document).on("click", ".optDel", function(e) {
+    $(this).parent().remove();
+  });
+  $(document).on("click", ".optEdit", function(e) {
+    // Open Edit Modal
   });
 
 
@@ -70,21 +105,20 @@ function loadSavedFavorites() {
 function loadPopularFavorites() {
   var popFavs = getPopularFavorites();
   popFavs.then(function(res) {
-    createPopularFavs(JSON.parse(res));
+    var response = JSON.parse(res);
+    createPopularFavs(response.popular_favorites);
   });
 }
 
 function createPopularFavs(favorites) {
-  var list = favorites.popular_favorites;
+  console.log(favorites);
+  var list = favorites;
   for(var i = 0; i < list.length; i++){
     var favHTML = "<a href='#' class='popFav' data-url=" + list[i].url + " data-imgurl=" + list[i].bgImg +">" + list[i].title + "</a>";
     $(".popularFavs").append(favHTML);
   }
-  loadedFavorites = favorites.popular_favorites;
-  // console.log(list);
+  loadedFavorites = list;
 }
-
-
 
 // Prompt user for first run settings
 function firstRun() {
@@ -93,14 +127,16 @@ function firstRun() {
 
 // Prompt user for image to use for bookmark
 // and also the url.  Append to favorites
-function triggerFavoriteModal() {
+function triggerModal(modal) {
+  console.log(modal);
   $('.lightbox').fadeIn();
-  $('.addModal').fadeIn();
+  modal.fadeIn();
 }
 
-function closeModal() {
+function closeModal(modal) {
+  console.log(modal);
   $('.lightbox').fadeOut();
-  $('.addModal').fadeOut();
+  modal.fadeOut();
 }
 // Add a new favorite to the favorites grid
 function addFavorite(url, imageUrl) {
@@ -110,7 +146,15 @@ function addFavorite(url, imageUrl) {
   newFavorite.style.backgroundSize = "cover";
   newFavorite.style.backgroundPosition = "center center";
   newFavorite.style.backgroundRepeat = "no-repeat";
+  newFavorite.classList.add("favorite");
+  var optDel = document.createElement("I");
+  optDel.classList.add("fa", "fa-trash-o", "fa-lg", "fa-fw", "optDel");
+  var optEdit = document.createElement("I");
+  optEdit.classList.add("fa", "fa-pencil", "fa-lg", "fa-fw", "optEdit");
+  newFavorite.appendChild(optDel);
+  newFavorite.appendChild(optEdit);
   $("#favorites").append(newFavorite);
+  $(".favorite").children().hide();
 }
 
 // Save favorite to local storage
@@ -134,4 +178,9 @@ function getPopularFavorites() {
     url: "./popularFavs.json",
     method: "GET"
   });
+}
+function triggerEditMode() {
+  $(".favorite").toggleClass("editing");
+  $(".favorite").children().toggle();
+
 }

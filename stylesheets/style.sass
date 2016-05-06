@@ -25,7 +25,6 @@ body, ul, ol
       +display(flex)
       margin-left: 30px
       margin-top: 30px
-      margin-bottom: 30px
       text-align: left
       font-family: $font-stack
       justify-content: space-between
@@ -52,13 +51,13 @@ body, ul, ol
             color: black
 
     #favorites
-      margin-top: 40px
-      margin-bottom: 40px
+      margin-top: 30px
       +display(flex)
       flex-wrap: wrap
       justify-content: center
       width: 100%
       a
+        +display(flex)
         position: relative
         flex-shrink: 2
         padding: 80px 120px
@@ -66,7 +65,16 @@ body, ul, ol
         text-decoration: none
         +transition
         background: white
-
+        i
+          position: absolute
+          font-size: 2em
+          color: white
+          top: 5px
+          z-index: 3
+        .optDel
+          right: 2px
+        .optEdit
+          right: 40px
       a:hover
         z-index: 10
         transform: scale(1.1,1.1)
@@ -128,6 +136,20 @@ body, ul, ol
         background-size: cover
         background-position: center center
 
+      .favorite.editing
+        margin: 2px
+        animation: swing 10s infinite
+        transform-origin: top center
+      .favorite.editing:before
+        background: rgba(1,1,1,0.4)
+        content: ""
+        width: 100%
+        height: 100%
+        position: absolute
+        left: 0
+        top: 0
+    
+
   .sidebar
       position: fixed
       background: red
@@ -160,7 +182,7 @@ body, ul, ol
   background: rgba(0, 0, 0, 0.6)
   +position(absolute, 0px 0px 0px 0px)
 
-.addModal
+.modal
   text-align: left
   font-size: 2em
   font-family: $font-stack
@@ -175,7 +197,13 @@ body, ul, ol
   +display(none)
   background: white
   overflow: hidden
+  .closeBtn
+    color: black
+    position: absolute
+    top: 15px
+    right: 10px
 
+.addModal
   input[type="text"]
     border: 1px solid black
     padding: 10px
@@ -191,11 +219,7 @@ body, ul, ol
     +transition
     &:hover
       background: #328cbd
-  #closeBtn
-    color: black
-    position: absolute
-    top: 15px
-    right: 10px
+
   .popularFavs
     +display(flex)
     flex-direction: row

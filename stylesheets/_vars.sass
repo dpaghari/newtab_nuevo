@@ -3,3 +3,32 @@
   src: url("/assets/BebasNeue.otf")
 
 $font-stack: BebasNeue, $helvetica, sans-serif
+
+@keyframes shake
+  10%, 90%
+    transform: translate3d(-1px, 0, 0)
+  20%, 80%
+    transform: translate3d(2px, 0, 0)
+  30%, 50%, 70%
+    transform: translate3d(-4px, 0, 0)
+  40%, 60%
+    transform: translate3d(4px, 0, 0)
+
+
+
+@keyframes swing
+  20%
+    -webkit-transform: rotate3d(0, 0, 1, 2deg)
+    transform: rotate3d(0, 0, 1, 2deg)
+  40%
+    -webkit-transform: rotate3d(0, 0, 1, -2deg)
+    transform: rotate3d(0, 0, 1, -2deg)
+  60%
+    -webkit-transform: rotate3d(0, 0, 1, 0deg)
+    transform: rotate3d(0, 0, 1, 0deg)
+  80%
+    -webkit-transform: rotate3d(0, 0, 1, -2deg)
+    transform: rotate3d(0, 0, 1, -2deg)
+  to
+    -webkit-transform: rotate3d(0, 0, 1, 2deg)
+    transform: rotate3d(0, 0, 1, 2deg)
