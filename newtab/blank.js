@@ -23,6 +23,7 @@ $(document).ready(function() {
     e.preventDefault();
     var modalToOpen = $(".addModal");
     triggerModal(modalToOpen);
+    $(".addFavorite").find("div").remove();
   });
   $(document).on("click", ".editMode", function(e){
     e.preventDefault();
@@ -33,6 +34,11 @@ $(document).ready(function() {
     var modalToOpen = $(".settingsModal");
     triggerModal(modalToOpen);
   });
+  $(document).on("click", ".openOnboarding", function(e){
+    e.preventDefault();
+    var modalToOpen = $(".onboardingModal");
+    triggerModal(modalToOpen);
+  });
   /*
     Handler for the close button on the modals
   */
@@ -40,6 +46,16 @@ $(document).ready(function() {
     e.preventDefault();
     var modalToClose = $(this).parent();
     closeModal(modalToClose);
+
+    if ($(this).parents('.onboardingModal').length) {
+      var $arrowContainer = '\
+        <div class="arrowContainer">\
+          <p>^</p>\
+          <p>You can also add favorites by clicking the + icon</p>\
+        </div>\
+        ';
+      $(".addFavorite").append($arrowContainer);
+    }
   });
   /*
     Handler for the suggested favorites in the Add New Favorite menu
