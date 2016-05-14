@@ -86,8 +86,13 @@ $(document).ready(function() {
       "imgUrl" : imageVal
     };
     saveFavorite(newEntry);
-    var modalToClose = $(".addModal");
-    closeModal(modalToClose);
+
+    // var modalToClose = $(".addModal");
+    // closeModal(modalToClose);
+
+    if ($(".modal").length != null) {
+      closeModal($(".modal"));
+    }
   });
 
   /*
