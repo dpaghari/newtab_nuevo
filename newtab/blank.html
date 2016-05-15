@@ -7,6 +7,7 @@
 <script type="text/javascript" src="./vendor/lodash/lodash.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css">
 <link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
 <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon" />
 <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
@@ -23,6 +24,7 @@
           <a class="editMode userAction" href="#"><i class="fa fa-pencil-square-o fa-lg fa-fw"></i></a>
           <a class="openSettings userAction" href="#"><i class="fa fa-gear fa-lg fa-fw"></i></a>
           <a class="openCalendar userAction" href="#"><i class="fa fa-calendar fa-lg fa-fw"></i></a>
+          <a class="openOnboarding userAction" href="#"><i class="fa fa-gear fa-lg fa-fw"></i></a>
         </div>
     </div>
 
@@ -112,6 +114,27 @@
         </select>
       </p>
     </form>
+  </div>
+
+  <!-- Onboarding modal HTML -->
+  <div class="onboardingModal modal">
+    <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
+    <h1>Welcome to New Tab!</h1>
+    <p>Enter a few tabs you would like to add, or choose from some popular sites.</p>
+
+    <form>
+      <label for="faveUrl"></label>
+      <input type="text" name="faveUrl" id="inputUrl"
+      placeholder="URL i.e http://www.google.com"/><br>
+      <label for="faveImg"></label>
+      <input type="text" name="faveImg" id="inputImage" placeholder="Image URL"/><br>
+      <a href="#" class="addBtn">Add</a>
+    </form>
+
+    <p class="orGradient"> Or </p>
+    <p>Select from a list of popular favorites:</p>
+    <div class="popularFavs"></div>
+
   </div>
   <script type="text/javascript" src="blank.js"></script>
 </body>
