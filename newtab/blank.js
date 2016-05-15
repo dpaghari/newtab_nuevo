@@ -5,6 +5,9 @@ chrome.runtime.sendMessage({task: "checkFirstRun"}, function(res) {
 $(document).ready(function() {
   loadSavedFavorites();
   loadPopularFavorites();
+  chrome.storage.local.get(null, function(items){
+    console.log(items);
+  });
   $(".favorite").children().hide();
   // Refresh time every second
   setInterval(function(e){
@@ -75,16 +78,33 @@ $(document).ready(function() {
   });
 
   /*
-    Handlers for edit mode options on the each of the favorites
+    Handlers for edit mode options on each of the favorites
   */
   $(document).on("click", ".optDel", function(e) {
     e.preventDefault();
+    var bookmark = $(this).parent();
     $(this).parent().remove();
+    chrome.storage.local.get("popularFavorites", function(res){
+      var loadedFavorites = [];
+      loadedFavorites = res.popularFavorites.popular_favorites;
+      console.log(loadedFavorites);
+      var match = _.find(loadedFavorites, function(val) {
+        console.log(this);
+        console.log(val.url, this[0].href);
+        return val.url === this[0].href;
+      }.bind(this));
+
+      console.log(match);
+    }.bind(bookmark));
   });
   $(document).on("click", ".optEdit", function(e) {
+    e.preventDefault();
     // Open Edit Modal
   });
-
+  $(document).on("click", ".favorite", function(e) {
+    if($(this).hasClass("editing"))
+      e.preventDefault();
+  });
 
 });
 
@@ -105,8 +125,11 @@ function loadSavedFavorites() {
 function loadPopularFavorites() {
   var popFavs = getPopularFavorites();
   popFavs.then(function(res) {
+    var ogFavs = $("#favorites").children();
     var response = JSON.parse(res);
-    createPopularFavs(response.popular_favorites);
+    var allFavs = $.extend(ogFavs, response);
+    console.log(ogFavs, response, allFavs);
+    chrome.storage.local.set({"popularFavorites" : allFavs});
   });
 }
 
@@ -185,16 +208,21 @@ function saveFavorite(entry) {
 //   });
 // }
 
+
 function getPopularFavorites() {
   return $.ajax({
     url: "./popularFavs.json",
     method: "GET"
   });
 }
+function getPromise(url) {
+  return $.ajax({
+    url: url,
+    method: "GET"
+  });
+}
 function triggerEditMode() {
   var favorites = $(".favorite");
   $(".favorite").toggleClass("editing");
-
   $(".favorite").children().toggle();
-
 }

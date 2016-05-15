@@ -1,40 +1,5 @@
-// chrome.runtime.onMessage.addListener(function(req, sender, sendResponse){
-//   var res = {};
-//   console.log(req);
-//   console.log(sender);
-//   console.log(sendResponse);
-//     switch(req.task) {
-//   		case "checkFirstRun":
-//         chrome.storage.local.get(function(status){
-//           console.log(status);
-//           res.firstRun = status;
-//           sendResponse(res);
-//         });
-//   		break;
-//     }
-// });
-//
-chrome.runtime.onInstalled.addListener(function(){
-  var settings = {};
-  settings.firstRun = true;
-  firstRun = settings.firstRun;
-  chrome.storage.local.set(settings);
-  chrome.tabs.create({url: chrome.extension.getURL("newtab/blank.html")});
-});
-//
-//
-// chrome.tabs.onCreated.addListener(function(tab)
-// {
-// 	if (tab.url=="chrome://newtab/") {
-// 		chrome.tabs.update(tab.id, {url: chrome.extension.getURL("newtab/blank.html")});
-// 	}
-// });
-
-
 var NewtabNuevo = function(){};
 NewtabNuevo.prototype.StorageObjects=null;
-NewtabNuevo.prototype.CookieObjects=null;
-NewtabNuevo.prototype.firstRun = true;
 NewtabNuevo.prototype.OpenUrl = function(tabURL){
 	chrome.tabs.create({ url: tabURL });
 };
@@ -56,19 +21,7 @@ NewtabNuevo.prototype.setSetting = function(name,value) {
 	setting[name]=value;
 	chrome.storage.local.set(setting);
 };
-NewtabNuevo.prototype.getCookie = function(name,defValue) {
-	if (typeof this.CookieObjects.get(name) != 'undefined')
-	{
-		return this.CookieObjects.get(name);
-	}
-	 else
-	{
-		if (typeof(defValue)===undefined)
-			return "";
-		else
-			return defValue;
-	}
-};
+
 NewtabNuevo.prototype.startup=function() {
 	var firstRun = this.getSetting("FirstRunPopUp",true);
 	if(firstRun){
@@ -76,33 +29,26 @@ NewtabNuevo.prototype.startup=function() {
 		this.OpenUrl(chrome.extension.getURL("newtab/blank.html#newTab"));
 	}
 };
-NewtabNuevo.prototype.loadCookies=function()
-{
-	chrome.cookies.getAll({domain:this.CookieDomain},function(cookies)
-	{
-		window.NTInstance.CookieObjects=new Map();
-		for(var i=0;i<cookies.length;i++){
-			window.NTInstance.CookieObjects.set(cookies[i].name,cookies[i].value);
-		}
-    });
-};
+
 NewtabNuevo.prototype.loadSettings=function()
 {
 	chrome.storage.local.get(function(storedItems)
 	{
+    console.log(storedItems);
 		window.NTInstance.StorageObjects=new Map();
 		for(var key in storedItems) {
 			window.NTInstance.StorageObjects.set(key,storedItems[key]);
 		}
 	});
 };
+
+
 var NTInstance = new NewtabNuevo();
 window.NTInstance=NTInstance;
 chrome.runtime.onStartup.addListener(function(){
-	NTInstance.loadCookies();
 	NTInstance.loadSettings();
 	var intervalId=setInterval(function(){
-		if (window.NTInstance.StorageObjects !== null && window.NTInstance.CookieObjects !== null)
+		if (window.NTInstance.StorageObjects !== null)
 		{
 			clearInterval(intervalId);
 			NTInstance.startup();
@@ -110,55 +56,28 @@ chrome.runtime.onStartup.addListener(function(){
 	},500);
 });
 chrome.runtime.onInstalled.addListener(function(){
-		chrome.storage.local.set({"firstRun": true});
-	//   NTInstance.loadCookies();
-  //   NTInstance.loadSettings();
-	// var intervalId=setInterval(function(){
-	// 	if (window.NTInstance.StorageObjects !== null && window.NTInstance.CookieObjects !== null)
-	// 	{
-			// clearInterval(intervalId);
-			// NTInstance.startup();
-		// }
-	// },500);
+		// chrome.storage.local.set({"firstRun": true});
+    // NTInstance.setSetting("firstRun", true);
+    chrome.tabs.create({url: chrome.extension.getURL("newtab/blank.html")});
 });
-chrome.tabs.onCreated.addListener(function created(tab)
-{
-	if (tab.url=="chrome://newtab/")
-	{
+chrome.tabs.onCreated.addListener(function created(tab){
+	if (tab.url=="chrome://newtab/") {
 		chrome.tabs.update(tab.id, {url: chrome.extension.getURL("newtab/blank.html")});
 	}
 });
-chrome.runtime.onMessage.addListener(function(req, sender, sendResponse)
-{
+
+// Messaging Event Listeners
+chrome.runtime.onMessage.addListener(function(req, sender, sendResponse) {
 	var res = {};
-    switch(req.task)
-	{
+  switch(req.task) {
 		case "checkfirstRun":
-			// NTInstance.CookieObjects=null;
-			// NTInstance.loadCookies();
-			// var intervalId=setInterval(function(){
-			// 	if (window.NTInstance.CookieObjects !== null)
-			// 	{
-					// clearInterval(intervalId);
-					// NTInstance.setSetting("FirstRunPopUp",true);
-					// chrome.tabs.query({url:"chrome://newtab/"},function(tabs)
-					// {
-					// 		for (i=0;i<tabs.length;i++)
-					// 		chrome.tabs.remove(tabs[i].id,function(){});
-					// });
-					// chrome.tabs.getSelected(null, function(tab) {
-					// 		 chrome.tabs.update(tab.id, {url: chrome.extension.getURL("newtab/blank.html")});
-					// });
-          // res.firstRun = NTInstance.getSetting("FirstRunPopUp", true);
-					console.log('task', req.task);
-					chrome.storage.local.get("firstRun", function(res){
-						console.log(res.firstRun);
-						sendResponse(res.firstRun);
-					});
-
-					// }
-
-			// },500);
+			console.log('task', req.task);
+      var firstRun = NTInstance.getSetting("firstRun",true);
+      console.log("firstRun", firstRun);
+      if(firstRun){
+				sendResponse(firstRun);
+        NTInstance.setSetting("firstRun", false);
+      }
 		break;
 	}
   return true;
