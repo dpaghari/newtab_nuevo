@@ -3,11 +3,17 @@
 var gulp = require('gulp'),
     gutil = require('gulp-util'),
     sass = require('gulp-sass'),
-    cssnano = require('gulp-cssnano');
+    cssnano = require('gulp-cssnano'),
+    babel = require('gulp-babel');
     // livereload = require('gulp-livereload');
 
 gulp.task('scripts', function () {
   // Future processing for scripts
+  return gulp.src("js/*.js")
+  .pipe(babel({
+    presets: ["es2015"]
+  }))
+  .pipe(gulp.dest("dist/js"));
 });
 
 gulp.task('styles', function () {
@@ -20,9 +26,14 @@ gulp.task('styles', function () {
     // .pipe(livereload());
 });
 
+
 gulp.task('sass:watch', function () {
   // livereload.listen();
   gulp.watch('stylesheets/*.sass', ['styles']);
 });
+gulp.task('babel:watch', function () {
+  // livereload.listen();
+  gulp.watch('js/*.js', ['scripts']);
+});
 
-gulp.task('default', ['styles', 'sass:watch']);
+gulp.task('default', ['styles', 'scripts', 'sass:watch', 'babel:watch']);

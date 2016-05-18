@@ -23,7 +23,7 @@
 	  "default_title": "My Personal New Tab"
 	},
   "background":{
-    "scripts": ["background.js"],
+    "scripts": ["/dist/js/background.js"],
     "persistent": false
   },
   "permissions": ["http://*/*", "https://*/*", "cookies", "storage", "tabs"],
