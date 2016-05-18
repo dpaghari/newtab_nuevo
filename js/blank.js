@@ -1,6 +1,9 @@
 var loadedFavorites = [];
 chrome.runtime.sendMessage({task: "checkFirstRun"}, function(res) {
   console.log('checkfirstrun: ',res);
+  if(res.firstRun) {
+    alert("first RUN!");
+  }
 });
 $(document).ready(function() {
   loadSavedFavorites();
