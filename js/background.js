@@ -13,10 +13,10 @@ class NewtabNuevo {
 		}
 	}
 
-	setSetting(name, defVal) {
-		this.StorageObjects.set(name,defVal);
+	setSetting(name, val) {
+		this.StorageObjects.set(name,val);
 		var setting = {};
-		setting[name] = defVal;
+		setting[name] = val;
 		chrome.storage.local.set(setting);
 	}
 
@@ -82,6 +82,7 @@ chrome.runtime.onMessage.addListener(function(req, sender, sendResponse) {
 				sendResponse(res);
         NTInstance.setSetting("FirstRun", false);
       }
+			sendResponse(res);
 		break;
 
 		default:

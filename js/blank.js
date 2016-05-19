@@ -1,4 +1,7 @@
 var loadedFavorites = [];
+var background = chrome.extension.getBackgroundPage();
+var NTInstance = background.NTInstance;
+console.log(NTInstance);
 
 $(document).ready(function() {
   chrome.runtime.sendMessage({task: "checkFirstRun"}, function(res) {
@@ -29,6 +32,7 @@ $(document).ready(function() {
     var modalToOpen = $(".addModal");
     triggerModal(modalToOpen);
     $(".addFavorite").find("div").remove();
+
   });
   $(document).on("click", ".editMode", function(e){
     e.preventDefault();
@@ -110,7 +114,7 @@ $(document).ready(function() {
   $(document).on("click", ".optDel", function(e) {
     e.preventDefault();
     var bookmark = $(this).parent();
-    $(this).parent().remove();
+    bookmark.remove();
     chrome.storage.local.get("popularFavorites", function(res){
       var loadedFavorites = [];
       loadedFavorites = res.popularFavorites.popular_favorites;
@@ -152,17 +156,14 @@ function loadSavedFavorites() {
 function loadPopularFavorites() {
   var popFavs = getPopularFavorites();
   popFavs.then(function(res) {
-    var ogFavs = $("#favorites").children();
     var response = JSON.parse(res);
-    var allFavs = $.extend(ogFavs, response);
-    console.log(ogFavs, response, allFavs);
-    chrome.storage.local.set({"popularFavorites" : allFavs});
+    createPopularFavs(response);
   });
 }
 
 function createPopularFavs(favorites) {
-  console.log(favorites);
-  var list = favorites;
+  // console.log(favorites);
+  var list = favorites.popular_favorites;
   for(var i = 0; i < list.length; i++){
     var favHTML = "<a href='#' class='popFav' data-url=" + list[i].url + " data-imgurl=" + list[i].bgImg +">" + list[i].title + "</a>";
     $(".popularFavs").append(favHTML);
@@ -170,21 +171,14 @@ function createPopularFavs(favorites) {
   loadedFavorites = list;
 }
 
-// Prompt user for first run settings
-function firstRun() {
-
-}
-
 // Prompt user for image to use for bookmark
 // and also the url.  Append to favorites
 function triggerModal(modal) {
-  console.log(modal);
   $('.lightbox').fadeIn();
   modal.fadeIn();
 }
 
 function closeModal(modal) {
-  console.log(modal);
   $('.lightbox').fadeOut();
   modal.fadeOut();
 }
@@ -215,7 +209,8 @@ function saveFavorite(entry) {
       currentSaved = res.savedFavorites;
     }
     currentSaved.push(entry);
-    chrome.storage.local.set({"savedFavorites" : currentSaved });
+    NTInstance.setSetting("savedFavorites" , currentSaved);
+    // chrome.storage.local.set({"savedFavorites" : currentSaved });
     addFavorite(entry.url, entry.imgUrl);
     $("#inputUrl").val("");
     $("#inputImage").val("");
@@ -250,6 +245,6 @@ function getPromise(url) {
 }
 function triggerEditMode() {
   var favorites = $(".favorite");
-  $(".favorite").toggleClass("editing");
-  $(".favorite").children().toggle();
+  favorites.toggleClass("editing");
+  favorites.children().toggle();
 }
