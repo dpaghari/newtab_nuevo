@@ -9,7 +9,7 @@ class NewtabNuevo {
 		}
 		else {
 			if(typeof defVal === "undefined") return "";
-			else return defValue;
+			else return defVal;
 		}
 	}
 
@@ -26,11 +26,12 @@ class NewtabNuevo {
 				this.setSetting("FirstRun", false);
 				this.openTab(chrome.extension.getURL("newtab/blank.html#newTab"));
 		}
+
 	}
 
 	loadSettings() {
 		chrome.storage.local.get(function(storedItems) {
-	    console.log(storedItems);
+			console.log(storedItems);
 			window.NTInstance.StorageObjects=new Map();
 			for(var key in storedItems) {
 				window.NTInstance.StorageObjects.set(key,storedItems[key]);
@@ -46,9 +47,11 @@ class NewtabNuevo {
 
 var NTInstance = new NewtabNuevo();
 window.NTInstance=NTInstance;
+NTInstance.loadSettings();
 chrome.runtime.onStartup.addListener(function(){
-	NTInstance.loadSettings();
+
 	var intervalId=setInterval(function(){
+
 		if (window.NTInstance.StorageObjects !== null)
 		{
 			clearInterval(intervalId);
@@ -57,6 +60,7 @@ chrome.runtime.onStartup.addListener(function(){
 	},500);
 });
 chrome.runtime.onInstalled.addListener(function(){
+
 		// chrome.storage.local.set({"firstRun": true});
     // NTInstance.setSetting("firstRun", true);
     chrome.tabs.create({url: chrome.extension.getURL("newtab/blank.html")});
@@ -70,18 +74,20 @@ chrome.tabs.onCreated.addListener(function created(tab){
 // Messaging Event Listeners
 chrome.runtime.onMessage.addListener(function(req, sender, sendResponse) {
 	var res = {};
-	console.log('task', req.task);
   switch(req.task) {
-		case "checkfirstRun":
+		case "checkFirstRun":
       var firstRun = NTInstance.getSetting("FirstRun",true);
-      console.log("firstRun", firstRun);
 			res.firstRun = firstRun;
       if(firstRun){
-				console.log(res);
-				sendResponse(res.firstRun);
+				sendResponse(res);
         NTInstance.setSetting("FirstRun", false);
       }
 		break;
+
+		default:
+			console.log("default");
+			break;
+
 	}});
 
 // Open a new tab when you click on extension icon

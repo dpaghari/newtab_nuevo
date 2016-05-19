@@ -2,10 +2,8 @@ var loadedFavorites = [];
 
 $(document).ready(function() {
   chrome.runtime.sendMessage({task: "checkFirstRun"}, function(res) {
-    console.log('checkfirstrun: ',res);
-    if(res.firstRun) {
-      alert("first RUN!");
-    }
+    if(res.firstRun)
+      triggerModal($(".onboardingModal"));
   });
   loadSavedFavorites();
   loadPopularFavorites();
@@ -14,14 +12,14 @@ $(document).ready(function() {
   });
   $(".favorite").children().hide();
   // Refresh time every second
-  setInterval(function(e){
-    currentTime = new Date().toLocaleTimeString(navigator.language, { hour : '2-digit', minute: '2-digit'} );
-    $('#time').html(currentTime);
-  }, 1000);
   var currentTime = new Date().toLocaleTimeString(navigator.language, { hour : '2-digit', minute: '2-digit'} );
   $('#time').html(currentTime);
   var currentDate = new Date().toDateString();
   $('#date').html(currentDate);
+  setInterval(function(){
+    currentTime = new Date().toLocaleTimeString(navigator.language, { hour : '2-digit', minute: '2-digit'} );
+    $('#time').html(currentTime);
+  }, 1000);
 
   /*
     Handlers for the top right main user actions menu
@@ -75,7 +73,6 @@ $(document).ready(function() {
   $(document).on("click", ".popFav", function(e){
     e.preventDefault();
     var selection = $(this)[0];
-    // console.log(selection);
     var urltoAdd = selection.dataset.url;
     var imgtoAdd = selection.dataset.imgurl;
     var newEntry = {

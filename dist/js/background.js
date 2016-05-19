@@ -17,7 +17,7 @@ var NewtabNuevo = function () {
 			if (typeof this.StorageObjects.get(name) !== "undefined") {
 				return this.StorageObjects.get(name);
 			} else {
-				if (typeof defVal === "undefined") return "";else return defValue;
+				if (typeof defVal === "undefined") return "";else return defVal;
 			}
 		}
 	}, {
@@ -60,9 +60,11 @@ var NewtabNuevo = function () {
 
 var NTInstance = new NewtabNuevo();
 window.NTInstance = NTInstance;
+NTInstance.loadSettings();
 chrome.runtime.onStartup.addListener(function () {
-	NTInstance.loadSettings();
+
 	var intervalId = setInterval(function () {
+
 		if (window.NTInstance.StorageObjects !== null) {
 			clearInterval(intervalId);
 			NTInstance.startup();
@@ -70,6 +72,7 @@ chrome.runtime.onStartup.addListener(function () {
 	}, 500);
 });
 chrome.runtime.onInstalled.addListener(function () {
+
 	// chrome.storage.local.set({"firstRun": true});
 	// NTInstance.setSetting("firstRun", true);
 	chrome.tabs.create({ url: chrome.extension.getURL("newtab/blank.html") });
@@ -83,18 +86,20 @@ chrome.tabs.onCreated.addListener(function created(tab) {
 // Messaging Event Listeners
 chrome.runtime.onMessage.addListener(function (req, sender, sendResponse) {
 	var res = {};
-	console.log('task', req.task);
 	switch (req.task) {
-		case "checkfirstRun":
+		case "checkFirstRun":
 			var firstRun = NTInstance.getSetting("FirstRun", true);
-			console.log("firstRun", firstRun);
 			res.firstRun = firstRun;
 			if (firstRun) {
-				console.log(res);
-				sendResponse(res.firstRun);
+				sendResponse(res);
 				NTInstance.setSetting("FirstRun", false);
 			}
 			break;
+
+		default:
+			console.log("default");
+			break;
+
 	}
 });
 
