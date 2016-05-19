@@ -1,13 +1,14 @@
 "use strict";
 
 var loadedFavorites = [];
-chrome.runtime.sendMessage({ task: "checkFirstRun" }, function (res) {
-  console.log('checkfirstrun: ', res);
-  if (res.firstRun) {
-    alert("first RUN!");
-  }
-});
+
 $(document).ready(function () {
+  chrome.runtime.sendMessage({ task: "checkFirstRun" }, function (res) {
+    console.log('checkfirstrun: ', res);
+    if (res.firstRun) {
+      alert("first RUN!");
+    }
+  });
   loadSavedFavorites();
   loadPopularFavorites();
   chrome.storage.local.get(null, function (items) {
@@ -45,6 +46,11 @@ $(document).ready(function () {
   $(document).on("click", ".openOnboarding", function (e) {
     e.preventDefault();
     var modalToOpen = $(".onboardingModal");
+    triggerModal(modalToOpen);
+  });
+  $(document).on("click", ".openCalendar", function (e) {
+    e.preventDefault();
+    var modalToOpen = $(".calendarModal");
     triggerModal(modalToOpen);
   });
   /*

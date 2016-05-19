@@ -83,19 +83,19 @@ chrome.tabs.onCreated.addListener(function created(tab) {
 // Messaging Event Listeners
 chrome.runtime.onMessage.addListener(function (req, sender, sendResponse) {
 	var res = {};
+	console.log('task', req.task);
 	switch (req.task) {
 		case "checkfirstRun":
-			console.log('task', req.task);
 			var firstRun = NTInstance.getSetting("FirstRun", true);
 			console.log("firstRun", firstRun);
 			res.firstRun = firstRun;
 			if (firstRun) {
+				console.log(res);
 				sendResponse(res.firstRun);
 				NTInstance.setSetting("FirstRun", false);
 			}
 			break;
 	}
-	return true;
 });
 
 // Open a new tab when you click on extension icon
