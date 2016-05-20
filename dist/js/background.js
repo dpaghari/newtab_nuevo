@@ -17,15 +17,15 @@ var NewtabNuevo = function () {
 			if (typeof this.StorageObjects.get(name) !== "undefined") {
 				return this.StorageObjects.get(name);
 			} else {
-				if (typeof defVal === "undefined") return "";else return defValue;
+				if (typeof defVal === "undefined") return "";else return defVal;
 			}
 		}
 	}, {
 		key: "setSetting",
-		value: function setSetting(name, defVal) {
-			this.StorageObjects.set(name, defVal);
+		value: function setSetting(name, val) {
+			this.StorageObjects.set(name, val);
 			var setting = {};
-			setting[name] = defVal;
+			setting[name] = val;
 			chrome.storage.local.set(setting);
 		}
 	}, {
@@ -60,9 +60,11 @@ var NewtabNuevo = function () {
 
 var NTInstance = new NewtabNuevo();
 window.NTInstance = NTInstance;
+NTInstance.loadSettings();
 chrome.runtime.onStartup.addListener(function () {
-	NTInstance.loadSettings();
+
 	var intervalId = setInterval(function () {
+
 		if (window.NTInstance.StorageObjects !== null) {
 			clearInterval(intervalId);
 			NTInstance.startup();
@@ -70,6 +72,7 @@ chrome.runtime.onStartup.addListener(function () {
 	}, 500);
 });
 chrome.runtime.onInstalled.addListener(function () {
+
 	// chrome.storage.local.set({"firstRun": true});
 	// NTInstance.setSetting("firstRun", true);
 	chrome.tabs.create({ url: chrome.extension.getURL("newtab/blank.html") });
@@ -84,18 +87,21 @@ chrome.tabs.onCreated.addListener(function created(tab) {
 chrome.runtime.onMessage.addListener(function (req, sender, sendResponse) {
 	var res = {};
 	switch (req.task) {
-		case "checkfirstRun":
-			console.log('task', req.task);
+		case "checkFirstRun":
 			var firstRun = NTInstance.getSetting("FirstRun", true);
-			console.log("firstRun", firstRun);
 			res.firstRun = firstRun;
 			if (firstRun) {
-				sendResponse(res.firstRun);
+				sendResponse(res);
 				NTInstance.setSetting("FirstRun", false);
 			}
+			sendResponse(res);
 			break;
+
+		default:
+			console.log("default");
+			break;
+
 	}
-	return true;
 });
 
 // Open a new tab when you click on extension icon
