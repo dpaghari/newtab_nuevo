@@ -27,49 +27,57 @@ $(document).ready(function() {
   /*
     Handlers for the top right main user actions menu
   */
-  $(document).on("click", ".addFavorite", function(e){
-    e.preventDefault();
-    var modalToOpen = $(".addModal");
-    triggerModal(modalToOpen);
-    $(".addFavorite").find("div").remove();
+  $(document).on("click", "a", function(e) {
+     e.preventDefault();
+     var className = $(this).attr('class');
+     console.log("Class name:" + className);
+     switch(className) {
+        case "addFavorite userAction":
+          console.log("addfavorite");
+          var modalToOpen = $(".addModal");
+          triggerModal(modalToOpen);
+          $(".addFavorite").find("div").remove();
+          break
 
-  });
-  $(document).on("click", ".editMode", function(e){
-    e.preventDefault();
-    triggerEditMode();
-  });
-  $(document).on("click", ".openSettings", function(e){
-    e.preventDefault();
-    var modalToOpen = $(".settingsModal");
-    triggerModal(modalToOpen);
-  });
-  $(document).on("click", ".openOnboarding", function(e){
-    e.preventDefault();
-    var modalToOpen = $(".onboardingModal");
-    triggerModal(modalToOpen);
-  });
-  $(document).on("click", ".openCalendar", function(e){
-    e.preventDefault();
-    var modalToOpen = $(".calendarModal");
-    triggerModal(modalToOpen);
-  });
-  /*
-    Handler for the close button on the modals
-  */
-  $(document).on("click", ".closeBtn", function(e){
-    e.preventDefault();
-    var modalToClose = $(this).parent();
-    closeModal(modalToClose);
+        case 'editMode userAction':
+          e.preventDefault();
+          triggerEditMode();
+          break
 
-    if ($(this).parents('.onboardingModal').length) {
-      var $arrowContainer = '\
-        <div class="arrowContainer">\
-          <p>^</p>\
-          <p>You can also add favorites by clicking the + icon</p>\
-        </div>\
-        ';
-      $(".addFavorite").append($arrowContainer);
-    }
+        case 'openSettings userAction':
+          e.preventDefault();
+          var modalToOpen = $(".settingsModal");
+          triggerModal(modalToOpen);
+          break
+
+        case 'openOnboarding userAction':
+          e.preventDefault();
+          var modalToOpen = $(".onboardingModal");
+          triggerModal(modalToOpen);
+          break
+
+        case 'openCalendar userAction':
+          e.preventDefault();
+          var modalToOpen = $(".calendarModal");
+          triggerModal(modalToOpen);
+          break
+
+        case 'closeBtn':
+          e.preventDefault();
+          var modalToClose = $(this).parent();
+          closeModal(modalToClose);
+
+          if ($(this).parents('.onboardingModal').length) {
+            var $arrowContainer = '\
+              <div class="arrowContainer">\
+                <p>^</p>\
+                <p>You can also add favorites by clicking the + icon</p>\
+              </div>\
+              ';
+            $(".addFavorite").append($arrowContainer);
+          }
+          break
+     }
   });
   /*
     Handler for the suggested favorites in the Add New Favorite menu
