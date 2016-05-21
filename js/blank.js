@@ -27,16 +27,13 @@ $(document).ready(function() {
   /*
     Handlers for the top right main user actions menu
   */
-  $(document).on("click", "a", function(e) {
+  $(document).on("click", ".userAction", function(e) {
      e.preventDefault();
-     var className = $(this).attr('class');
-     console.log("Class name:" + className);
-     switch(className) {
+     var clickElement = $(this).attr('class');
+     switch(clickElement) {
         case "addFavorite userAction":
-          console.log("addfavorite");
           var modalToOpen = $(".addModal");
           triggerModal(modalToOpen);
-          $(".addFavorite").find("div").remove();
           break
 
         case 'editMode userAction':
@@ -61,24 +58,9 @@ $(document).ready(function() {
           var modalToOpen = $(".calendarModal");
           triggerModal(modalToOpen);
           break
-
-        case 'closeBtn':
-          e.preventDefault();
-          var modalToClose = $(this).parent();
-          closeModal(modalToClose);
-
-          if ($(this).parents('.onboardingModal').length) {
-            var $arrowContainer = '\
-              <div class="arrowContainer">\
-                <p>^</p>\
-                <p>You can also add favorites by clicking the + icon</p>\
-              </div>\
-              ';
-            $(".addFavorite").append($arrowContainer);
-          }
-          break
      }
   });
+
   /*
     Handler for the suggested favorites in the Add New Favorite menu
   */
@@ -93,6 +75,26 @@ $(document).ready(function() {
     };
     saveFavorite(newEntry);
   });
+
+  $(document).on("click", ".closeBtn", function(e) {
+    e.preventDefault();
+    var modalToClose = $(this).parent();
+    closeModal(modalToClose);
+
+    if ($(this).parents('.onboardingModal').length) {
+      var $arrowContainer = '\
+        <div class="arrowContainer">\
+          <p>^</p>\
+          <p>You can also add favorites by clicking the + icon</p>\
+        </div>\
+        ';
+      $(".addFavorite").append($arrowContainer);
+    }
+  });
+
+  $(document).on("click", '.arrowContainer', function(e) {
+    $(this).remove();
+  })
 
   /*
     Handler for the add button on the Add a New Favorite menu
@@ -144,7 +146,6 @@ $(document).ready(function() {
     if($(this).hasClass("editing"))
       e.preventDefault();
   });
-
 });
 
 
