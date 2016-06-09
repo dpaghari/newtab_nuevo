@@ -2,7 +2,6 @@
 
 var background = chrome.extension.getBackgroundPage();
 var NTInstance = background.NTInstance;
-// console.log(NTInstance);
 
 $(document).ready(function () {
   chrome.runtime.sendMessage({ task: "checkFirstRun" }, function (res) {
@@ -16,7 +15,6 @@ $(document).ready(function () {
   chrome.storage.local.get(null, function (items) {
     console.log(items);
   });
-  //console.log(NTInstance.getSetting("savedFavorites"));
   // Hide edit icons
   $(".favorite").children().hide();
   // Refresh time every second
@@ -126,20 +124,10 @@ $(document).ready(function () {
   */
   $(document).on("click", ".optDel", function (e) {
     e.preventDefault();
-    var bookmark = $(this).parent();
-    bookmark.remove();
-    chrome.storage.local.get("popularFavorites", function (res) {
-      var loadedFavorites = [];
-      loadedFavorites = res.popularFavorites.popular_favorites;
-      console.log(loadedFavorites);
-      var match = _.find(loadedFavorites, function (val) {
-        console.log(this);
-        console.log(val.url, this[0].href);
-        return val.url === this[0].href;
-      }.bind(this));
-
-      console.log(match);
-    }.bind(bookmark));
+    var linkToDelete = $(this).parent().attr("href");
+    console.log(linkToDelete);
+    deleteFavorite(linkToDelete);
+    $(this).parent().remove();
   });
   $(document).on("click", ".optEdit", function (e) {
     e.preventDefault();
@@ -150,24 +138,31 @@ $(document).ready(function () {
   });
 });
 
+function deleteFavorite(delUrl) {
+  var savedFavorites = NTInstance.getSetting("savedFavorites", null);
+  if (savedFavorites !== null) {
+    savedFavorites.forEach(function (item, index) {
+      if (item.url === delUrl) {
+        savedFavorites.splice(index, 1);
+      }
+    });
+    NTInstance.setSetting("savedFavorites", savedFavorites);
+  }
+}
+
 // Load saved favorites onload
 function loadSavedFavorites() {
-  console.log("loadSavedFavorites");
   var savedItems = [];
-  // chrome.storage.local.get("savedFavorites", function(res) {
   var savedFavorites = NTInstance.getSetting("savedFavorites", null);
   if (savedFavorites !== null) {
     savedItems = savedFavorites;
-    // console.log(savedItems);
     savedItems.forEach(function (item) {
       addFavorite(item.url, item.bgImg);
     });
   }
-  // });
 }
 
 function loadPopularFavorites() {
-  console.log("loadPopularFavorites");
   var popFavs = getPopularFavorites();
   popFavs.then(function (res) {
     var response = JSON.parse(res);
@@ -175,10 +170,8 @@ function loadPopularFavorites() {
   });
 }
 function loadDefaultFavorites() {
-  console.log("loadDefaultFavorites");
   var popFavs = getPromise("/newtab/defaultFavs.json");
   popFavs.then(function (res) {
-    // console.log(res);
     var response = JSON.parse(res);
     createDefaultFavs(response);
   });
@@ -203,13 +196,6 @@ function createPopularFavs(favorites) {
   for (var i = 0; i < list.length; i++) {
     var favHTML = "<a href='#' class='popFav' data-title=" + list[i].title + " data-url=" + list[i].url + " data-imgurl=" + list[i].bgImg + ">" + list[i].title + "</a>";
     $(".popularFavs").append(favHTML);
-
-    // var entry = {
-    //   "title" : list[i].title,
-    //   "url" : list[i].url,
-    //   "bgImg" : list[i].bgImg,
-    // };
-    // saveFavorite(entry);
   }
 }
 
@@ -245,25 +231,16 @@ function addFavorite(url, imageUrl) {
 
 // Save favorite to local storage
 function saveFavorite(entry) {
-  // chrome.storage.local.get("savedFavorites", function (res) {
-  // console.log(res);
   var currentSaved = [];
   var savedFavorites = NTInstance.getSetting("savedFavorites", null);
-  console.log(savedFavorites);
   if (savedFavorites !== null) {
-    // console.log(res);
     currentSaved = savedFavorites;
-    console.log("got saved:", currentSaved);
   }
-  // console.log(entry);
-  // console.log(currentSaved);
   currentSaved.push(entry);
-  // console.log(currentSaved);
   NTInstance.setSetting("savedFavorites", currentSaved);
   addFavorite(entry.url, entry.bgImg);
   $("#inputUrl").val("");
   $("#inputImage").val("");
-  // });
 }
 
 function getPopularFavorites() {
