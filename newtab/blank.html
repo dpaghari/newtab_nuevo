@@ -20,16 +20,16 @@
           <p id="date">April 27, 2016</p>
         </div>
         <div class="options">
-          <a class="addFavorite userAction" href="#"><i class="fa fa-plus fa-lg fa-fw"></i></a>
-          <a class="editMode userAction" href="#"><i class="fa fa-pencil-square-o fa-lg fa-fw"></i></a>
-          <a class="openSettings userAction" href="#"><i class="fa fa-gear fa-lg fa-fw"></i></a>
-          <a class="openCalendar userAction" href="#"><i class="fa fa-calendar fa-lg fa-fw"></i></a>
-          <a class="openOnboarding userAction" href="#"><i class="fa fa-gear fa-lg fa-fw"></i></a>
+          <a id="addFavorite" class="userAction" href="#"><i class="fa fa-plus fa-lg fa-fw"></i></a>
+          <a id="editMode" class="userAction" href="#"><i class="fa fa-pencil-square-o fa-lg fa-fw"></i></a>
+          <a id="openSettings" class="userAction" href="#"><i class="fa fa-gear fa-lg fa-fw"></i></a>
+          <a id="openCalendar" class="userAction" href="#"><i class="fa fa-calendar fa-lg fa-fw"></i></a>
+          <!-- <a id="openOnboarding" class="userAction" href="#"><i class="fa fa-gear fa-lg fa-fw"></i></a> -->
         </div>
     </div>
 
       <div class="container" id="favorites">
-        <a href="http://facebook.com" class="favorite" id="fav-fb">
+        <!-- <a href="http://facebook.com" class="favorite" id="fav-fb">
           <i class="fa fa-trash-o fa-lg fa-fw optDel"></i>
           <i class="fa fa-pencil fa-lg fa-fw optEdit"></i>
         </a>
@@ -76,7 +76,7 @@
         <a href="http://yelp.com" class="favorite" id="fav-yelp">
           <i class="fa fa-trash-o fa-lg fa-fw optDel"></i>
           <i class="fa fa-pencil fa-lg fa-fw optEdit"></i>
-        </a>
+        </a> -->
       </div>
     </div>
   </div>
@@ -86,6 +86,8 @@
     <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
     <p>Add a new Favorite</p>
     <form>
+      <label for="faveTitle">Title:</label>
+      <input type="text" name="faveTitle" id="inputTitle"/><br>
       <label for="faveUrl">Url:</label>
       <input type="text" name="faveUrl" id="inputUrl"/><br>
       <label for="faveImg">Image Url:</label>

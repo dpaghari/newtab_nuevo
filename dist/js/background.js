@@ -4,12 +4,20 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+/**
+ * Facilitates the overall control flow of the extension
+ */
+
 var NewtabNuevo = function () {
 	function NewtabNuevo() {
 		_classCallCheck(this, NewtabNuevo);
 
 		this.StorageObjects = null;
 	}
+
+	// Get a setting from localstorage
+	// Setting name, default value if not found
+
 
 	_createClass(NewtabNuevo, [{
 		key: "getSetting",
@@ -20,6 +28,9 @@ var NewtabNuevo = function () {
 				if (typeof defVal === "undefined") return "";else return defVal;
 			}
 		}
+		// Save a setting to localstorage
+		// Setting name, value for setting could be an array, object, etc.
+
 	}, {
 		key: "setSetting",
 		value: function setSetting(name, val) {
@@ -28,6 +39,9 @@ var NewtabNuevo = function () {
 			setting[name] = val;
 			chrome.storage.local.set(setting);
 		}
+
+		// What to do when the extension starts
+
 	}, {
 		key: "startup",
 		value: function startup() {
@@ -37,6 +51,8 @@ var NewtabNuevo = function () {
 				this.openTab(chrome.extension.getURL("newtab/blank.html#newTab"));
 			}
 		}
+		// Retrieve all settings from localstorage and map them to session StorageObjects
+
 	}, {
 		key: "loadSettings",
 		value: function loadSettings() {
@@ -48,6 +64,9 @@ var NewtabNuevo = function () {
 				}
 			});
 		}
+
+		// Open a new tab
+
 	}, {
 		key: "openTab",
 		value: function openTab(tabURL) {
@@ -62,7 +81,6 @@ var NTInstance = new NewtabNuevo();
 window.NTInstance = NTInstance;
 NTInstance.loadSettings();
 chrome.runtime.onStartup.addListener(function () {
-
 	var intervalId = setInterval(function () {
 
 		if (window.NTInstance.StorageObjects !== null) {
@@ -72,9 +90,6 @@ chrome.runtime.onStartup.addListener(function () {
 	}, 500);
 });
 chrome.runtime.onInstalled.addListener(function () {
-
-	// chrome.storage.local.set({"firstRun": true});
-	// NTInstance.setSetting("firstRun", true);
 	chrome.tabs.create({ url: chrome.extension.getURL("newtab/blank.html") });
 });
 chrome.tabs.onCreated.addListener(function created(tab) {

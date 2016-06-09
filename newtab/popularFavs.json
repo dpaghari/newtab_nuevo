@@ -3,37 +3,67 @@
       {
         "title" : "Chase",
         "url" : "http://chase.com",
-        "bgImg" : "http://www.my10000dollars.com/wp-content/uploads/2016/02/Chase-Logo-300x151.jpg"
+        "bgImg" : "/newtab/images/chase.jpg"
       },
       {
-        "title" : "Amazon",
-        "url" : "http://amazon.com",
-        "bgImg" : "http://thosegamingnerds.com/wp-content/uploads/2014/02/Amazon-logo-1024x750.jpg"
+        "title" : "NBA",
+        "url" : "http://nba.com",
+        "bgImg" : "/newtab/images/nba.png"
       },
       {
-        "title" : "Pinterest",
-        "url" : "http://pinterest.com",
-        "bgImg" : "http://blog.verticalresponse.com/wp-content/uploads/2013/02/pinterest-logo.png"
+        "title" : "NFL",
+        "url" : "http://nfl.com",
+        "bgImg" : "/newtab/images/nfl.jpg"
       },
       {
-        "title" : "Linkedin",
-        "url" : "http://linkedin.com",
-        "bgImg" : "http://www.hdicon.com/wp-content/uploads/2011/03/linked_in.png"
+        "title" : "MLB",
+        "url" : "http://mlb.com",
+        "bgImg" : "/newtab/images/mlb.gif"
       },
       {
-        "title" : "CNN",
-        "url" : "http://cnn.com",
-        "bgImg" : "http://cdn-0.famouslogos.us/images/cnn-logo.jpg"
+        "title" : "ESPN",
+        "url" : "http://espn.com",
+        "bgImg" : "/newtab/images/espn.png"
       },
       {
-        "title" : "Hulu",
-        "url" : "http://hulu.com",
-        "bgImg" : "http://assets.huluim.com/h2o/facebook_share_thumb_default_hulu.png"
+        "title" : "Twitch",
+        "url" : "http://twitch.tv",
+        "bgImg" : "/newtab/images/twitch.png"
+      },
+      {
+        "title" : "Wells Fargo",
+        "url" : "http://wellsfargo.com",
+        "bgImg" : "/newtab/images/wf.jpg"
+      },
+      {
+        "title" : "Trello",
+        "url" : "http://trello.com",
+        "bgImg" : "/newtab/images/trello.jpg"
+      },
+      {
+        "title" : "Github",
+        "url" : "http://github.com",
+        "bgImg" : "/newtab/images/github.jpg"
       },
       {
         "title" : "Tumblr",
         "url" : "http://tumblr.com",
-        "bgImg" : "http://allthingsd.com/files/2013/11/tumblr-logo-rectangle-white-on-blue-839x385px.png"
+        "bgImg" : "/newtab/images/tumblr.png"
+      },
+      {
+        "title" : "Google Drive",
+        "url" : "http://drive.google.com",
+        "bgImg" : "/newtab/images/drive.jpg"
+      },
+      {
+        "title" : "Google Photos",
+        "url" : "http://photos.google.com",
+        "bgImg" : "/newtab/images/photos.png"
+      },
+      {
+        "title" : "Polygon",
+        "url" : "http://polygon.com",
+        "bgImg" : "/newtab/images/polygon.jpg"
       }
   ]
 }

@@ -1,0 +1,64 @@
+{
+  "default_favorites" : [
+      {
+        "title" : "Facebook",
+        "url" : "http://facebook.com",
+        "bgImg" : "/newtab/images/facebook.jpg"
+      },
+      {
+        "title" : "Gmail",
+        "url" : "http://gmail.com",
+        "bgImg" : "/newtab/images/gmail.png"
+      },
+      {
+        "title" : "Twitter",
+        "url" : "http://twitter.com",
+        "bgImg" : "/newtab/images/twitter.jpg"
+      },
+      {
+        "title" : "Linkedin",
+        "url" : "http://linkedin.com",
+        "bgImg" : "/newtab/images/linkedin.png"
+      },
+      {
+        "title" : "CNN",
+        "url" : "http://cnn.com",
+        "bgImg" : "/newtab/images/cnn.jpg"
+      },
+      {
+        "title" : "Hulu",
+        "url" : "http://hulu.com",
+        "bgImg" : "/newtab/images/hulu.png"
+      },
+      {
+        "title" : "Netflix",
+        "url" : "http://tumblr.com",
+        "bgImg" : "/newtab/images/netflix.png"
+      },
+      {
+        "title" : "Youtube",
+        "url" : "http://youtube.com",
+        "bgImg" : "/newtab/images/youtube.png"
+      },
+      {
+        "title" : "Yelp",
+        "url" : "http://yelp.com",
+        "bgImg" : "/newtab/images/yelp.png"
+      },
+      {
+        "title" : "HBO",
+        "url" : "http://hbogo.com",
+        "bgImg" : "/newtab/images/hbo.png"
+      },
+      {
+        "title" : "Amazon",
+        "url" : "http://amazon.com",
+        "bgImg" : "/newtab/images/amazon.jpg"
+      },
+      {
+        "title" : "Reddit",
+        "url" : "http://reddit.com",
+        "bgImg" : "/newtab/images/reddit.png"
+      }
+  ]
+}

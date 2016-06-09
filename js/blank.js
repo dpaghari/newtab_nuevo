@@ -1,18 +1,21 @@
-var loadedFavorites = [];
 var background = chrome.extension.getBackgroundPage();
 var NTInstance = background.NTInstance;
-console.log(NTInstance);
+// console.log(NTInstance);
 
 $(document).ready(function() {
   chrome.runtime.sendMessage({task: "checkFirstRun"}, function(res) {
-    if(res.firstRun)
+    if(res.firstRun){
+      loadDefaultFavorites();
       triggerModal($(".onboardingModal"));
+    }
   });
   loadSavedFavorites();
   loadPopularFavorites();
   chrome.storage.local.get(null, function(items){
     console.log(items);
   });
+  //console.log(NTInstance.getSetting("savedFavorites"));
+  // Hide edit icons
   $(".favorite").children().hide();
   // Refresh time every second
   var currentTime = new Date().toLocaleTimeString(navigator.language, { hour : '2-digit', minute: '2-digit'} );
@@ -29,35 +32,36 @@ $(document).ready(function() {
   */
   $(document).on("click", ".userAction", function(e) {
      e.preventDefault();
-     var clickElement = $(this).attr('class');
+     var clickElement = $(this).attr('id');
+     //console.log(clickElement);
      switch(clickElement) {
-        case "addFavorite userAction":
+        case "addFavorite":
           var modalToOpen = $(".addModal");
           triggerModal(modalToOpen);
-          break
+          break;
 
-        case 'editMode userAction':
+        case 'editMode':
           e.preventDefault();
           triggerEditMode();
-          break
+          break;
 
-        case 'openSettings userAction':
+        case 'openSettings':
           e.preventDefault();
-          var modalToOpen = $(".settingsModal");
-          triggerModal(modalToOpen);
-          break
+          var settingsModal = $(".settingsModal");
+          triggerModal(settingsModal);
+          break;
 
-        case 'openOnboarding userAction':
+        case 'openOnboarding':
           e.preventDefault();
-          var modalToOpen = $(".onboardingModal");
-          triggerModal(modalToOpen);
-          break
+          var onBoardingModal = $(".onboardingModal");
+          triggerModal(onBoardingModal);
+          break;
 
-        case 'openCalendar userAction':
+        case 'openCalendar':
           e.preventDefault();
-          var modalToOpen = $(".calendarModal");
-          triggerModal(modalToOpen);
-          break
+          var calendarModal = $(".calendarModal");
+          triggerModal(calendarModal);
+          break;
      }
   });
 
@@ -67,12 +71,16 @@ $(document).ready(function() {
   $(document).on("click", ".popFav", function(e){
     e.preventDefault();
     var selection = $(this)[0];
+    var titletoAdd = selection.dataset.title;
     var urltoAdd = selection.dataset.url;
     var imgtoAdd = selection.dataset.imgurl;
+
     var newEntry = {
+      "title" : titletoAdd,
       "url" : urltoAdd,
-      "imgUrl" : imgtoAdd
+      "bgImg" : imgtoAdd
     };
+    console.log(newEntry);
     saveFavorite(newEntry);
   });
 
@@ -82,36 +90,34 @@ $(document).ready(function() {
     closeModal(modalToClose);
 
     if ($(this).parents('.onboardingModal').length) {
-      var $arrowContainer = '\
-        <div class="arrowContainer">\
-          <p>^</p>\
-          <p>You can also add favorites by clicking the + icon</p>\
-        </div>\
-        ';
+      var $arrowContainer = `
+        <div class="arrowContainer">
+          <p>^</p>
+          <p>You can also add favorites by clicking the + icon</p>
+        </div>
+        `;
       $(".addFavorite").append($arrowContainer);
     }
   });
 
-  $(document).on("click", '.arrowContainer', function(e) {
+  $(document).on("click", '.arrowContainer', function() {
     $(this).remove();
-  })
+  });
 
   /*
     Handler for the add button on the Add a New Favorite menu
   */
   $(document).on("click", ".addBtn", function(e){
     e.preventDefault();
+    var titleVal = $("#inputTitle").val();
     var urlVal = $("#inputUrl").val();
     var imageVal = $("#inputImage").val();
-    var newFavorites = [];
     var newEntry = {
+      "title" : titleVal,
       "url" : urlVal,
-      "imgUrl" : imageVal
+      "bgImg" : imageVal
     };
     saveFavorite(newEntry);
-
-    // var modalToClose = $(".addModal");
-    // closeModal(modalToClose);
 
     if ($(".modal").length !== null) {
       closeModal($(".modal"));
@@ -151,33 +157,65 @@ $(document).ready(function() {
 
 // Load saved favorites onload
 function loadSavedFavorites() {
+  console.log("loadSavedFavorites");
   var savedItems = [];
-  chrome.storage.local.get("savedFavorites", function(res) {
-    if(typeof res.savedFavorites !== "undefined"){
-    savedItems = res.savedFavorites;
-    savedItems.forEach(function(item, index) {
-      addFavorite(item.url, item.imgUrl);
+  // chrome.storage.local.get("savedFavorites", function(res) {
+    var savedFavorites = NTInstance.getSetting("savedFavorites", null);
+    if(savedFavorites !== null){
+    savedItems = savedFavorites;
+    // console.log(savedItems);
+    savedItems.forEach(function(item) {
+      addFavorite(item.url, item.bgImg);
     });
     }
-  });
+  // });
 }
 
 function loadPopularFavorites() {
+  console.log("loadPopularFavorites");
   var popFavs = getPopularFavorites();
   popFavs.then(function(res) {
     var response = JSON.parse(res);
     createPopularFavs(response);
   });
 }
+function loadDefaultFavorites() {
+  console.log("loadDefaultFavorites");
+  var popFavs = getPromise("/newtab/defaultFavs.json");
+  popFavs.then(function(res) {
+    // console.log(res);
+    var response = JSON.parse(res);
+    createDefaultFavs(response);
+  });
+}
+
+function createDefaultFavs(favorites) {
+  var list = favorites.default_favorites;
+  // console.log(list);
+  for(var i = 0; i < list.length; i++){
+    var entry = {
+      "title" : list[i].title,
+      "url" : list[i].url,
+      "bgImg" : list[i].bgImg,
+    };
+    // console.log(entry);
+    saveFavorite(entry);
+  }
+}
 
 function createPopularFavs(favorites) {
-  // console.log(favorites);
   var list = favorites.popular_favorites;
   for(var i = 0; i < list.length; i++){
-    var favHTML = "<a href='#' class='popFav' data-url=" + list[i].url + " data-imgurl=" + list[i].bgImg +">" + list[i].title + "</a>";
+    var favHTML = "<a href='#' class='popFav' data-title=" + list[i].title + " data-url=" + list[i].url + " data-imgurl=" + list[i].bgImg +">" + list[i].title + "</a>";
     $(".popularFavs").append(favHTML);
+
+    // var entry = {
+    //   "title" : list[i].title,
+    //   "url" : list[i].url,
+    //   "bgImg" : list[i].bgImg,
+    // };
+    // saveFavorite(entry);
   }
-  loadedFavorites = list;
 }
 
 // Prompt user for image to use for bookmark
@@ -212,33 +250,26 @@ function addFavorite(url, imageUrl) {
 
 // Save favorite to local storage
 function saveFavorite(entry) {
-  chrome.storage.local.get("savedFavorites", function (res) {
+  // chrome.storage.local.get("savedFavorites", function (res) {
+    // console.log(res);
     var currentSaved = [];
-    if(typeof res.savedFavorites !== "undefined"){
-      currentSaved = res.savedFavorites;
+    var savedFavorites = NTInstance.getSetting("savedFavorites", null);
+    console.log(savedFavorites);
+    if(savedFavorites !== null){
+      // console.log(res);
+      currentSaved = savedFavorites;
+      console.log("got saved:", currentSaved);
     }
+    // console.log(entry);
+    // console.log(currentSaved);
     currentSaved.push(entry);
+    // console.log(currentSaved);
     NTInstance.setSetting("savedFavorites" , currentSaved);
-    // chrome.storage.local.set({"savedFavorites" : currentSaved });
-    addFavorite(entry.url, entry.imgUrl);
+    addFavorite(entry.url, entry.bgImg);
     $("#inputUrl").val("");
     $("#inputImage").val("");
-  });
+  // });
 }
-
-// function saveChangesToFavorites() {
-//   chrome.storage.local.get("savedFavorites", function (res) {
-//     var currentSaved = [];
-//     if(typeof res.savedFavorites !== "undefined"){
-//       currentSaved = res.savedFavorites;
-//     }
-//     chrome.storage.local.set({"savedFavorites" : currentSaved });
-//     addFavorite(entry.url, entry.imgUrl);
-//     $("#inputUrl").val("");
-//     $("#inputImage").val("");
-//   });
-// }
-
 
 function getPopularFavorites() {
   return $.ajax({

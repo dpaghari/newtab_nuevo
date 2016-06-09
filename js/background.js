@@ -1,8 +1,15 @@
+
+
+/**
+ * Facilitates the overall control flow of the extension
+ */
 class NewtabNuevo {
 	constructor() {
 		this.StorageObjects = null;
 	}
 
+	// Get a setting from localstorage
+	// Setting name, default value if not found
 	getSetting(name, defVal) {
 		if(typeof this.StorageObjects.get(name) !== "undefined"){
 			return this.StorageObjects.get(name);
@@ -12,7 +19,8 @@ class NewtabNuevo {
 			else return defVal;
 		}
 	}
-
+	// Save a setting to localstorage
+	// Setting name, value for setting could be an array, object, etc.
 	setSetting(name, val) {
 		this.StorageObjects.set(name,val);
 		var setting = {};
@@ -20,6 +28,7 @@ class NewtabNuevo {
 		chrome.storage.local.set(setting);
 	}
 
+	// What to do when the extension starts
 	startup() {
 		var firstRun = this.getSetting("FirstRun",true);
 		if(firstRun){
@@ -28,7 +37,7 @@ class NewtabNuevo {
 		}
 
 	}
-
+	// Retrieve all settings from localstorage and map them to session StorageObjects
 	loadSettings() {
 		chrome.storage.local.get(function(storedItems) {
 			console.log(storedItems);
@@ -39,17 +48,16 @@ class NewtabNuevo {
 		});
 	}
 
+	// Open a new tab
 	openTab(tabURL) {
 		chrome.tabs.create({url: tabURL});
 	}
 
 }
-
 var NTInstance = new NewtabNuevo();
 window.NTInstance=NTInstance;
 NTInstance.loadSettings();
 chrome.runtime.onStartup.addListener(function(){
-
 	var intervalId=setInterval(function(){
 
 		if (window.NTInstance.StorageObjects !== null)
@@ -60,9 +68,6 @@ chrome.runtime.onStartup.addListener(function(){
 	},500);
 });
 chrome.runtime.onInstalled.addListener(function(){
-
-		// chrome.storage.local.set({"firstRun": true});
-    // NTInstance.setSetting("firstRun", true);
     chrome.tabs.create({url: chrome.extension.getURL("newtab/blank.html")});
 });
 chrome.tabs.onCreated.addListener(function created(tab){

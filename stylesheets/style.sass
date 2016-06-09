@@ -3,12 +3,13 @@
 
 @import "vars"
 
+$my-fonts: "Helvetica", sans-serif
+
+
 body, ul, ol
   padding: 0
   margin: 0
   font-family: $font-stack
-  // background: url("/newtab/images/navy_blue.png")
-
 .wrapper
   +display(flex)
   flex-direction: row
@@ -201,7 +202,7 @@ body, ul, ol
   left: 50%
   top: 50%
   min-width: 300px
-  max-height: 500px
+  // max-height: 500px
   +transform(translate(-50%, -50%))
   z-index: 100
   +display(none)
