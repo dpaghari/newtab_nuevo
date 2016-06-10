@@ -77,8 +77,7 @@ body, ul, ol
         padding: 80px 120px
         border: 1.5px solid black
         text-decoration: none
-        transition: 0.2s all
-        background: white
+        transition: 0.3s all
         i
           position: absolute
           font-size: 1.5em
@@ -87,8 +86,12 @@ body, ul, ol
           z-index: 3
         .optDel
           right: 2px
+          &:hover
+            cursor: pointer
         .optEdit
           right: 40px
+          &:hover
+          cursor: pointer
       a:hover
         z-index: 10
         transform: scale(1.1,1.1)
@@ -101,11 +104,13 @@ body, ul, ol
         left: 0
         top: 0
       .favorite.editing
+
         margin: 2px
         animation: swing 3s infinite
         transform-origin: top center
         &:hover
           transform: scale(0,0)
+          cursor: move
 
       .favorite.editing:before
         background: rgba(1,1,1,0.4)
@@ -115,7 +120,6 @@ body, ul, ol
         position: absolute
         left: 0
         top: 0
-
 
   .sidebar
       position: fixed

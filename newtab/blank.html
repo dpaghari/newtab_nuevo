@@ -1,3 +1,5 @@
+<!-- NewTab Nuevo -->
+<!-- Author: Daniel Pagharion http://danielpagharion.com -->
 <!DOCTYPE html>
 <html>
 <head>
@@ -5,11 +7,11 @@
 <title>My New Tab</title>
 <script type="text/javascript" src="./vendor/jquery/jquery-2.2.3.min.js"></script>
 <script type="text/javascript" src="./vendor/lodash/lodash.min.js"></script>
+<link rel="stylesheet" href="./vendor/jquery-ui-1.11.4/jquery-ui.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css">
-<link href='https://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
-<link href='https://fonts.googleapis.com/css?family=Lato:400,300,700' rel='stylesheet' type='text/css'>
 <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon" />
 <link rel="stylesheet" href="style.css" type="text/css" />
+<script src="/newtab/vendor/jquery-ui-1.11.4/jquery-ui.min.js" charset="utf-8"></script>
 </head>
 <body>
   <div class="wrapper">
@@ -28,7 +30,7 @@
         </div>
     </div>
 
-      <div class="container" id="favorites"></div>
+      <div class="favorites-wrapper"><ul id="favorites"></ul></div>
     </div>
   </div>
 
@@ -49,7 +51,18 @@
     <p>Select from a list of popular favorites</p>
     <div class="popularFavs"></div>
   </div>
-  
+  <div class="editModal modal">
+    <a href="#" class="closeEdit"><i class="fa fa-times fa-lg fa-fw"></i></a>
+    <p>Edit <span class="editedItem"></span></p>
+    <form>
+      <label for="faveUrl">Url:</label>
+      <input type="text" name="faveUrl" id="inputUrl"/><br>
+      <label for="faveImg">Image Url:</label>
+      <input type="text" name="faveImg" id="inputImage"/><br>
+      <a href="#" class="addBtn">Accept Changes</a>
+    </form>
+  </div>
+
   <div class="settingsModal modal">
     <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
     <p>Settings</p>

@@ -2,8 +2,11 @@
 
 var background = chrome.extension.getBackgroundPage();
 var NTInstance = background.NTInstance;
+NTInstance.editing = false;
 
 $(document).ready(function () {
+  $("#favorites").sortable();
+  $("#favorites").sortable("disable");
   chrome.runtime.sendMessage({ task: "checkFirstRun" }, function (res) {
     if (res.firstRun) {
       loadDefaultFavorites();
@@ -42,7 +45,14 @@ $(document).ready(function () {
 
       case 'editMode':
         e.preventDefault();
-        triggerEditMode();
+        NTInstance.editing = !NTInstance.editing;
+        $(".favorite").toggleClass("editing");
+        $(".favorite").children().toggle();
+        if (NTInstance.editing) {
+          triggerEditMode();
+        } else {
+          processEditedList();
+        }
         break;
 
       case 'openSettings':
@@ -80,10 +90,12 @@ $(document).ready(function () {
       "url": urltoAdd,
       "bgImg": imgtoAdd
     };
-    console.log(newEntry);
+    // console.log(newEntry);
     saveFavorite(newEntry);
   });
-
+  /*
+    Handler for close button
+  */
   $(document).on("click", ".closeBtn", function (e) {
     e.preventDefault();
     var modalToClose = $(this).parent();
@@ -93,6 +105,11 @@ $(document).ready(function () {
       var $arrowContainer = "\n        <div class=\"arrowContainer\">\n          <p>^</p>\n          <p>You can also add favorites by clicking the + icon</p>\n        </div>\n        ";
       $(".addFavorite").append($arrowContainer);
     }
+  });
+  $(document).on("click", ".closeEdit", function (e) {
+    e.preventDefault();
+    var modalToClose = $(this).parent();
+    closeModal(modalToClose);
   });
 
   $(document).on("click", '.arrowContainer', function () {
@@ -124,14 +141,19 @@ $(document).ready(function () {
   */
   $(document).on("click", ".optDel", function (e) {
     e.preventDefault();
-    var linkToDelete = $(this).parent().attr("href");
-    console.log(linkToDelete);
+    var favorite = $(this).parent();
+    var linkToDelete = favorite.attr("href");
+    // console.log(linkToDelete);
     deleteFavorite(linkToDelete);
     $(this).parent().remove();
   });
   $(document).on("click", ".optEdit", function (e) {
     e.preventDefault();
     // Open Edit Modal
+    var favorite = $(this).parent();
+    $(".editedItem").text(favorite.data(title));
+    favorite.addClass("changingVals");
+    triggerModal($(".editModal"));
   });
   $(document).on("click", ".favorite", function (e) {
     if ($(this).hasClass("editing")) e.preventDefault();
@@ -157,7 +179,7 @@ function loadSavedFavorites() {
   if (savedFavorites !== null) {
     savedItems = savedFavorites;
     savedItems.forEach(function (item) {
-      addFavorite(item.url, item.bgImg);
+      addFavorite(item.title, item.url, item.bgImg);
     });
   }
 }
@@ -211,7 +233,8 @@ function closeModal(modal) {
   modal.fadeOut();
 }
 // Add a new favorite to the favorites grid
-function addFavorite(url, imageUrl) {
+function addFavorite(title, url, imageUrl) {
+  var newListEntry = document.createElement("LI");
   var newFavorite = document.createElement("A");
   newFavorite.href = url;
   newFavorite.style.backgroundImage = "url(" + imageUrl + ")";
@@ -219,13 +242,16 @@ function addFavorite(url, imageUrl) {
   newFavorite.style.backgroundPosition = "center center";
   newFavorite.style.backgroundRepeat = "no-repeat";
   newFavorite.classList.add("favorite");
+  newFavorite.dataset.title = title;
+  newFavorite.dataset.bgImg = imageUrl;
   var optDel = document.createElement("I");
   optDel.classList.add("fa", "fa-trash-o", "fa-lg", "fa-fw", "optDel");
   var optEdit = document.createElement("I");
   optEdit.classList.add("fa", "fa-pencil", "fa-lg", "fa-fw", "optEdit");
   newFavorite.appendChild(optDel);
   newFavorite.appendChild(optEdit);
-  $("#favorites").append(newFavorite);
+  newListEntry.appendChild(newFavorite);
+  $("#favorites").append(newListEntry);
   $(".favorite").children().hide();
 }
 
@@ -238,7 +264,7 @@ function saveFavorite(entry) {
   }
   currentSaved.push(entry);
   NTInstance.setSetting("savedFavorites", currentSaved);
-  addFavorite(entry.url, entry.bgImg);
+  addFavorite(entry.title, entry.url, entry.bgImg);
   $("#inputUrl").val("");
   $("#inputImage").val("");
 }
@@ -256,7 +282,20 @@ function getPromise(url) {
   });
 }
 function triggerEditMode() {
-  var favorites = $(".favorite");
-  favorites.toggleClass("editing");
-  favorites.children().toggle();
+  $("#favorites").sortable("enable");
+}
+
+function processEditedList() {
+  var reorderedList = $("#favorites").children();
+  var processedList = [];
+  for (var i = 0; i < reorderedList.length; i++) {
+    var newEntry = {
+      "title": reorderedList[i].childNodes[0].dataset.title,
+      "url": reorderedList[i].childNodes[0].href,
+      "bgImg": reorderedList[i].childNodes[0].dataset.bgImg
+    };
+    processedList.push(newEntry);
+  }
+  NTInstance.setSetting("savedFavorites", processedList);
+  $("#favorites").sortable("disable");
 }

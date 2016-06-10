@@ -1,5 +1,5 @@
 {
-  "name": "My Personal New Tab",
+  "name": "New Tab Nuevo",
   "short_name" : "My Personal New Tab",
   "description": "My Personal New Tab",
   "version": "1.0.0",
@@ -20,7 +20,7 @@
 		"32": "icons/32.png",
 		"128": "icons/128.png"
 	  },
-	  "default_title": "My Personal New Tab"
+	  "default_title": "Newtab Nuevo"
 	},
   "background":{
     "scripts": ["dist/js/background.js"],
