@@ -24,9 +24,8 @@
         <div class="options">
           <a id="addFavorite" class="userAction" href="#"><i class="fa fa-plus fa-lg fa-fw"></i></a>
           <a id="editMode" class="userAction" href="#"><i class="fa fa-pencil-square-o fa-lg fa-fw"></i></a>
-          <!-- <a id="openSettings" class="userAction" href="#"><i class="fa fa-gear fa-lg fa-fw"></i></a> -->
+          <a id="openSettings" class="userAction" href="#"><i class="fa fa-gear fa-lg fa-fw"></i></a>
           <!-- <a id="openCalendar" class="userAction" href="#"><i class="fa fa-calendar fa-lg fa-fw"></i></a> -->
-          <!-- <a id="openOnboarding" class="userAction" href="#"><i class="fa fa-gear fa-lg fa-fw"></i></a> -->
         </div>
     </div>
 
@@ -70,19 +69,27 @@
     <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
     <p>Settings</p>
     <form>
-      <p>Theme:
+      <fieldset>Theme:
         <label for="theme-select">Light</label>
         <input type="radio" name="theme-select" value="light" checked/>
         <label for="theme-select">Dark</label>
         <input type="radio" name="theme-select" value="dark"/>
-      </p>
-      <p>Hover Effect:
+      </fieldset>
+      <fieldset>Hover Effect:
         <select>
           <option value="pop">Pop</option>
           <option value="highlight">Highlight</option>
           <option value="none">None</option>
         </select>
-      </p>
+      </fieldset>
+      <fieldset>Font:
+        <select>
+          <option value="Roboto_Mono">Roboto Mono</option>
+          <option value="Montserrat">Montserrat</option>
+          <option value="Bebas_Neue">Bebas Neue</option>
+          <option value="Raleway">Raleway</option>
+        </select>
+      </fieldset>
     </form>
   </div>
 
