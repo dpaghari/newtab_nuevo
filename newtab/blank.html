@@ -6,7 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>My New Tab</title>
 <script type="text/javascript" src="./vendor/jquery/jquery-2.2.3.min.js"></script>
-<script type="text/javascript" src="./vendor/lodash/lodash.min.js"></script>
+<!-- <script type="text/javascript" src="./vendor/lodash/lodash.min.js"></script> -->
 <link rel="stylesheet" href="./vendor/jquery-ui-1.11.4/jquery-ui.min.css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css">
 <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon" />
@@ -38,30 +38,33 @@
   <div class="addModal modal">
     <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
     <p>Add a new Favorite</p>
-    <form>
+    <p id="addFormError"> Please fill out the missing fields </p>
+    <form class="addFavForm">
       <label for="faveTitle">Title:</label>
-      <input type="text" name="faveTitle" id="inputTitle"/><br>
+      <input type="text" name="faveTitle" id="inputTitle" placeholder="Cool Website"/><br>
       <label for="faveUrl">Url:</label>
-      <input type="text" name="faveUrl" id="inputUrl"/><br>
+      <input type="text" name="faveUrl" id="inputUrl" placeholder="http://example.com"/><br>
       <label for="faveImg">Image Url:</label>
-      <input type="text" name="faveImg" id="inputImage"/><br>
+      <input type="text" name="faveImg" id="inputImage" placeholder="http://somewebsite.com/picture.jpg"/><br>
       <a href="#" class="addBtn">Add</a>
     </form>
-    <p style="text-align:center">Or</p>
-    <p>Select from a list of popular favorites</p>
+    <div class="addExtra">
+      <p style="text-align:center">Or</p>
+      <p>Select from a list of popular favorites</p>
+    </div>
     <div class="popularFavs"></div>
   </div>
-  <div class="editModal modal">
+  <!-- <div class="editModal modal">
     <a href="#" class="closeEdit"><i class="fa fa-times fa-lg fa-fw"></i></a>
     <p>Edit <span class="editedItem"></span></p>
     <form>
       <label for="faveUrl">Url:</label>
-      <input type="text" name="faveUrl" id="inputUrl"/><br>
+      <input type="text" name="faveUrl" id="editInputUrl"/><br>
       <label for="faveImg">Image Url:</label>
-      <input type="text" name="faveImg" id="inputImage"/><br>
-      <a href="#" class="addBtn">Accept Changes</a>
+      <input type="text" name="faveImg" id="editInputImage"/><br>
+      <a href="#" class="editBtn">Accept Changes</a>
     </form>
-  </div>
+  </div> -->
 
   <div class="settingsModal modal">
     <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
@@ -88,18 +91,19 @@
     <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
     <h1>Let's Set a Few Things Up!</h1>
     <p>Enter a few tabs you would like to add, or choose from some popular sites.</p>
-    <form>
+    <form class="addFavForm">
       <label for="faveTitle">Title:</label>
-      <input type="text" name="faveTitle" id="inputTitle"/><br>
+      <input type="text" name="faveTitle" id="obInputTitle"/><br>
       <label for="faveUrl">Url:</label>
-      <input type="text" name="faveUrl" id="inputUrl"/><br>
+      <input type="text" name="faveUrl" id="obInputUrl"/><br>
       <label for="faveImg">Image Url:</label>
-      <input type="text" name="faveImg" id="inputImage"/><br>
+      <input type="text" name="faveImg" id="obInputImage"/><br>
       <a href="#" class="addBtn">Add</a>
     </form>
-
-    <p style="text-align: center"> Or </p>
-    <p>Select from a list of popular favorites:</p>
+    <div class="addExtra">
+      <p style="text-align: center"> Or </p>
+      <p>Select from a list of popular favorites:</p>
+    </div>
     <div class="popularFavs"></div>
   </div>
 

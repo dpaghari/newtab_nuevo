@@ -1,14 +1,18 @@
 var background = chrome.extension.getBackgroundPage();
 var NTInstance = background.NTInstance;
 NTInstance.editing = false;
+// NTInstance.editedItem;
 
 $(document).ready(function() {
+
+
   $("#favorites").sortable();
   $("#favorites").sortable("disable");
   chrome.runtime.sendMessage({task: "checkFirstRun"}, function(res) {
     if(res.firstRun){
       loadDefaultFavorites();
       triggerModal($(".onboardingModal"));
+      $("#obInputTitle").focus();
     }
   });
   loadSavedFavorites();
@@ -37,8 +41,12 @@ $(document).ready(function() {
      //console.log(clickElement);
      switch(clickElement) {
         case "addFavorite":
+          if($(".addModal .popularFavs").children().length === 0){
+            $(".addExtra").hide();
+          }
           var modalToOpen = $(".addModal");
           triggerModal(modalToOpen);
+          $("#inputTitle").focus();
           break;
 
         case 'editMode':
@@ -91,6 +99,11 @@ $(document).ready(function() {
     };
     // console.log(newEntry);
     saveFavorite(newEntry);
+    // console.log($(this).closest(".popularFavs"));
+    $(this).remove();
+    if($(".addModal .popularFavs").children().length === 0 || $(".onboardingModal .popularFavs").children().length === 0) {
+      $(".addExtra").hide();
+    }
   });
 /*
   Handler for close button
@@ -120,25 +133,80 @@ $(document).ready(function() {
     $(this).remove();
   });
 
+  $(".addFavForm").on("focus", function(e) {
+
+    console.log(e.which);
+  });
+
   /*
     Handler for the add button on the Add a New Favorite menu
   */
-  $(document).on("click", ".addBtn", function(e){
+  $(document).on("click", ".addBtn",  function(e){
     e.preventDefault();
     var titleVal = $("#inputTitle").val();
     var urlVal = $("#inputUrl").val();
-    var imageVal = $("#inputImage").val();
-    var newEntry = {
-      "title" : titleVal,
-      "url" : urlVal,
-      "bgImg" : imageVal
-    };
-    saveFavorite(newEntry);
+    urlVal = addHttp(urlVal);
+    var isValidURL = validateURL(urlVal);
 
-    if ($(".modal").length !== null) {
-      closeModal($(".modal"));
+    if(!isValidURL) {
+      $("#addFormError").text("Please enter a valid URL").show();
+    }
+    var imageVal = $("#inputImage").val();
+    imageVal = addHttp(imageVal);
+    var isValidImgURL = validateURL(imageVal);
+    if(!isValidImgURL) {
+      $("#addFormError").text("Please enter a valid Image URL").show();
+    }
+    if(!isValidURL && !isValidImgURL) {
+      $("#addFormError").text("Please enter a valid URL & Image URL").show();
+    }
+    if((titleVal !== "") && (urlVal !== "" && isValidURL) && (imageVal !== "" && isValidImgURL)){
+      var newEntry = {
+        "title" : titleVal,
+        "url" : urlVal,
+        "bgImg" : imageVal
+      };
+      saveFavorite(newEntry);
+
+      if ($(".modal").length !== null) {
+        closeModal($(".modal"));
+      }
+      $("#addFormError").hide();
+    }
+    else {
+      $("#addFormError").show();
     }
   });
+  /*
+    Handler for the accept changes in edit favorite menu
+  */
+  // $(document).on("click", ".editBtn", function(e){
+  //   var itemToEdit = NTInstance.editedItem;
+  //   console.log(itemToEdit);
+  //   e.preventDefault();
+  //   var titleVal = itemToEdit[0].dataset.title;
+  //   var urlVal = $("#editInputUrl").val();
+  //   var imageVal = $("#editInputImage").val();
+  //   var newEntry = {
+  //     "title" : titleVal,
+  //     "url" : urlVal,
+  //     "bgImg" : imageVal
+  //   };
+  //   saveFavorite(newEntry);
+  //
+  //   var savedFavorites = NTInstance.getSetting("savedFavorites", null);
+  //   for (var i = 0; i < savedFavorites.length; i++) {
+  //     if(savedFavorites[i].url === itemToEdit.url) {
+  //       savedFavorites.splice(i, 1);
+  //     }
+  //   }
+  //   NTInstance.setSetting("savedFavorites", savedFavorites);
+  //   if ($(".modal").length !== null) {
+  //     closeModal($(".modal"));
+  //   }
+  //   $(itemToEdit).remove();
+  //   NTInstance.editedItem = null;
+  // });
 
   /*
     Handlers for edit mode options on each of the favorites
@@ -147,17 +215,18 @@ $(document).ready(function() {
     e.preventDefault();
     var favorite = $(this).parent();
     var linkToDelete = favorite.attr("href");
-    // console.log(linkToDelete);
     deleteFavorite(linkToDelete);
     $(this).parent().remove();
   });
   $(document).on("click", ".optEdit", function(e) {
     e.preventDefault();
     // Open Edit Modal
+    NTInstance.editedItem = $(this).parent();
     var favorite = $(this).parent();
-    $(".editedItem").text(favorite.data(title));
+    $(".editedItem").text(favorite[0].dataset.title);
     favorite.addClass("changingVals");
     triggerModal($(".editModal"));
+    $("#editInputUrl").focus();
 
   });
   $(document).on("click", ".favorite", function(e) {
@@ -222,9 +291,25 @@ function createDefaultFavs(favorites) {
 
 function createPopularFavs(favorites) {
   var list = favorites.popular_favorites;
+  var savedFavorites = NTInstance.getSetting("savedFavorites", null);
+  var match = [];
+  console.log(NTInstance);
   for(var i = 0; i < list.length; i++){
-    var favHTML = "<a href='#' class='popFav' data-title=" + list[i].title + " data-url=" + list[i].url + " data-imgurl=" + list[i].bgImg +">" + list[i].title + "</a>";
-    $(".popularFavs").append(favHTML);
+    if(savedFavorites !== null){
+    match = $.grep(savedFavorites, function(e) {
+      return e.url === list[i].url;
+    });
+    }
+    // var popularFav = {
+    //   "title" : list[i].title,
+    //   "url" : list[i].url,
+    //   "bgImg" : list[i].bgImg
+    // };
+
+    if(match.length === 0){
+      var favHTML = "<a href='#' class='popFav' data-title=" + list[i].title + " data-url=" + list[i].url + " data-imgurl=" + list[i].bgImg +">" + list[i].title + "</a>";
+      $(".popularFavs").append(favHTML);
+    }
   }
 }
 
@@ -244,7 +329,13 @@ function addFavorite(title, url, imageUrl) {
   var newListEntry = document.createElement("LI");
   var newFavorite = document.createElement("A");
   newFavorite.href = url;
-  newFavorite.style.backgroundImage = "url(" + imageUrl + ")";
+  // console.log(imageExists(imageUrl));
+  $.get(imageUrl)
+    .done(function() {
+      newFavorite.style.backgroundImage = "url(" + imageUrl + ")";
+    }).fail(function() {
+      newFavorite.style.backgroundImage = "url('/newtab/images/placeholder.png')";
+  });
   newFavorite.style.backgroundSize = "cover";
   newFavorite.style.backgroundPosition = "center center";
   newFavorite.style.backgroundRepeat = "no-repeat";
@@ -253,14 +344,15 @@ function addFavorite(title, url, imageUrl) {
   newFavorite.dataset.bgImg = imageUrl;
   var optDel = document.createElement("I");
   optDel.classList.add("fa", "fa-trash-o", "fa-lg", "fa-fw", "optDel");
-  var optEdit = document.createElement("I");
-  optEdit.classList.add("fa", "fa-pencil", "fa-lg", "fa-fw", "optEdit");
+  // var optEdit = document.createElement("I");
+  // optEdit.classList.add("fa", "fa-pencil", "fa-lg", "fa-fw", "optEdit");
   newFavorite.appendChild(optDel);
-  newFavorite.appendChild(optEdit);
+  // newFavorite.appendChild(optEdit);
   newListEntry.appendChild(newFavorite);
   $("#favorites").append(newListEntry);
   $(".favorite").children().hide();
 }
+
 
 // Save favorite to local storage
 function saveFavorite(entry) {
@@ -305,5 +397,29 @@ function processEditedList() {
   }
   NTInstance.setSetting("savedFavorites", processedList);
   $("#favorites").sortable("disable");
+
+}
+
+function validateURL(url) {
+  // var regex = "";
+  // console.log(typeof regex, url.match(regex));
+  if(url.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/) === null){
+
+    return false;
+  }
+  else return true;
+}
+
+function addHttp(url) {
+  var newUrl;
+  if(url.match(/^(https?:\/\/)/) === null){
+    var addHttp = "http://";
+    newUrl = addHttp.concat(url);
+    return newUrl;
+  }
+}
+
+function imageExists(image_url){
+
 
 }

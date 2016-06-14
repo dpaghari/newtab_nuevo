@@ -4,12 +4,14 @@ var gulp = require('gulp'),
     gutil = require('gulp-util'),
     sass = require('gulp-sass'),
     cssnano = require('gulp-cssnano'),
-    babel = require('gulp-babel');
+    babel = require('gulp-babel'),
+    plumber = require('gulp-plumber');
     // livereload = require('gulp-livereload');
 
 gulp.task('scripts', function () {
   // Future processing for scripts
   return gulp.src("js/*.js")
+  .pipe(plumber())
   .pipe(babel({
     presets: ["es2015"]
   }))
@@ -18,6 +20,7 @@ gulp.task('scripts', function () {
 
 gulp.task('styles', function () {
   gulp.src('stylesheets/*.sass')
+    .pipe(plumber())
     .pipe(sass({
       includePaths: ['./stylesheets', './node_modules/support-for/sass/']
     }).on('error', sass.logError))

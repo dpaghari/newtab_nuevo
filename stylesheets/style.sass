@@ -70,56 +70,57 @@ body, ul, ol
       flex-wrap: wrap
       justify-content: center
       width: 100%
-      a
-        display: flex
-        position: relative
-        flex-shrink: 2
-        padding: 80px 120px
-        border: 1.5px solid black
-        text-decoration: none
-        transition: 0.3s all
-        i
-          position: absolute
-          font-size: 1.5em
-          color: white
-          top: 5px
-          z-index: 3
-        .optDel
-          right: 2px
-          &:hover
+      li
+        a
+          display: flex
+          position: relative
+          flex-shrink: 2
+          padding: 80px 120px
+          border: 1.5px solid black
+          text-decoration: none
+          transition: 0.3s all
+          i
+            position: absolute
+            font-size: 1.5em
+            color: white
+            top: 5px
+            z-index: 3
+          .optDel
+            right: 2px
+            &:hover
+              cursor: pointer
+          .optEdit
+            right: 40px
+            &:hover
             cursor: pointer
-        .optEdit
-          right: 40px
+        a:hover
+          z-index: 10
+          transform: scale(1.1,1.1)
+        a:active:before
+          background: rgba(1,1,1,0.4)
+          content: ""
+          width: 100%
+          height: 100%
+          position: absolute
+          left: 0
+          top: 0
+        .favorite.editing
+
+          margin: 2px
+          animation: swing 3s infinite
+          transform-origin: top center
           &:hover
-          cursor: pointer
-      a:hover
-        z-index: 10
-        transform: scale(1.1,1.1)
-      a:active:before
-        background: rgba(1,1,1,0.4)
-        content: ""
-        width: 100%
-        height: 100%
-        position: absolute
-        left: 0
-        top: 0
-      .favorite.editing
+            transform: scale(0,0)
+            cursor: move
 
-        margin: 2px
-        animation: swing 3s infinite
-        transform-origin: top center
-        &:hover
-          transform: scale(0,0)
-          cursor: move
-
-      .favorite.editing:before
-        background: rgba(1,1,1,0.4)
-        content: ""
-        width: 100%
-        height: 100%
-        position: absolute
-        left: 0
-        top: 0
+        .favorite.editing:before
+          background: rgba(1,1,1,0.4)
+          content: ""
+          width: 100%
+          height: 100%
+          position: absolute
+          left: 0
+          top: 0
 
   .sidebar
       position: fixed
