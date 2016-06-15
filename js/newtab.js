@@ -1,7 +1,11 @@
 var background = chrome.extension.getBackgroundPage();
 var NTInstance = background.NTInstance;
 NTInstance.editing = false;
-NTInstance.currentSettings = {};
+NTInstance.currentSettings = {
+  "theme" : "light",
+  "font" : "Montserrat, sans-serif",
+  "hover" : "hoverPop"
+};
 // NTInstance.editedItem;
 
 $(document).ready(function() {
@@ -14,15 +18,13 @@ $(document).ready(function() {
       triggerModal($(".onboardingModal"));
       $("#obInputTitle").focus();
     }
+    loadSavedFavorites();
+    loadPopularFavorites();
+    setUserSettings(NTInstance.currentSettings);
+    // Hide edit icons
+    $(".favorite").children().hide();
   });
-  loadSavedFavorites();
-  loadPopularFavorites();
-  setUserSettings(NTInstance.currentSettings);
-  chrome.storage.local.get(null, function(items){
-    console.log(items);
-  });
-  // Hide edit icons
-  $(".favorite").children().hide();
+
   // Refresh time every second
   var currentTime = new Date().toLocaleTimeString(navigator.language, { hour : '2-digit', minute: '2-digit'} );
   $('#time').html(currentTime);
@@ -213,7 +215,7 @@ $(document).ready(function() {
   $('input[type=radio][name=theme-select]').change(function() {
     NTInstance.setSetting("userTheme", this.value);
     if (this.value == 'light') {
-      $("body, .modal").css("background", "#e6e6e6");
+      $("body, .modal").css("background", "#f6f6f6");
       $("*").not(".addBtn").css("color", "black");
       $(".favorite").css("border", "1.5px solid black");
 
@@ -421,7 +423,7 @@ function addFavorite(title, url, imageUrl) {
   newFavorite.style.backgroundSize = "cover";
   newFavorite.style.backgroundPosition = "center center";
   newFavorite.style.backgroundRepeat = "no-repeat";
-  newFavorite.classList.add("favorite");
+  newFavorite.classList.add("favorite", NTInstance.currentSettings.hover);
   newFavorite.dataset.title = title;
   newFavorite.dataset.bgImg = imageUrl;
   var optDel = document.createElement("I");
@@ -510,10 +512,12 @@ function loadUserSettings() {
     "font" : userFont,
     "hover" : userHover
   };
+  // console.log(NTInstance.currentSettings);
 }
 function setUserSettings(settings) {
+  // console.log("set User Settings");
   if (settings.theme == 'light') {
-    $("body, .modal").css("background", "#e6e6e6");
+    $("body, .modal").css("background", "#f6f6f6");
     $("*").not(".addBtn").css("color", "black");
     $(".favorite").css("border", "1.5px solid black");
   }
@@ -524,5 +528,7 @@ function setUserSettings(settings) {
     $(".favorite").css("border", "1.5px solid #d4d6e9");
   }
   $("*").not("i").css("font-family", settings.font);
-  $(".favorite").addClass(settings.hover);
+  // $(".favorite").addClass(settings.hover);
+
+
 }
