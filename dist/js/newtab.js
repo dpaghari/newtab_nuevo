@@ -8,7 +8,6 @@ NTInstance.currentSettings = {};
 
 $(document).ready(function () {
   loadUserSettings();
-  setUserSettings(NTInstance.currentSettings);
   $("#favorites").sortable();
   $("#favorites").sortable("disable");
   chrome.runtime.sendMessage({ task: "checkFirstRun" }, function (res) {
@@ -20,6 +19,7 @@ $(document).ready(function () {
   });
   loadSavedFavorites();
   loadPopularFavorites();
+  setUserSettings(NTInstance.currentSettings);
   chrome.storage.local.get(null, function (items) {
     console.log(items);
   });
@@ -209,10 +209,12 @@ $(document).ready(function () {
     if (this.value == 'light') {
       $("body, .modal").css("background", "white");
       $("*").not(".addBtn").css("color", "black");
+      $(".favorite").css("border", "1.5px solid black");
     } else if (this.value == 'dark') {
-      $("body, .modal").css("background", "black");
+      $("body, .modal").css("background", "#3c3c3c");
       $("*").css("color", "white");
       $("input, select, option").css("color", "black");
+      $(".favorite").css("border", "1.5px solid #d4d6e9");
     }
   });
 
@@ -497,10 +499,12 @@ function setUserSettings(settings) {
   if (settings.theme == 'light') {
     $("body, .modal").css("background", "white");
     $("*").not(".addBtn").css("color", "black");
+    $(".favorite").css("border", "1.5px solid black");
   } else if (settings.theme == 'dark') {
-    $("body, .modal").css("background", "black");
+    $("body, .modal").css("background", "#3c3c3c");
     $("*").css("color", "white");
     $("input, select, option").css("color", "black");
+    $(".favorite").css("border", "1.5px solid #d4d6e9");
   }
   $("*").not("i").css("font-family", settings.font);
   $(".favorite").addClass(settings.hover);

@@ -1,5 +1,5 @@
 {
-  "name": "New Tab Nuevo",
+  "name": "Dashtab",
   "short_name" : "My Personal New Tab",
   "description": "My Personal New Tab",
   "version": "1.0.0",
@@ -20,7 +20,7 @@
 		"32": "icons/32.png",
 		"128": "icons/128.png"
 	  },
-	  "default_title": "Newtab Nuevo"
+	  "default_title": "Dashtab"
 	},
   "background":{
     "scripts": ["dist/js/background.js"],
