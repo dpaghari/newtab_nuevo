@@ -218,6 +218,7 @@ $(document).ready(function() {
       $("body, .modal").css("background", "#f6f6f6");
       $("*").not(".addBtn").css("color", "black");
       $(".favorite").css("border", "1.5px solid black");
+      $(".favorite i, .popFav").css("color", "white");
 
     }
     else if (this.value == 'dark') {
@@ -515,11 +516,11 @@ function loadUserSettings() {
   // console.log(NTInstance.currentSettings);
 }
 function setUserSettings(settings) {
-  // console.log("set User Settings");
   if (settings.theme == 'light') {
     $("body, .modal").css("background", "#f6f6f6");
     $("*").not(".addBtn").css("color", "black");
     $(".favorite").css("border", "1.5px solid black");
+    $(".favorite i, .popFav").css("color", "white");
   }
   else if (settings.theme == 'dark') {
     $("body, .modal").css("background", "#3c3c3c");
