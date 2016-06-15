@@ -1,11 +1,12 @@
 var background = chrome.extension.getBackgroundPage();
 var NTInstance = background.NTInstance;
 NTInstance.editing = false;
+NTInstance.currentSettings = {};
 // NTInstance.editedItem;
 
 $(document).ready(function() {
-
-
+  loadUserSettings();
+  setUserSettings(NTInstance.currentSettings);
   $("#favorites").sortable();
   $("#favorites").sortable("disable");
   chrome.runtime.sendMessage({task: "checkFirstRun"}, function(res) {
@@ -207,6 +208,84 @@ $(document).ready(function() {
   //   $(itemToEdit).remove();
   //   NTInstance.editedItem = null;
   // });
+
+
+  $('input[type=radio][name=theme-select]').change(function() {
+    NTInstance.setSetting("userTheme", this.value);
+    if (this.value == 'light') {
+      $("body, .modal").css("background", "white");
+      $("*").not(".addBtn").css("color", "black");
+    }
+    else if (this.value == 'dark') {
+      $("body, .modal").css("background", "black");
+      $("*").css("color", "white");
+      $("input, select, option").css("color", "black");
+    }
+  });
+
+
+  $(document).on("change", ".hoverOption", function() {
+    var hoverSelected = $(this).val();
+    switch(hoverSelected) {
+
+      case "pop":
+      NTInstance.setSetting("userHover", "hoverPop");
+      $(".favorite").addClass("hoverPop").removeClass("hoverNone hoverHighlight");
+      break;
+
+      case "highlight":
+      NTInstance.setSetting("userHover", "hoverHighlight");
+      $(".favorite").addClass("hoverHighlight").removeClass("hoverNone hoverPop");
+      break;
+
+      case "none":
+      NTInstance.setSetting("userHover", "hoverNone");
+      $(".favorite").addClass("hoverNone").removeClass("hoverPop hoverHighlight");
+      break;
+    }
+  });
+  $(document).on("change", ".fontOption", function() {
+    console.log($(this).val());
+    var fontSelected = $(this).val();
+    var newFontStack;
+    switch(fontSelected) {
+      case "Montserrat":
+      newFontStack = "Montserrat, sans-serif";
+      NTInstance.setSetting("userFont", newFontStack);
+      $("*").not("i").css("font-family", newFontStack);
+      break;
+      case "Bebas_Neue":
+      newFontStack = "BebasNeue, sans-serif";
+      NTInstance.setSetting("userFont", newFontStack);
+      $("*").not("i").css("font-family", newFontStack);
+      break;
+      case "Roboto_Mono":
+      newFontStack = "Roboto Mono, sans-serif";
+      NTInstance.setSetting("userFont", newFontStack);
+      $("*").not("i").css("font-family", newFontStack);
+      break;
+      case "Raleway":
+      newFontStack = "Raleway, sans-serif";
+      NTInstance.setSetting("userFont", newFontStack);
+      $("*").not("i").css("font-family", newFontStack);
+      break;
+      case "Pridi":
+      newFontStack = "Pridi, sans-serif";
+      NTInstance.setSetting("userFont", newFontStack);
+      $("*").not("i").css("font-family", newFontStack);
+      break;
+      case "Work_Sans":
+      newFontStack = "Work Sans, sans-serif";
+      NTInstance.setSetting("userFont", newFontStack);
+      $("*").not("i").css("font-family", newFontStack);
+      break;
+      case "Mitr":
+      newFontStack = "Mitr, sans-serif";
+      NTInstance.setSetting("userFont", newFontStack);
+      $("*").not("i").css("font-family", newFontStack);
+      break;
+    }
+  });
 
   /*
     Handlers for edit mode options on each of the favorites
@@ -419,7 +498,26 @@ function addHttp(url) {
   }
 }
 
-function imageExists(image_url){
-
-
+function loadUserSettings() {
+  var userTheme = NTInstance.getSetting("userTheme", "light");
+  var userFont = NTInstance.getSetting("userFont", "Montserrat, sans-serif");
+  var userHover = NTInstance.getSetting("userHover", "hoverPop");
+  NTInstance.currentSettings = {
+    "theme" : userTheme,
+    "font" : userFont,
+    "hover" : userHover
+  };
+}
+function setUserSettings(settings) {
+  if (settings.theme == 'light') {
+    $("body, .modal").css("background", "white");
+    $("*").not(".addBtn").css("color", "black");
+  }
+  else if (settings.theme == 'dark') {
+    $("body, .modal").css("background", "black");
+    $("*").css("color", "white");
+    $("input, select, option").css("color", "black");
+  }
+  $("*").not("i").css("font-family", settings.font);
+  $(".favorite").addClass(settings.hover);
 }

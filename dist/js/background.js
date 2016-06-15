@@ -48,7 +48,7 @@ var NewtabNuevo = function () {
 			var firstRun = this.getSetting("FirstRun", true);
 			if (firstRun) {
 				this.setSetting("FirstRun", false);
-				this.openTab(chrome.extension.getURL("newtab/blank.html#newTab"));
+				this.openTab(chrome.extension.getURL("newtab/newtab.html#newTab"));
 			}
 		}
 		// Retrieve all settings from localstorage and map them to session StorageObjects
@@ -80,6 +80,7 @@ var NewtabNuevo = function () {
 var NTInstance = new NewtabNuevo();
 window.NTInstance = NTInstance;
 NTInstance.loadSettings();
+
 chrome.runtime.onStartup.addListener(function () {
 	var intervalId = setInterval(function () {
 
@@ -90,11 +91,11 @@ chrome.runtime.onStartup.addListener(function () {
 	}, 500);
 });
 chrome.runtime.onInstalled.addListener(function () {
-	chrome.tabs.create({ url: chrome.extension.getURL("newtab/blank.html") });
+	chrome.tabs.create({ url: chrome.extension.getURL("newtab/newtab.html") });
 });
 chrome.tabs.onCreated.addListener(function created(tab) {
 	if (tab.url == "chrome://newtab/") {
-		chrome.tabs.update(tab.id, { url: chrome.extension.getURL("newtab/blank.html") });
+		chrome.tabs.update(tab.id, { url: chrome.extension.getURL("newtab/newtab.html") });
 	}
 });
 
@@ -121,5 +122,5 @@ chrome.runtime.onMessage.addListener(function (req, sender, sendResponse) {
 
 // Open a new tab when you click on extension icon
 chrome.browserAction.onClicked.addListener(function () {
-	NTInstance.openTab(chrome.extension.getURL("newtab/blank.html"));
+	NTInstance.openTab(chrome.extension.getURL("newtab/newtab.html"));
 });
