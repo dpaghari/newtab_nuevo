@@ -70,6 +70,7 @@ $(document).ready(function () {
         e.preventDefault();
         var settingsModal = $(".settingsModal");
         triggerModal(settingsModal);
+
         break;
 
       case 'openOnboarding':
@@ -130,11 +131,6 @@ $(document).ready(function () {
 
   $(document).on("click", '.arrowContainer', function () {
     $(this).remove();
-  });
-
-  $(".addFavForm").on("focus", function (e) {
-
-    console.log(e.which);
   });
 
   /*
@@ -242,7 +238,7 @@ $(document).ready(function () {
     }
   });
   $(document).on("change", ".fontOption", function () {
-    console.log($(this).val());
+    // console.log($(this).val());
     var fontSelected = $(this).val();
     var newFontStack;
     switch (fontSelected) {
@@ -366,7 +362,7 @@ function createPopularFavs(favorites) {
   var list = favorites.popular_favorites;
   var savedFavorites = NTInstance.getSetting("savedFavorites", null);
   var match = [];
-  console.log(NTInstance);
+  //console.log(NTInstance);
   for (var i = 0; i < list.length; i++) {
     if (savedFavorites !== null) {
       match = $.grep(savedFavorites, function (e) {
@@ -512,5 +508,4 @@ function setUserSettings(settings) {
     $(".favorite").css("border", "1.5px solid #d4d6e9");
   }
   $("*").not("i").css("font-family", settings.font);
-  // $(".favorite").addClass(settings.hover);
 }
