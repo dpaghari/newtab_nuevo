@@ -203,25 +203,36 @@ $(document).ready(function () {
   //   NTInstance.editedItem = null;
   // });
 
-  $(document).on("click", ".settingsBGBtn", function () {
+  $(document).on("click", ".updateBtn", function () {
     var newImageURL = $("input[name=themeBGImage]").val();
     var isValidURL = validateURL(newImageURL);
     if (isValidURL) {
       NTInstance.setSetting("userThemeBG", newImageURL);
       $("body").css("background-image", "url('" + newImageURL + "')");
+    } else {
+      $(".bgURLError").show();
     }
+  });
+  $(document).on("click", ".removeBtn", function () {
+    $("input[name=themeBGImage]").val("");
+    // var isValidURL = validateURL(newImageURL);
+    // if(isValidURL) {
+    NTInstance.setSetting("userThemeBG", null);
+    $("body").css("background-image", "none");
+    $(".bgURLError").hide();
+    // }
   });
 
   $('input[type=radio][name=theme-select]').change(function () {
     NTInstance.setSetting("userTheme", this.value);
     if (this.value == 'light') {
       $("body, .modal").css("background", "#f6f6f6");
-      $("*").not(".addBtn, settingsBGBtn").css("color", "black");
+      $("*").not(".addBtn, .settingsBtn, .bgURLError").css("color", "black");
       $(".favorite").css("border", "1.5px solid black");
       $(".favorite i, .popFav").css("color", "white");
     } else if (this.value == 'dark') {
       $("body, .modal").css("background", "#3c3c3c");
-      $("*").css("color", "white");
+      $("*").not(".bgURLError").css("color", "white");
       $("input, select, option").css("color", "black");
       $(".favorite").css("border", "1.5px solid #d4d6e9");
     }
@@ -300,16 +311,17 @@ $(document).ready(function () {
     deleteFavorite(linkToDelete);
     $(this).parent().remove();
   });
-  $(document).on("click", ".optEdit", function (e) {
-    e.preventDefault();
-    // Open Edit Modal
-    NTInstance.editedItem = $(this).parent();
-    var favorite = $(this).parent();
-    $(".editedItem").text(favorite[0].dataset.title);
-    favorite.addClass("changingVals");
-    triggerModal($(".editModal"));
-    $("#editInputUrl").focus();
-  });
+  // $(document).on("click", ".optEdit", function(e) {
+  //   e.preventDefault();
+  //   // Open Edit Modal
+  //   NTInstance.editedItem = $(this).parent();
+  //   var favorite = $(this).parent();
+  //   $(".editedItem").text(favorite[0].dataset.title);
+  //   favorite.addClass("changingVals");
+  //   triggerModal($(".editModal"));
+  //   $("#editInputUrl").focus();
+  //
+  // });
   $(document).on("click", ".favorite", function (e) {
     if ($(this).hasClass("editing")) e.preventDefault();
   });
@@ -509,12 +521,12 @@ function loadUserSettings() {
 function setUserSettings(settings) {
   if (settings.theme == 'light') {
     $("body, .modal").css("background", "#f6f6f6");
-    $("*").not(".addBtn, .settingsBGBtn").css("color", "black");
+    $("*").not(".addBtn, .settingsBtn, .bgURLError").css("color", "black");
     $(".favorite").css("border", "1.5px solid black");
     $(".favorite i, .popFav").css("color", "white");
   } else if (settings.theme == 'dark') {
     $("body, .modal").css("background", "#3c3c3c");
-    $("*").css("color", "white");
+    $("*").not(".bgURLError").css("color", "white");
     $("input, select, option").css("color", "black");
     $(".favorite").css("border", "1.5px solid #d4d6e9");
   }
