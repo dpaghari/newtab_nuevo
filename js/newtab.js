@@ -485,7 +485,6 @@ function validateURL(url) {
   // var regex = "";
   // console.log(typeof regex, url.match(regex));
   if(url.match(/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/) === null){
-
     return false;
   }
   else return true;
@@ -525,5 +524,5 @@ function setUserSettings(settings) {
     $(".favorite").css("border", "1.5px solid #d4d6e9");
   }
   $("*").not("i").css("font-family", settings.font);
-  
+
 }
