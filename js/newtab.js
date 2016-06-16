@@ -4,7 +4,8 @@ NTInstance.editing = false;
 NTInstance.currentSettings = {
   "theme" : "light",
   "font" : "Montserrat, sans-serif",
-  "hover" : "hoverPop"
+  "hover" : "hoverPop",
+  "background" : null
 };
 // NTInstance.editedItem;
 
@@ -208,11 +209,20 @@ $(document).ready(function() {
   // });
 
 
+  $(document).on("click", ".settingsBGBtn", function() {
+    var newImageURL = $("input[name=themeBGImage]").val();
+    var isValidURL = validateURL(newImageURL);
+    if(isValidURL) {
+      NTInstance.setSetting("userThemeBG", newImageURL);
+      $("body").css("background-image", "url('" + newImageURL + "')");
+    }
+  });
+
   $('input[type=radio][name=theme-select]').change(function() {
     NTInstance.setSetting("userTheme", this.value);
     if (this.value == 'light') {
       $("body, .modal").css("background", "#f6f6f6");
-      $("*").not(".addBtn").css("color", "black");
+      $("*").not(".addBtn, settingsBGBtn").css("color", "black");
       $(".favorite").css("border", "1.5px solid black");
       $(".favorite i, .popFav").css("color", "white");
 
@@ -230,17 +240,17 @@ $(document).ready(function() {
     var hoverSelected = $(this).val();
     switch(hoverSelected) {
 
-      case "pop":
+      case "hoverPop":
       NTInstance.setSetting("userHover", "hoverPop");
       $(".favorite").addClass("hoverPop").removeClass("hoverNone hoverHighlight");
       break;
 
-      case "highlight":
+      case "hoverHighlight":
       NTInstance.setSetting("userHover", "hoverHighlight");
       $(".favorite").addClass("hoverHighlight").removeClass("hoverNone hoverPop");
       break;
 
-      case "none":
+      case "hoverNone":
       NTInstance.setSetting("userHover", "hoverNone");
       $(".favorite").addClass("hoverNone").removeClass("hoverPop hoverHighlight");
       break;
@@ -252,37 +262,37 @@ $(document).ready(function() {
     var newFontStack;
     switch(fontSelected) {
       case "Montserrat":
-      newFontStack = "Montserrat, sans-serif";
+      newFontStack = "Montserrat";
       NTInstance.setSetting("userFont", newFontStack);
       $("*").not("i").css("font-family", newFontStack);
       break;
-      case "Bebas_Neue":
-      newFontStack = "BebasNeue, sans-serif";
+      case "BebasNeue":
+      newFontStack = "BebasNeue";
       NTInstance.setSetting("userFont", newFontStack);
       $("*").not("i").css("font-family", newFontStack);
       break;
-      case "Roboto_Mono":
-      newFontStack = "Roboto Mono, sans-serif";
+      case "Roboto Mono":
+      newFontStack = "Roboto Mono";
       NTInstance.setSetting("userFont", newFontStack);
       $("*").not("i").css("font-family", newFontStack);
       break;
       case "Raleway":
-      newFontStack = "Raleway, sans-serif";
+      newFontStack = "Raleway";
       NTInstance.setSetting("userFont", newFontStack);
       $("*").not("i").css("font-family", newFontStack);
       break;
       case "Pridi":
-      newFontStack = "Pridi, sans-serif";
+      newFontStack = "Pridi";
       NTInstance.setSetting("userFont", newFontStack);
       $("*").not("i").css("font-family", newFontStack);
       break;
-      case "Work_Sans":
-      newFontStack = "Work Sans, sans-serif";
+      case "Work Sans":
+      newFontStack = "Work Sans";
       NTInstance.setSetting("userFont", newFontStack);
       $("*").not("i").css("font-family", newFontStack);
       break;
       case "Mitr":
-      newFontStack = "Mitr, sans-serif";
+      newFontStack = "Mitr";
       NTInstance.setSetting("userFont", newFontStack);
       $("*").not("i").css("font-family", newFontStack);
       break;
@@ -501,19 +511,21 @@ function addHttp(url) {
 
 function loadUserSettings() {
   var userTheme = NTInstance.getSetting("userTheme", "light");
-  var userFont = NTInstance.getSetting("userFont", "Montserrat, sans-serif");
+  var userFont = NTInstance.getSetting("userFont", "Montserrat");
   var userHover = NTInstance.getSetting("userHover", "hoverPop");
+  var userBGImg = NTInstance.getSetting("userThemeBG", null);
   NTInstance.currentSettings = {
     "theme" : userTheme,
     "font" : userFont,
-    "hover" : userHover
+    "hover" : userHover,
+    "background" : userBGImg
   };
   // console.log(NTInstance.currentSettings);
 }
 function setUserSettings(settings) {
   if (settings.theme == 'light') {
     $("body, .modal").css("background", "#f6f6f6");
-    $("*").not(".addBtn").css("color", "black");
+    $("*").not(".addBtn, .settingsBGBtn").css("color", "black");
     $(".favorite").css("border", "1.5px solid black");
     $(".favorite i, .popFav").css("color", "white");
   }
@@ -524,5 +536,17 @@ function setUserSettings(settings) {
     $(".favorite").css("border", "1.5px solid #d4d6e9");
   }
   $("*").not("i").css("font-family", settings.font);
+  $("select.fontOption").val(settings.font);
+  $("select.hoverOption").val(settings.hover);
+  var radios = $("input[name=theme-select]");
+  $(radios).each(function(i, el) {
+    if($(el).val() === settings.theme)
+      $(el).attr("checked", "checked");
+  });
+
+  if(settings.background !== null) {
+    $("body").css("background-image", "url(" + settings.background +")");
+    $("input[name=themeBGImage]").val(settings.background);
+  }
 
 }

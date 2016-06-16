@@ -36,7 +36,7 @@
   <div class="lightbox"></div>
   <div class="addModal modal">
     <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
-    <p>Add a new Favorite</p>
+    <h3>Add a new Favorite</h3>
     <p id="addFormError"> Please fill out the missing fields </p>
     <form class="addFavForm">
       <label for="faveTitle">Title:</label>
@@ -78,22 +78,27 @@
       <fieldset><label for="hoverOption">Hover Effect</label>
         <select class="hoverOption">
           <option>--Select--</option>
-          <option value="pop">Pop</option>
-          <option value="highlight">Highlight</option>
-          <option value="none">None</option>
+          <option value="hoverPop">Pop</option>
+          <option value="hoverHighlight">Highlight</option>
+          <option value="hoverNone">None</option>
         </select>
       </fieldset>
       <fieldset><label for="fontOption">Font</label>
         <select class="fontOption">
           <option>--Select--</option>
           <option value="Montserrat">Montserrat</option>
-          <option value="Roboto_Mono">Roboto Mono</option>
-          <option value="Bebas_Neue">Bebas Neue</option>
+          <option value="Roboto Mono">Roboto Mono</option>
+          <option value="BebasNeue">Bebas Neue</option>
           <option value="Raleway">Raleway</option>
           <option value="Pridi">Pridi</option>
-          <option value="Work_Sans">Work Sans</option>
+          <option value="Work Sans">Work Sans</option>
           <option value="Mitr">Mitr</option>
         </select>
+      </fieldset>
+      <fieldset>
+        <label for="themeBGImage">Background Image(url)</label>
+        <input type="text" name="themeBGImage" value="" placeholder="http://example.com/image.jpg"/>
+        <a href="#" class="settingsBGBtn">Update Background</a>
       </fieldset>
     </form>
   </div>
@@ -101,7 +106,7 @@
   <!-- Onboarding modal HTML -->
   <div class="onboardingModal modal">
     <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
-    <h1>Let's Set a Few Things Up!</h1>
+    <h2>Let's Set a Few Things Up!</h2>
     <p>Enter a few tabs you would like to add, or choose from some popular sites.</p>
     <form class="addFavForm">
       <label for="faveTitle">Title:</label>

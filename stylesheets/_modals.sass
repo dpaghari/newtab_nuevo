@@ -78,8 +78,6 @@
 
 .settingsModal
   font-size: 1em
-  h3
-    text-align: center
   fieldset
     margin: 30px auto
   input[type=radio]
@@ -89,3 +87,13 @@
   select
     padding: 10px
     margin: 5px 0
+  .settingsBGBtn
+    display: block
+    text-align: center
+    padding: 20px 40px
+    text-decoration: none
+    background: $addButton
+    transition: 0.2s all
+    color: white
+    &:hover
+      background: $addButtonHover
