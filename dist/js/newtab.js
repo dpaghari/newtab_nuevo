@@ -5,7 +5,7 @@ var NTInstance = background.NTInstance;
 NTInstance.editing = false;
 NTInstance.currentSettings = {
   "theme": "light",
-  "font": "Montserrat, sans-serif",
+  "font": "Raleway",
   "hover": "hoverPop",
   "background": null
 };
@@ -15,15 +15,17 @@ $(document).ready(function () {
   loadUserSettings();
   $("#favorites").sortable();
   $("#favorites").sortable("disable");
+  loadSavedFavorites();
+  loadPopularFavorites();
+  setUserSettings(NTInstance.currentSettings);
   chrome.runtime.sendMessage({ task: "checkFirstRun" }, function (res) {
     if (res.firstRun) {
+      showInitialLoad();
       loadDefaultFavorites();
       triggerModal($(".onboardingModal"));
       $("#obInputTitle").focus();
     }
-    loadSavedFavorites();
-    loadPopularFavorites();
-    setUserSettings(NTInstance.currentSettings);
+
     // Hide edit icons
     $(".favorite").children().hide();
   });
@@ -116,7 +118,7 @@ $(document).ready(function () {
   */
   $(document).on("click", ".closeBtn", function (e) {
     e.preventDefault();
-    var modalToClose = $(this).parent();
+    var modalToClose = $(this).closest(".modal");
     closeModal(modalToClose);
 
     if ($(this).parents('.onboardingModal').length) {
@@ -507,7 +509,7 @@ function addHttp(url) {
 
 function loadUserSettings() {
   var userTheme = NTInstance.getSetting("userTheme", "light");
-  var userFont = NTInstance.getSetting("userFont", "Montserrat");
+  var userFont = NTInstance.getSetting("userFont", "Raleway");
   var userHover = NTInstance.getSetting("userHover", "hoverPop");
   var userBGImg = NTInstance.getSetting("userThemeBG", null);
   NTInstance.currentSettings = {
@@ -542,4 +544,30 @@ function setUserSettings(settings) {
     $("body").css("background-image", "url(" + settings.background + ")");
     $("input[name=themeBGImage]").val(settings.background);
   }
+}
+// TO-DO: Could probably be implemented better
+function showInitialLoad() {
+  var $onboarding = $(".onboardingModal");
+  var temp = $onboarding.html();
+  $onboarding.html("<img class='onboardLoad' src='/newtab/images/cubeload.svg'/><p class='onboardGreeting'>Setting up DashTab</p>");
+  setTimeout(function () {
+    $onboarding.children().fadeOut("slow");
+  }, 3000);
+  setTimeout(function () {
+    $onboarding.html("<img class='onboardLoad' src='/newtab/images/logo.jpg'/ alt='Dashtab Logo'><p class='onboardGreeting'>Welcome to DashTab!</p>");
+  }, 3500);
+  setTimeout(function () {
+    $(".onboardGreeting, .onboardLoad").fadeOut("slow");
+    // $onboarding.html(temp).children(".modalWrapper").hide();
+    // $(".modalWrapper").fadeOut("slow");
+  }, 6000);
+  setTimeout(function () {
+    // $(".onboardGreeting, .onboardLoad").fadeOut("slow");
+    $onboarding.html(temp).children(".modalWrapper").hide();
+    // $(".modalWrapper").fadeOut("slow");
+  }, 6500);
+  setTimeout(function () {
+    $(".modalWrapper").fadeIn("slow");
+    // $(".onboardGreeting").fadeOut("slow");
+  }, 7000);
 }
