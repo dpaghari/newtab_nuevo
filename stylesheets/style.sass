@@ -33,23 +33,28 @@ body, ul, ol
       text-align: left
       font-family: $font-stack
       justify-content: space-between
-      h1
-        margin: 0
-        font:
-          size: 6em
-      p
-        margin: 0
-        font:
-          weight: 100
-          size: 3.5em
+      .dateTime
+        display: flex
+        @extend %material-box
+        padding: 10px
+        height: 70px
+        #time
+          border-right: 2px solid #666
+        p
+          padding: 10px
+          margin: 0
+          font:
+            weight: 100
+            size: 1.5em
       .options
+        border: 1.5px solid black
+        box-shadow: 0px 2px 2px #999
         display: flex
         margin-right: 30px
+        height: 70px
         .userAction
-          height: 10px
           display: block
           padding: 20px
-          // font-size: 16px
           text-decoration: none
           color: #666
           transition: 0.2s all

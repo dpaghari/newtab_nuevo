@@ -1,6 +1,7 @@
 /**
  * Facilitates the overall control flow of the extension
  */
+
 class NewtabNuevo {
 	constructor() {
 		this.StorageObjects = null;
