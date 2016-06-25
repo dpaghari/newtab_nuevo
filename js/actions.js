@@ -100,6 +100,8 @@ let setUserSettings = function (settings) {
       $("input[name=themeBGImage]").val(settings.background);
     }
 
+    $(".themeBGImageRepeat").val(settings.bgStyle);
+
 
 
   };
@@ -171,8 +173,7 @@ let setBGStyle = function(styleVal, NTInstance) {
   }
   else {
     $("body").css("background-repeat", styleVal);
-    $("body").css("background-size", auto);
-
+    $("body").css("background-size", "auto");
   }
   // let cardSizeStr = sizeVal + "px " + (parseInt(sizeVal) + 40) + "px";
 };

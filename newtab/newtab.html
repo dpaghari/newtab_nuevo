@@ -37,7 +37,7 @@
   <div class="addModal modal">
     <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
     <h3>Add a New Favorite</h3>
-    <p id="addFormError"> Please fill out the missing fields </p>
+    <p class="addFormError"> Please fill out the missing fields </p>
     <form class="addFavForm">
       <label for="faveTitle">Title:</label>
       <input type="text" name="faveTitle" id="inputTitle" placeholder="Cool Website"/><br>
@@ -102,6 +102,7 @@
         <p class="bgURLError">Not a Valid Image Url</p>
         <label for="themeBGImageRepeat">Background Style</label>
         <select class="themeBGImageRepeat">
+          <option value="">--Select--</option>
           <option value="cover">Cover</option>
           <option value="repeat">Tile</option>
         </select>
@@ -121,6 +122,7 @@
     <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
     <h2>Let's Set a Few Things Up!</h2>
     <p>Add one of your favorite websites below by providing the url and the image you want to use for it.</p>
+    <p class="addFormError"> Please fill out the missing fields </p>
     <form class="addFavForm">
       <label for="faveTitle">Title:</label>
       <input type="text" name="faveTitle" id="obInputTitle" placeholder="Cool Website"/><br>

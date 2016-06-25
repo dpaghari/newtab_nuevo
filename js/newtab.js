@@ -139,18 +139,18 @@ $(document).ready(function() {
     var urlVal = $("#inputUrl").val();
     urlVal = Util.addHttp(urlVal);
     var isValidURL = Util.validateURL(urlVal);
-
     if(!isValidURL) {
-      $("#addFormError").text("Please enter a valid URL").show();
+      $(".addFormError").css("color", "red");
+      $(".addFormError").text("Please enter a valid URL").show();
     }
     var imageVal = $("#inputImage").val();
     imageVal = Util.addHttp(imageVal);
     var isValidImgURL = Util.validateURL(imageVal);
     if(!isValidImgURL) {
-      $("#addFormError").text("Please enter a valid Image URL").show();
+      $(".addFormError").text("Please enter a valid Image URL").show();
     }
     if(!isValidURL && !isValidImgURL) {
-      $("#addFormError").text("Please enter a valid URL & Image URL").show();
+      $(".addFormError").text("Please enter a valid URL & Image URL").show();
     }
     if((titleVal !== "") && (urlVal !== "" && isValidURL) && (imageVal !== "" && isValidImgURL)){
       var newEntry = {
@@ -163,10 +163,10 @@ $(document).ready(function() {
       if ($(".modal").length !== null) {
         Actions.closeModal($(".modal"));
       }
-      $("#addFormError").hide();
+      $(".addFormError").hide();
     }
     else {
-      $("#addFormError").show();
+      $(".addFormError").show();
     }
   });
   /*
@@ -226,7 +226,7 @@ $(document).ready(function() {
     NTInstance.setSetting("userTheme", this.value);
     if (this.value == 'light') {
       $("body, .modal").css("background", "white");
-      $("*").not(".addBtn, .settingsBtn, .bgURLError, .currentDay span").css("color", "black");
+      $("*").not(".addBtn, .settingsBtn, .bgURLError, .currentDay span, .addFormError").css("color", "black");
       $(".favorite").css("border", "1.5px solid black");
       $(".favorite i, .popFav").css("color", "white");
 
