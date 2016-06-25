@@ -41,13 +41,15 @@ let loadUserSettings = function(NTInstance) {
     var userFont = NTInstance.getSetting("userFont", "Work Sans");
     var userHover = NTInstance.getSetting("userHover", "hoverPop");
     var userBGImg = NTInstance.getSetting("userThemeBG", null);
-    var userFaveSize = NTInstance.getSetting("userFaveSize", 80);
+    var userFaveSize = NTInstance.getSetting("userFaveSize", "80");
+    var userBGStyle = NTInstance.getSetting("userBGStyle", "repeat");
     NTInstance.currentSettings = {
       "theme" : userTheme,
       "font" : userFont,
       "hover" : userHover,
       "background" : userBGImg,
-      "faveSize" : userFaveSize
+      "faveSize" : userFaveSize,
+      "bgStyle" : userBGStyle
     };
     // console.log(NTInstance.currentSettings);
 };
@@ -59,7 +61,7 @@ let setUserSettings = function (settings) {
       $(".favorite").css({
         "border" : "1.5px solid black",
         "padding" : cardSizeStr,
-
+        "transition" : "0.3s transform"
       });
       $(".favorite i, .popFav").css("color", "white");
     }
@@ -70,7 +72,16 @@ let setUserSettings = function (settings) {
       $(".favorite").css({
         "border" : "1.5px solid #d4d6e9",
         "padding" : cardSizeStr,
+        "transition" : "0.3s transform"
       });
+
+    }
+    if(settings.bgStyle === "cover"){
+      $("body").css("background-size", settings.bgStyle);
+    }
+    else {
+      $("body").css("background-repeat", settings.bgStyle);
+      $("body").css("background-size", "auto");
 
     }
     $(".favoriteSize").val(settings.faveSize);
@@ -88,6 +99,7 @@ let setUserSettings = function (settings) {
       $("body").css("background-image", "url(" + settings.background +")");
       $("input[name=themeBGImage]").val(settings.background);
     }
+
 
 
   };
@@ -149,8 +161,20 @@ let setSize = function(sizeVal, NTInstance) {
   let cardSizeStr = sizeVal + "px " + (parseInt(sizeVal) + 40) + "px";
   $(".favorite").css({
     "padding" : cardSizeStr,
-    "transition" : "0.4s padding"
+    "transition" : "0.4s padding, 0.3s transform"
   });
+};
+let setBGStyle = function(styleVal, NTInstance) {
+  NTInstance.setSetting("userBGStyle", styleVal);
+  if(styleVal === "cover"){
+    $("body").css("background-size", styleVal);
+  }
+  else {
+    $("body").css("background-repeat", styleVal);
+    $("body").css("background-size", auto);
+
+  }
+  // let cardSizeStr = sizeVal + "px " + (parseInt(sizeVal) + 40) + "px";
 };
 module.exports = {
   triggerModal,
@@ -162,5 +186,6 @@ module.exports = {
   showInitialLoad,
   setFont,
   setHover,
-  setSize
+  setSize,
+  setBGStyle
 };

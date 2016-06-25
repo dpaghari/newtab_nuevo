@@ -253,7 +253,10 @@ $(document).ready(function() {
     var sizeSelected = $(this).val();
     Actions.setSize(sizeSelected, NTInstance);
   });
-
+  $(document).on("change", ".themeBGImageRepeat", function() {
+    var bgStyleSelected = $(this).val();
+    Actions.setBGStyle(bgStyleSelected, NTInstance);
+  });
   /*
     Handlers for edit mode options on each of the favorites
   */
