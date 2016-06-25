@@ -1,18 +1,20 @@
-// import $ from "jquery";
-// let NTInstance;
-// let init = function(NT) {
-//   NTInstance = NT;
-// };
-  // Prompt user for image to use for bookmark
-  // and also the url.  Append to favorites
+// Prompt user for image to use for bookmark
+// and also the url.  Append to favorites
 let triggerModal = function(modal) {
     $('.lightbox').fadeIn();
-    modal.fadeIn();
+    // modal.fadeIn();
+    modal.animate({
+      "right" : "0px"
+    }, 400, "swing");
+
 };
 
 let closeModal = function (modal) {
     $('.lightbox').fadeOut();
-    modal.fadeOut();
+    // modal.fadeOut();
+    modal.animate({
+      "right" : "-400px"
+    }, 300, "swing");
 };
 
 let triggerEditMode = function () {
@@ -39,27 +41,40 @@ let loadUserSettings = function(NTInstance) {
     var userFont = NTInstance.getSetting("userFont", "Work Sans");
     var userHover = NTInstance.getSetting("userHover", "hoverPop");
     var userBGImg = NTInstance.getSetting("userThemeBG", null);
+    var userFaveSize = NTInstance.getSetting("userFaveSize", 80);
     NTInstance.currentSettings = {
       "theme" : userTheme,
       "font" : userFont,
       "hover" : userHover,
-      "background" : userBGImg
+      "background" : userBGImg,
+      "faveSize" : userFaveSize
     };
     // console.log(NTInstance.currentSettings);
 };
 let setUserSettings = function (settings) {
+    let cardSizeStr = settings.faveSize + "px " + (parseInt(settings.faveSize) + 40) + "px";
     if (settings.theme == 'light') {
       $("body, .modal").css("background", "white");
       $("*").not(".addBtn, .settingsBtn, .bgURLError, .currentDay span").css("color", "black");
-      $(".favorite").css("border", "1.5px solid black");
+      $(".favorite").css({
+        "border" : "1.5px solid black",
+        "padding" : cardSizeStr,
+
+      });
       $(".favorite i, .popFav").css("color", "white");
     }
     else if (settings.theme == 'dark') {
       $("body, .modal").css("background", "#3c3c3c");
       $("*").not(".bgURLError").css("color", "white");
       $("input, select, option").css("color", "black");
-      $(".favorite").css("border", "1.5px solid #d4d6e9");
+      $(".favorite").css({
+        "border" : "1.5px solid #d4d6e9",
+        "padding" : cardSizeStr,
+      });
+
     }
+    $(".favoriteSize").val(settings.faveSize);
+    // setSize(settings.faveSize, NTInstance);
     $("*").not("i").css("font-family", settings.font);
     $("select.fontOption").val(settings.font);
     $("select.hoverOption").val(settings.hover);
@@ -73,6 +88,7 @@ let setUserSettings = function (settings) {
       $("body").css("background-image", "url(" + settings.background +")");
       $("input[name=themeBGImage]").val(settings.background);
     }
+
 
   };
 
@@ -127,6 +143,15 @@ let setHover = function(hoverName, NTInstance) {
   }
   //$(".favorite").addClass(hoverName).removeClass("hoverNone hoverHighlight");
 };
+
+let setSize = function(sizeVal, NTInstance) {
+  NTInstance.setSetting("userFaveSize", sizeVal);
+  let cardSizeStr = sizeVal + "px " + (parseInt(sizeVal) + 40) + "px";
+  $(".favorite").css({
+    "padding" : cardSizeStr,
+    "transition" : "0.4s padding"
+  });
+};
 module.exports = {
   triggerModal,
   closeModal,
@@ -136,5 +161,6 @@ module.exports = {
   setUserSettings,
   showInitialLoad,
   setFont,
-  setHover
+  setHover,
+  setSize
 };

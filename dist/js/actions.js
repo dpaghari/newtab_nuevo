@@ -1,10 +1,10 @@
 'use strict';
 
 // import $ from "jquery";
-var NTInstance = void 0;
-var init = function init(NT) {
-  NTInstance = NT;
-};
+// let NTInstance;
+// let init = function(NT) {
+//   NTInstance = NT;
+// };
 // Prompt user for image to use for bookmark
 // and also the url.  Append to favorites
 var triggerModal = function triggerModal(modal) {
@@ -21,7 +21,7 @@ var triggerEditMode = function triggerEditMode() {
   $("#favorites").sortable("enable");
 };
 
-var processEditedList = function processEditedList() {
+var processEditedList = function processEditedList(NTInstance) {
   var reorderedList = $("#favorites").children();
   var processedList = [];
   for (var i = 0; i < reorderedList.length; i++) {
@@ -36,7 +36,7 @@ var processEditedList = function processEditedList() {
   $("#favorites").sortable("disable");
 };
 
-var loadUserSettings = function loadUserSettings() {
+var loadUserSettings = function loadUserSettings(NTInstance) {
   var userTheme = NTInstance.getSetting("userTheme", "light");
   var userFont = NTInstance.getSetting("userFont", "Work Sans");
   var userHover = NTInstance.getSetting("userHover", "hoverPop");
@@ -102,14 +102,31 @@ var showInitialLoad = function showInitialLoad() {
   }, 7000);
 };
 
-var setFont = function setFont(fontName) {
+var setFont = function setFont(fontName, NTInstance) {
   var newFontStack = fontName;
   NTInstance.setSetting("userFont", newFontStack);
   $("*").not("i").css("font-family", newFontStack);
 };
 
+var setHover = function setHover(hoverName, NTInstance) {
+  NTInstance.setSetting("userHover", hoverName);
+  switch (hoverName) {
+
+    case "hoverPop":
+      $(".favorite").addClass("hoverPop").removeClass("hoverNone hoverHighlight");
+      break;
+
+    case "hoverHighlight":
+      $(".favorite").addClass("hoverHighlight").removeClass("hoverNone hoverPop");
+      break;
+
+    case "hoverNone":
+      $(".favorite").addClass("hoverNone").removeClass("hoverPop hoverHighlight");
+      break;
+  }
+  //$(".favorite").addClass(hoverName).removeClass("hoverNone hoverHighlight");
+};
 module.exports = {
-  init: init,
   triggerModal: triggerModal,
   closeModal: closeModal,
   triggerEditMode: triggerEditMode,
@@ -117,5 +134,6 @@ module.exports = {
   loadUserSettings: loadUserSettings,
   setUserSettings: setUserSettings,
   showInitialLoad: showInitialLoad,
-  setFont: setFont
+  setFont: setFont,
+  setHover: setHover
 };

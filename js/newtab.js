@@ -6,7 +6,8 @@ NTInstance.currentSettings = {
   "theme" : "light",
   "font" : "Work Sans",
   "hover" : "hoverPop",
-  "background" : null
+  "background" : null,
+  "faveSize" : "80"
 };
 
 const Actions = require("./actions.js");
@@ -16,9 +17,9 @@ const Util = require("./util.js");
 $(document).ready(function() {
 
   Actions.loadUserSettings(NTInstance);
-  Actions.setUserSettings(NTInstance.currentSettings);
   Favorites.loadSavedFavorites(NTInstance);
   Favorites.loadPopularFavorites(NTInstance);
+  Actions.setUserSettings(NTInstance.currentSettings);
   var calendar = Calendar.buildCalendar();
 
   $(".calendar-head").html("<span>" + Calendar.month_name[Calendar.month] + " " + Calendar.year + "</span");
@@ -116,10 +117,8 @@ $(document).ready(function() {
     };
     Favorites.saveFavorite(newEntry, NTInstance);
     $(this).remove();
-    console.log($(".addModal .popularFavs").children().length);
-    console.log($(".onboardingModal .popularFavs").children().length);
     if($(".addModal .popularFavs").children().length === 0 || $(".onboardingModal .popularFavs").children().length === 0) {
-      $(".addExtra").hide();
+      $(".addExtra, .popularFavs").hide();
     }
   });
 /*
@@ -249,6 +248,10 @@ $(document).ready(function() {
   $(document).on("change", ".fontOption", function() {
     var fontSelected = $(this).val();
     Actions.setFont(fontSelected, NTInstance);
+  });
+  $(document).on("change", ".favoriteSize", function() {
+    var sizeSelected = $(this).val();
+    Actions.setSize(sizeSelected, NTInstance);
   });
 
   /*

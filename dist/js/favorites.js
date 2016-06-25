@@ -1,11 +1,12 @@
 "use strict";
 
-var NTInstance = void 0;
-var init = function init(NT) {
-  NTInstance = NT;
-};
+var Util = require("./util.js");
+// let NTInstance;
+// let init = function(NT) {
+//   NTInstance = NT;
+// };
 // Add a new favorite to the favorites grid
-var addFavorite = function addFavorite(title, url, imageUrl) {
+var addFavorite = function addFavorite(title, url, imageUrl, NTInstance) {
   var newListEntry = document.createElement("LI");
   var newFavorite = document.createElement("A");
   newFavorite.href = url;
@@ -33,7 +34,7 @@ var addFavorite = function addFavorite(title, url, imageUrl) {
 };
 
 // Save favorite to local storage
-var saveFavorite = function saveFavorite(entry) {
+var saveFavorite = function saveFavorite(entry, NTInstance) {
   var currentSaved = [];
   var savedFavorites = NTInstance.getSetting("savedFavorites", null);
   if (savedFavorites !== null) {
@@ -41,7 +42,7 @@ var saveFavorite = function saveFavorite(entry) {
   }
   currentSaved.push(entry);
   NTInstance.setSetting("savedFavorites", currentSaved);
-  addFavorite(entry.title, entry.url, entry.bgImg);
+  addFavorite(entry.title, entry.url, entry.bgImg, NTInstance);
   $("#inputUrl").val("");
   $("#inputImage").val("");
 };
@@ -53,7 +54,7 @@ var getPopularFavorites = function getPopularFavorites() {
   });
 };
 
-var deleteFavorite = function deleteFavorite(delUrl) {
+var deleteFavorite = function deleteFavorite(delUrl, NTInstance) {
   var savedFavorites = NTInstance.getSetting("savedFavorites", null);
   if (savedFavorites !== null) {
     savedFavorites.forEach(function (item, index) {
@@ -66,33 +67,33 @@ var deleteFavorite = function deleteFavorite(delUrl) {
 };
 
 // Load saved favorites onload
-var loadSavedFavorites = function loadSavedFavorites() {
+var loadSavedFavorites = function loadSavedFavorites(NTInstance) {
   var savedItems = [];
   var savedFavorites = NTInstance.getSetting("savedFavorites", null);
   if (savedFavorites !== null) {
     savedItems = savedFavorites;
     savedItems.forEach(function (item) {
-      addFavorite(item.title, item.url, item.bgImg);
+      addFavorite(item.title, item.url, item.bgImg, NTInstance);
     });
   }
 };
 
-var loadPopularFavorites = function loadPopularFavorites() {
+var loadPopularFavorites = function loadPopularFavorites(NTInstance) {
   var popFavs = getPopularFavorites();
   popFavs.then(function (res) {
     var response = JSON.parse(res);
-    createPopularFavs(response);
+    createPopularFavs(response, NTInstance);
   });
 };
-var loadDefaultFavorites = function loadDefaultFavorites() {
-  var popFavs = getPromise("/newtab/defaultFavs.json");
+var loadDefaultFavorites = function loadDefaultFavorites(NTInstance) {
+  var popFavs = Util.getPromise("/newtab/defaultFavs.json");
   popFavs.then(function (res) {
     var response = JSON.parse(res);
-    createDefaultFavs(response);
+    createDefaultFavs(response, NTInstance);
   });
 };
 
-var createDefaultFavs = function createDefaultFavs(favorites) {
+var createDefaultFavs = function createDefaultFavs(favorites, NTInstance) {
   var list = favorites.default_favorites;
   // console.log(list);
   for (var i = 0; i < list.length; i++) {
@@ -102,12 +103,12 @@ var createDefaultFavs = function createDefaultFavs(favorites) {
       "bgImg": list[i].bgImg
     };
     // console.log(entry);
-    saveFavorite(entry);
+    saveFavorite(entry, NTInstance);
   }
 };
 
-var createPopularFavs = function createPopularFavs(favorites) {
-  console.log(NTInstance, favorites);
+var createPopularFavs = function createPopularFavs(favorites, NTInstance) {
+  // console.log(NTInstance, favorites);
   var list = favorites.popular_favorites;
   var savedFavorites = NTInstance.getSetting("savedFavorites", null);
   var match = [];
@@ -127,7 +128,7 @@ var createPopularFavs = function createPopularFavs(favorites) {
 };
 
 module.exports = {
-  init: init,
+
   addFavorite: addFavorite,
   saveFavorite: saveFavorite,
   getPopularFavorites: getPopularFavorites,

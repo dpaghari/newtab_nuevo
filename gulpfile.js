@@ -56,7 +56,7 @@ gulp.task('javascript', function () {
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))
         // Add transformation tasks to the pipeline here.
-        .pipe(plumber()) 
+        .pipe(plumber())
         .pipe(babel({
           presets: ["es2015"]
         }))
@@ -69,4 +69,4 @@ gulp.task('javascript', function () {
 
 
 
-gulp.task('default', ['styles', 'scripts', 'sass:watch', 'babel:watch']);
+gulp.task('default', ['styles', 'javascript', 'sass:watch', 'babel:watch']);
