@@ -10,10 +10,13 @@ NTInstance.currentSettings = {
   "faveSize" : "80"
 };
 
+
 const Actions = require("./actions.js");
 const Calendar = require("./createCalendar.js");
 const Favorites = require("./favorites.js");
 const Util = require("./util.js");
+
+
 $(document).ready(function() {
 
   Actions.loadUserSettings(NTInstance);
@@ -224,19 +227,26 @@ $(document).ready(function() {
 
   $('input[type=radio][name=theme-select]').change(function() {
     NTInstance.setSetting("userTheme", this.value);
-    if (this.value == 'light') {
+    if (this.value === 'light') {
       $("body, .modal").css("background", "white");
       $("*").not(".addBtn, .settingsBtn, .bgURLError, .currentDay span, .addFormError").css("color", "black");
       $(".favorite").css("border", "1.5px solid black");
       $(".favorite i, .popFav").css("color", "white");
 
     }
-    else if (this.value == 'dark') {
+    else if (this.value === 'dark') {
       $("body, .modal").css("background", "#3c3c3c");
       $("*").not(".bgURLError").css("color", "white");
       $("input, select, option").css("color", "black");
       $(".favorite").css("border", "1.5px solid #d4d6e9");
 
+    }
+
+    else if (this.value === "fade") {
+      $(".modal, .headerPanel").css("background", "rgba(0,0,0,0.4)");
+      $("*").not(".bgURLError").css("color", "white");
+      $("input, select, option").css("color", "black");
+      $(".headerPanel").css("border", "none");
     }
   });
 

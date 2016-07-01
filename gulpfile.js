@@ -63,7 +63,7 @@ gulp.task('javascript', function () {
         .pipe(uglify())
         .on('error', gutil.log)
     .pipe(sourcemaps.write('./'))
-    .pipe(gulp.dest('./testbrowserify/'));
+    .pipe(gulp.dest('./dist/'));
 });
 
 

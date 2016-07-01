@@ -55,27 +55,39 @@ let loadUserSettings = function(NTInstance) {
 };
 let setUserSettings = function (settings) {
     let cardSizeStr = settings.faveSize + "px " + (parseInt(settings.faveSize) + 40) + "px";
-    if (settings.theme == 'light') {
+
+    // Set Theme Styles
+    if (settings.theme === 'light') {
       $("body, .modal").css("background", "white");
       $("*").not(".addBtn, .settingsBtn, .bgURLError, .currentDay span").css("color", "black");
       $(".favorite").css({
         "border" : "1.5px solid black",
         "padding" : cardSizeStr,
-        "transition" : "0.3s transform"
+        "transition" : "0.3s transform, 0.3s margin"
       });
       $(".favorite i, .popFav").css("color", "white");
     }
-    else if (settings.theme == 'dark') {
+    else if (settings.theme === 'dark') {
       $("body, .modal").css("background", "#3c3c3c");
       $("*").not(".bgURLError").css("color", "white");
       $("input, select, option").css("color", "black");
       $(".favorite").css({
         "border" : "1.5px solid #d4d6e9",
         "padding" : cardSizeStr,
-        "transition" : "0.3s transform"
+        "transition" : "0.3s transform, 0.3s margin"
       });
-
     }
+    else if (settings.theme === "fade") {
+      $(".modal, .headerPanel").css("background", "rgba(0,0,0,0.4)");
+      $("*").not(".bgURLError").css("color", "white");
+      $("input, select, option").css("color", "black");
+      $(".headerPanel").css("border", "none");
+      $(".favorite").css({
+        "padding" : cardSizeStr,
+        "transition" : "0.3s transform, 0.3s margin"
+      });
+    }
+    // Set BG Image Style
     if(settings.bgStyle === "cover"){
       $("body").css("background-size", settings.bgStyle);
     }
@@ -84,24 +96,24 @@ let setUserSettings = function (settings) {
       $("body").css("background-size", "auto");
 
     }
-    $(".favoriteSize").val(settings.faveSize);
-    // setSize(settings.faveSize, NTInstance);
+    // Set Font
     $("*").not("i").css("font-family", settings.font);
-    $("select.fontOption").val(settings.font);
-    $("select.hoverOption").val(settings.hover);
+
     var radios = $("input[name=theme-select]");
     $(radios).each(function(i, el) {
       if($(el).val() === settings.theme)
         $(el).attr("checked", "checked");
     });
-
+    // Set Background
     if(settings.background !== null) {
       $("body").css("background-image", "url(" + settings.background +")");
       $("input[name=themeBGImage]").val(settings.background);
     }
-
+    // Set Settings Options to their saved values
     $(".themeBGImageRepeat").val(settings.bgStyle);
-
+    $(".favoriteSize").val(settings.faveSize);
+    $("select.fontOption").val(settings.font);
+    $("select.hoverOption").val(settings.hover);
 
 
   };
@@ -163,7 +175,7 @@ let setSize = function(sizeVal, NTInstance) {
   let cardSizeStr = sizeVal + "px " + (parseInt(sizeVal) + 40) + "px";
   $(".favorite").css({
     "padding" : cardSizeStr,
-    "transition" : "0.4s padding, 0.3s transform"
+    "transition" : "0.4s padding, 0.3s transform, 0.3s margin"
   });
 };
 let setBGStyle = function(styleVal, NTInstance) {
