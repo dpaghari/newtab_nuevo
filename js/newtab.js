@@ -23,8 +23,8 @@ $(document).ready(function() {
   Favorites.loadSavedFavorites(NTInstance);
   Favorites.loadPopularFavorites(NTInstance);
   Actions.setUserSettings(NTInstance.currentSettings);
-  var calendar = Calendar.buildCalendar();
-
+  var calendar = Calendar.theCalendar;
+  console.log(Calendar);
   $(".calendar-head").html("<span>" + Calendar.month_name[Calendar.month] + " " + Calendar.year + "</span");
   $(".calendar").append(calendar);
   $("#favorites").sortable();

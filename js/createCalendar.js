@@ -11,11 +11,11 @@ let day_name = ['Sun', 'Mon', "Tue", "Wed", "Thu", "Fri", "Sat"];
 let day_no = day_name.indexOf(first_day);
 let days = new Date(year, month+1, 0).getDate();
 let table = document.createElement("table");
-let tr = document.createElement("tr");
-
-let buildCalendar = function () {
+let theCalendar;
 
 var tr = document.createElement("tr");
+function buildCalendar() {
+
 // Row for day letters
 for(var c = 0; c <= 6; c++) {
   var td = document.createElement("td");
@@ -39,11 +39,11 @@ for(c = 0;c <= 6; c++) {
 // Start counting days of the month
 var count = 1;
 for(; c <=6; c++) {
-  // console.log(c);
+  console.log(c);
   var td = document.createElement("td");
 
   td.innerHTML = "<span>" + count + "</span>";
-  //console.log(count, today);
+  // console.log(count, today);
   if(count === today){
     td.classList.add("currentDay");
   }
@@ -56,10 +56,12 @@ table.appendChild(tr);
 // rest of the date rows
 for(var r=3; r<= 6; r++) {
   tr = document.createElement("tr");
-  for(var c = 0; c <= 6;c++) {
+  for(var c = 0; c <= 7;c++) {
+    console.log(count, days);
     if(count > days) {
       table.appendChild(tr);
       return table;
+      //console.log("theCalendar: " + theCalendar);
     }
     var td = document.createElement("td");
     td.innerHTML = "<span>" + count + "</span>";
@@ -73,9 +75,9 @@ for(var r=3; r<= 6; r++) {
 }
 }
 
-//var calendar = buildCalendar();
+theCalendar = buildCalendar();
 module.exports = {
-  buildCalendar,
+  theCalendar,
   month_name,
   month,
   year
