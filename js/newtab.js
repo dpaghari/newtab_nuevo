@@ -10,6 +10,11 @@ NTInstance.currentSettings = {
   "faveSize" : "80"
 };
 
+chrome.storage.local.get(function(res){
+  console.log(res);
+});
+
+console.log(NTInstance.getSetting("savedFavorites"));
 
 const Actions = require("./actions.js");
 const Calendar = require("./createCalendar.js");
@@ -161,7 +166,7 @@ $(document).ready(function() {
         "url" : urlVal,
         "bgImg" : imageVal
       };
-      Favorites.saveFavorite(newEntry);
+      Favorites.saveFavorite(newEntry, NTInstance);
 
       if ($(".modal").length !== null) {
         Actions.closeModal($(".modal"));
