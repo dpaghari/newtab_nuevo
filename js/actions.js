@@ -122,27 +122,27 @@ let setUserSettings = function (settings) {
 let showInitialLoad = function () {
     var $onboarding = $(".onboardingModal");
     var temp = $onboarding.html();
-    $onboarding.html("<img class='onboardLoad' src='/newtab/images/cubeload.svg'/><p class='onboardGreeting'>Setting up DashTab</p>");
-    setTimeout(function() {
-      $onboarding.children().fadeOut("slow");
-    }, 3000);
-    setTimeout(function() {
-      $onboarding.html("<img class='onboardLoad' src='/newtab/images/logo.jpg'/ alt='Dashtab Logo'><p class='onboardGreeting'>Welcome to DashTab!</p>");
-    }, 3500);
-    setTimeout(function() {
-      $(".onboardGreeting, .onboardLoad").fadeOut("slow");
-      // $onboarding.html(temp).children(".modalWrapper").hide();
-      // $(".modalWrapper").fadeOut("slow");
-    }, 6000);
-    setTimeout(function() {
-      // $(".onboardGreeting, .onboardLoad").fadeOut("slow");
-      $onboarding.html(temp).children(".modalWrapper").hide();
-      // $(".modalWrapper").fadeOut("slow");
-    }, 6500);
-    setTimeout(function() {
-      $(".modalWrapper").fadeIn("slow");
-      // $(".onboardGreeting").fadeOut("slow");
-    }, 7000);
+    // $onboarding.html("<img class='onboardLoad' src='/newtab/images/cubeload.svg'/><p class='onboardGreeting'>Setting up DashTab</p>");
+    // setTimeout(function() {
+    //   $onboarding.children().fadeOut("slow");
+    // }, 3000);
+    // setTimeout(function() {
+    //   $onboarding.html("<img class='onboardLoad' src='/newtab/images/logo.jpg'/ alt='Dashtab Logo'><p class='onboardGreeting'>Welcome to DashTab!</p>");
+    // }, 3500);
+    // setTimeout(function() {
+    //   $(".onboardGreeting, .onboardLoad").fadeOut("slow");
+    //   // $onboarding.html(temp).children(".modalWrapper").hide();
+    //   // $(".modalWrapper").fadeOut("slow");
+    // }, 6000);
+    // setTimeout(function() {
+    //   // $(".onboardGreeting, .onboardLoad").fadeOut("slow");
+    //   $onboarding.html(temp).children(".modalWrapper").hide();
+    //   // $(".modalWrapper").fadeOut("slow");
+    // }, 6500);
+    // setTimeout(function() {
+    //   $(".modalWrapper").fadeIn("slow");
+    //   // $(".onboardGreeting").fadeOut("slow");
+    // }, 7000);
   };
 
 let setFont = function(fontName, NTInstance) {

@@ -1,58 +1,35 @@
 'use strict';
 
-var gulp = require('gulp'),
-    gutil = require('gulp-util'),
-    source = require('vinyl-source-stream'),
-    buffer = require('vinyl-buffer'),
-    uglify = require('gulp-uglify'),
-    sourcemaps = require('gulp-sourcemaps'),
-    browserify = require('browserify'),
-    sass = require('gulp-sass'),
-    cssnano = require('gulp-cssnano'),
-    babel = require('gulp-babel'),
-    plumber = require('gulp-plumber');
-    // livereload = require('gulp-livereload');
+var gulp = require('gulp');
+var gutil = require('gulp-util');
+var sass = require('gulp-sass');
+var cssnano = require('gulp-cssnano');
+var uncss = require('gulp-uncss');
+var imagemin = require('gulp-imagemin');
+var babel = require('gulp-babel');
+var plumber = require('gulp-plumber');
 
+var uglify = require('gulp-uglify');
+var source = require('vinyl-source-stream');
+var buffer = require('vinyl-buffer');
+var sourcemaps = require('gulp-sourcemaps');
+var browserify = require('browserify');
+var watchify = require('watchify');
+
+var b = watchify(browserify({
+  entries: './js/newtab.js',
+  debug: true
+}));
+
+b.on("update", bundle);
+// b.on("log", gutil.log);
+
+gulp.task("watchify", bundle);
 gulp.task('scripts', function () {
-  // Future processing for scripts
-  return gulp.src("js/*.js")
-  .pipe(plumber())
-  .pipe(babel({
-    presets: ["es2015"]
-  }))
-  .pipe(gulp.dest("dist/js"));
-});
-
-gulp.task('styles', function () {
-  gulp.src('stylesheets/*.sass')
-    .pipe(plumber())
-    .pipe(sass({
-      includePaths: ['./stylesheets', './node_modules/support-for/sass/']
-    }).on('error', sass.logError))
-    .pipe(cssnano())
-    .pipe(gulp.dest('newtab'));
-    // .pipe(livereload());
-});
-
-
-gulp.task('sass:watch', function () {
-  // livereload.listen();
-  gulp.watch('stylesheets/*.sass', ['styles']);
-});
-gulp.task('babel:watch', function () {
-  // livereload.listen();
-  gulp.watch('js/*.js', ['javascript']);
-});
-
-gulp.task('javascript', function () {
   // set up the browserify instance on a task basis
-  var b = browserify({
-    entries: './js/newtab.js',
-    debug: true
-  });
 
   return b.bundle()
-    .pipe(source('./js/newtab.js'))
+    .pipe(source('./newtab/newtab.js'))
     .pipe(buffer())
     .pipe(sourcemaps.init({loadMaps: true}))
         // Add transformation tasks to the pipeline here.
@@ -66,7 +43,48 @@ gulp.task('javascript', function () {
     .pipe(gulp.dest('./dist/'));
 });
 
+gulp.task('scripts:watch', function() {
+  gulp.watch("newtab/*.js", ["scripts"]);
+});
+
+gulp.task('styles', function () {
+  gulp.src('stylesheets/*.scss')
+    .pipe(sass().on('error', sass.logError))
+    // .pipe(uncss({ html : ["crx_wallpapersfmv1.0/newtab/blank.html"]}))
+    .pipe(cssnano())
+    .pipe(gulp.dest('newtab/'));
+    // .pipe(livereload());
+});
+
+gulp.task('sass:watch', function () {
+  // livereload.listen();
+  gulp.watch('stylesheets/*.scss', ['styles']);
+});
+
+gulp.task('imagemin', function () {
+  gulp.src('newtab/images/*')
+  .pipe(imagemin())
+  .pipe(gulp.dest('newtab/images'));
+});
+
+gulp.task('default', ['styles', 'scripts', 'sass:watch', 'scripts:watch']);
 
 
+// Functions
 
-gulp.task('default', ['styles', 'javascript', 'sass:watch', 'babel:watch']);
+function bundle() {
+  return b.bundle()
+    // log errors if they happen
+    .on('error', gutil.log.bind(gutil, 'Browserify Error'))
+    .pipe(source('./js/newtab.js'))
+    // optional, remove if you don't need to buffer file contents
+    .pipe(buffer())
+    // optional, remove if you dont want sourcemaps
+    .pipe(sourcemaps.init({loadMaps: true})) // loads map from browserify file
+       // Add transformation tasks to the pipeline here.
+       .pipe(babel({
+         presets: ["es2015"]
+       }))
+    .pipe(sourcemaps.write('./')) // writes .map file
+    .pipe(gulp.dest('./dist'));
+}

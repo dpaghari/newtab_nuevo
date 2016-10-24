@@ -29,7 +29,7 @@ $(document).ready(function() {
   Favorites.loadPopularFavorites(NTInstance);
   Actions.setUserSettings(NTInstance.currentSettings);
   var calendar = Calendar.theCalendar;
-  console.log(Calendar);
+  // console.log(Calendar);
   $(".calendar-head").html("<span>" + Calendar.month_name[Calendar.month] + " " + Calendar.year + "</span");
   $(".calendar").append(calendar);
   $("#favorites").sortable();
@@ -37,7 +37,7 @@ $(document).ready(function() {
 
   chrome.runtime.sendMessage({task: "checkFirstRun"}, function(res) {
     if(res.firstRun){
-      Actions.showInitialLoad();
+      // Actions.showInitialLoad();
       Favorites.loadDefaultFavorites(NTInstance);
       Actions.triggerModal($(".onboardingModal"));
       $("#obInputTitle").focus();
@@ -66,7 +66,7 @@ $(document).ready(function() {
      //console.log(clickElement);
      switch(clickElement) {
         case "addFavorite":
-          if($(".addModal .popularFavs").children().length === 0){
+          if($(".addModal .popularFavs").children().length === 0 || $(".onboardingModal .popularFavs").children().length === 0){
             $(".addExtra").hide();
           }
           var modalToOpen = $(".addModal");
@@ -125,7 +125,15 @@ $(document).ready(function() {
     };
     Favorites.saveFavorite(newEntry, NTInstance);
     $(this).remove();
+    var allPopFavs = $(".popularFavs").children();
+    var popArr = [].slice.call(allPopFavs, 0);
+    var match = popArr.filter(function(el) {
+      return $(el).data("url") === urltoAdd;
+    });
+    $(match).hide();
+    console.log($(".addModal .popularFavs").children().length, $(".onboardingModal .popularFavs").children().length);
     if($(".addModal .popularFavs").children().length === 0 || $(".onboardingModal .popularFavs").children().length === 0) {
+      // console.log(one);
       $(".addExtra, .popularFavs").hide();
     }
   });

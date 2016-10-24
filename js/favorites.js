@@ -112,13 +112,16 @@ let createPopularFavs = function (favorites, NTInstance) {
     // console.log(NTInstance, favorites);
     var list = favorites.popular_favorites;
     var savedFavorites = NTInstance.getSetting("savedFavorites", null);
+    // console.log("saved", savedFavorites, "list", list);
     var match = [];
     //console.log(NTInstance);
     for(var i = 0; i < list.length; i++){
       if(savedFavorites !== null){
-      match = $.grep(savedFavorites, function(e) {
-        return e.url === list[i].url;
+      match = savedFavorites.filter(function(el) {
+        // console.log("curr", el.url, "list", list[i].url);
+        return el.url === list[i].url;
       });
+      // console.log(match);
       }
 
       if(match.length === 0){
