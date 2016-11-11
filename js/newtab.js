@@ -1,6 +1,8 @@
-// import $ from "jquery";
-var background = chrome.extension.getBackgroundPage();
-var NTInstance = background.NTInstance;
+
+// const $ = require("jquery");
+
+const background = chrome.extension.getBackgroundPage();
+const NTInstance = background.NTInstance;
 NTInstance.editing = false;
 NTInstance.currentSettings = {
   "theme" : "light",
@@ -16,18 +18,18 @@ chrome.storage.local.get(function(res){
 
 console.log(NTInstance.getSetting("savedFavorites"));
 
-const Actions = require("./actions.js");
+const ActionsManager = require("./actions.js");
 const Calendar = require("./createCalendar.js");
-const Favorites = require("./favorites.js");
+const FavoritesManager = require("./favorites.js");
 const Util = require("./util.js");
 
 
 $(document).ready(function() {
 
-  Actions.loadUserSettings(NTInstance);
-  Favorites.loadSavedFavorites(NTInstance);
-  Favorites.loadPopularFavorites(NTInstance);
-  Actions.setUserSettings(NTInstance.currentSettings);
+  ActionsManager.loadUserSettings(NTInstance);
+  FavoritesManager.loadSavedFavorites(NTInstance);
+  FavoritesManager.loadPopularFavorites(NTInstance);
+  ActionsManager.setUserSettings(NTInstance.currentSettings);
   var calendar = Calendar.theCalendar;
   // console.log(Calendar);
   $(".calendar-head").html("<span>" + Calendar.month_name[Calendar.month] + " " + Calendar.year + "</span");
@@ -37,9 +39,9 @@ $(document).ready(function() {
 
   chrome.runtime.sendMessage({task: "checkFirstRun"}, function(res) {
     if(res.firstRun){
-      // Actions.showInitialLoad();
-      Favorites.loadDefaultFavorites(NTInstance);
-      Actions.triggerModal($(".onboardingModal"));
+      // ActionsManager.showInitialLoad();
+      FavoritesManager.loadDefaultFavorites(NTInstance);
+      ActionsManager.triggerModal($(".onboardingModal"));
       $("#obInputTitle").focus();
     }
 
@@ -70,7 +72,7 @@ $(document).ready(function() {
             $(".addExtra").hide();
           }
           var modalToOpen = $(".addModal");
-          Actions.triggerModal(modalToOpen);
+          ActionsManager.triggerModal(modalToOpen);
           $("#inputTitle").focus();
           break;
 
@@ -79,31 +81,31 @@ $(document).ready(function() {
           NTInstance.editing = !NTInstance.editing;
           $(".favorite").toggleClass("editing");
           $(".favorite").children().toggle();
-          if(NTInstance.editing){
-            Actions.triggerEditMode();
+          if(!NTInstance.editing){
+            ActionsManager.triggerEditMode();
           }
           else{
-            Actions.processEditedList(NTInstance);
+            ActionsManager.processEditedList(NTInstance);
           }
           break;
 
         case 'openSettings':
           e.preventDefault();
           var settingsModal = $(".settingsModal");
-          Actions.triggerModal(settingsModal);
+          ActionsManager.triggerModal(settingsModal);
 
           break;
 
         case 'openOnboarding':
           e.preventDefault();
           var onBoardingModal = $(".onboardingModal");
-          Actions.triggerModal(onBoardingModal);
+          ActionsManager.triggerModal(onBoardingModal);
           break;
 
         case 'openCalendar':
           e.preventDefault();
           var calendarModal = $(".calendarModal");
-          Actions.triggerModal(calendarModal);
+          ActionsManager.triggerModal(calendarModal);
           break;
      }
   });
@@ -123,7 +125,7 @@ $(document).ready(function() {
       "url" : urltoAdd,
       "bgImg" : imgtoAdd
     };
-    Favorites.saveFavorite(newEntry, NTInstance);
+    FavoritesManager.saveFavorite(newEntry, NTInstance);
     $(this).remove();
     var allPopFavs = $(".popularFavs").children();
     var popArr = [].slice.call(allPopFavs, 0);
@@ -143,7 +145,7 @@ $(document).ready(function() {
   $(document).on("click", ".closeBtn", function(e) {
     e.preventDefault();
     var modalToClose = $(this).closest(".modal");
-    Actions.closeModal(modalToClose);
+    ActionsManager.closeModal(modalToClose);
   });
 
   /*
@@ -174,10 +176,10 @@ $(document).ready(function() {
         "url" : urlVal,
         "bgImg" : imageVal
       };
-      Favorites.saveFavorite(newEntry, NTInstance);
+      FavoritesManager.saveFavorite(newEntry, NTInstance);
 
       if ($(".modal").length !== null) {
-        Actions.closeModal($(".modal"));
+        ActionsManager.closeModal($(".modal"));
       }
       $(".addFormError").hide();
     }
@@ -266,19 +268,19 @@ $(document).ready(function() {
 
   $(document).on("change", ".hoverOption", function() {
     var hoverSelected = $(this).val();
-    Actions.setHover(hoverSelected, NTInstance);
+    ActionsManager.setHover(hoverSelected, NTInstance);
   });
   $(document).on("change", ".fontOption", function() {
     var fontSelected = $(this).val();
-    Actions.setFont(fontSelected, NTInstance);
+    ActionsManager.setFont(fontSelected, NTInstance);
   });
   $(document).on("change", ".favoriteSize", function() {
     var sizeSelected = $(this).val();
-    Actions.setSize(sizeSelected, NTInstance);
+    ActionsManager.setSize(sizeSelected, NTInstance);
   });
   $(document).on("change", ".themeBGImageRepeat", function() {
     var bgStyleSelected = $(this).val();
-    Actions.setBGStyle(bgStyleSelected, NTInstance);
+    ActionsManager.setBGStyle(bgStyleSelected, NTInstance);
   });
   /*
     Handlers for edit mode options on each of the favorites
@@ -287,7 +289,7 @@ $(document).ready(function() {
     e.preventDefault();
     var favorite = $(this).parent();
     var linkToDelete = favorite.attr("href");
-    Favorites.deleteFavorite(linkToDelete, NTInstance);
+    FavoritesManager.deleteFavorite(linkToDelete, NTInstance);
     $(this).parent().remove();
   });
   // $(document).on("click", ".optEdit", function(e) {

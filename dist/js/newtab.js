@@ -13,6 +13,8 @@
     s(r[o]);
   }return s;
 })({ 1: [function (require, module, exports) {
+    // const $ = require("jquery");
+
     // Prompt user for image to use for bookmark
     // and also the url.  Append to favorites
     var triggerModal = function triggerModal(modal) {
@@ -36,9 +38,11 @@
     };
 
     var processEditedList = function processEditedList(NTInstance) {
-      var reorderedList = $("#favorites").children();
+      var reorderedList = [].slice.call($("#favorites").children(), 0);
+
       var processedList = [];
       for (var i = 0; i < reorderedList.length; i++) {
+        // console.log(reorderedList[i].childNodes[0].dataset.title);
         var newEntry = {
           "title": reorderedList[i].childNodes[0].dataset.title,
           "url": reorderedList[i].childNodes[0].href,
@@ -256,12 +260,11 @@
 
       // Start counting days of the month
       var count = 1;
-      console.log(c);
+
       for (; c < 7; c++) {
         var td = document.createElement("td");
 
         td.innerHTML = "<span>" + count + "</span>";
-        console.log(count, today);
         if (count === today) {
           td.classList.add("currentDay");
         }
@@ -302,6 +305,7 @@
     };
   }, {}], 3: [function (require, module, exports) {
     var Util = require("./util.js");
+    // const $ = require("jquery");
     // let NTInstance;
     // let init = function(NT) {
     //   NTInstance = NT;
@@ -396,7 +400,8 @@
 
     var createDefaultFavs = function createDefaultFavs(favorites, NTInstance) {
       var list = favorites.default_favorites;
-      // console.log(list);
+      var savedFavorites = NTInstance.getSetting("savedFavorites", null);
+      console.log(savedFavorites);
       for (var i = 0; i < list.length; i++) {
         var entry = {
           "title": list[i].title,
@@ -404,7 +409,7 @@
           "bgImg": list[i].bgImg
         };
         // console.log(entry);
-        saveFavorite(entry, NTInstance);
+        if (savedFavorites.indexOf(entry) > -1) saveFavorite(entry, NTInstance);
       }
     };
 
@@ -444,7 +449,9 @@
       createPopularFavs: createPopularFavs
     };
   }, { "./util.js": 5 }], 4: [function (require, module, exports) {
-    // import $ from "jquery";
+
+    // const $ = require("jquery");
+
     var background = chrome.extension.getBackgroundPage();
     var NTInstance = background.NTInstance;
     NTInstance.editing = false;
@@ -462,17 +469,17 @@
 
     console.log(NTInstance.getSetting("savedFavorites"));
 
-    var Actions = require("./actions.js");
+    var ActionsManager = require("./actions.js");
     var Calendar = require("./createCalendar.js");
-    var Favorites = require("./favorites.js");
+    var FavoritesManager = require("./favorites.js");
     var Util = require("./util.js");
 
     $(document).ready(function () {
 
-      Actions.loadUserSettings(NTInstance);
-      Favorites.loadSavedFavorites(NTInstance);
-      Favorites.loadPopularFavorites(NTInstance);
-      Actions.setUserSettings(NTInstance.currentSettings);
+      ActionsManager.loadUserSettings(NTInstance);
+      FavoritesManager.loadSavedFavorites(NTInstance);
+      FavoritesManager.loadPopularFavorites(NTInstance);
+      ActionsManager.setUserSettings(NTInstance.currentSettings);
       var calendar = Calendar.theCalendar;
       // console.log(Calendar);
       $(".calendar-head").html("<span>" + Calendar.month_name[Calendar.month] + " " + Calendar.year + "</span");
@@ -482,9 +489,9 @@
 
       chrome.runtime.sendMessage({ task: "checkFirstRun" }, function (res) {
         if (res.firstRun) {
-          // Actions.showInitialLoad();
-          Favorites.loadDefaultFavorites(NTInstance);
-          Actions.triggerModal($(".onboardingModal"));
+          // ActionsManager.showInitialLoad();
+          FavoritesManager.loadDefaultFavorites(NTInstance);
+          ActionsManager.triggerModal($(".onboardingModal"));
           $("#obInputTitle").focus();
         }
 
@@ -515,7 +522,7 @@
               $(".addExtra").hide();
             }
             var modalToOpen = $(".addModal");
-            Actions.triggerModal(modalToOpen);
+            ActionsManager.triggerModal(modalToOpen);
             $("#inputTitle").focus();
             break;
 
@@ -524,30 +531,30 @@
             NTInstance.editing = !NTInstance.editing;
             $(".favorite").toggleClass("editing");
             $(".favorite").children().toggle();
-            if (NTInstance.editing) {
-              Actions.triggerEditMode();
+            if (!NTInstance.editing) {
+              ActionsManager.triggerEditMode();
             } else {
-              Actions.processEditedList(NTInstance);
+              ActionsManager.processEditedList(NTInstance);
             }
             break;
 
           case 'openSettings':
             e.preventDefault();
             var settingsModal = $(".settingsModal");
-            Actions.triggerModal(settingsModal);
+            ActionsManager.triggerModal(settingsModal);
 
             break;
 
           case 'openOnboarding':
             e.preventDefault();
             var onBoardingModal = $(".onboardingModal");
-            Actions.triggerModal(onBoardingModal);
+            ActionsManager.triggerModal(onBoardingModal);
             break;
 
           case 'openCalendar':
             e.preventDefault();
             var calendarModal = $(".calendarModal");
-            Actions.triggerModal(calendarModal);
+            ActionsManager.triggerModal(calendarModal);
             break;
         }
       });
@@ -567,7 +574,7 @@
           "url": urltoAdd,
           "bgImg": imgtoAdd
         };
-        Favorites.saveFavorite(newEntry, NTInstance);
+        FavoritesManager.saveFavorite(newEntry, NTInstance);
         $(this).remove();
         var allPopFavs = $(".popularFavs").children();
         var popArr = [].slice.call(allPopFavs, 0);
@@ -587,7 +594,7 @@
       $(document).on("click", ".closeBtn", function (e) {
         e.preventDefault();
         var modalToClose = $(this).closest(".modal");
-        Actions.closeModal(modalToClose);
+        ActionsManager.closeModal(modalToClose);
       });
 
       /*
@@ -618,10 +625,10 @@
             "url": urlVal,
             "bgImg": imageVal
           };
-          Favorites.saveFavorite(newEntry, NTInstance);
+          FavoritesManager.saveFavorite(newEntry, NTInstance);
 
           if ($(".modal").length !== null) {
-            Actions.closeModal($(".modal"));
+            ActionsManager.closeModal($(".modal"));
           }
           $(".addFormError").hide();
         } else {
@@ -702,19 +709,19 @@
 
       $(document).on("change", ".hoverOption", function () {
         var hoverSelected = $(this).val();
-        Actions.setHover(hoverSelected, NTInstance);
+        ActionsManager.setHover(hoverSelected, NTInstance);
       });
       $(document).on("change", ".fontOption", function () {
         var fontSelected = $(this).val();
-        Actions.setFont(fontSelected, NTInstance);
+        ActionsManager.setFont(fontSelected, NTInstance);
       });
       $(document).on("change", ".favoriteSize", function () {
         var sizeSelected = $(this).val();
-        Actions.setSize(sizeSelected, NTInstance);
+        ActionsManager.setSize(sizeSelected, NTInstance);
       });
       $(document).on("change", ".themeBGImageRepeat", function () {
         var bgStyleSelected = $(this).val();
-        Actions.setBGStyle(bgStyleSelected, NTInstance);
+        ActionsManager.setBGStyle(bgStyleSelected, NTInstance);
       });
       /*
         Handlers for edit mode options on each of the favorites
@@ -723,7 +730,7 @@
         e.preventDefault();
         var favorite = $(this).parent();
         var linkToDelete = favorite.attr("href");
-        Favorites.deleteFavorite(linkToDelete, NTInstance);
+        FavoritesManager.deleteFavorite(linkToDelete, NTInstance);
         $(this).parent().remove();
       });
       // $(document).on("click", ".optEdit", function(e) {
@@ -742,36 +749,178 @@
       });
     });
   }, { "./actions.js": 1, "./createCalendar.js": 2, "./favorites.js": 3, "./util.js": 5 }], 5: [function (require, module, exports) {
-    var getPromise = function getPromise(url) {
-      return $.ajax({
-        url: url,
-        method: "GET"
-      });
+    // const $ = require("jquery");
+    module.exports = {
+      getCookie: getCookie,
+      compareLists: compareLists,
+      getPromise: getPromise,
+      getCurrentTime: getCurrentTime,
+      getParameterByName: getParameterByName,
+      getBrowser: getBrowser,
+      getBrowserSetting: getBrowserSetting,
+      setBrowserSetting: setBrowserSetting,
+      jsonp: jsonp,
+      validateURL: validateURL,
+      addHttp: addHttp
     };
 
-    var validateURL = function validateURL(url) {
+    // Check if two lists are equal
+    function compareLists(list1, list2) {
+      // If they aren't the same length
+      if (list1.length !== list2.length) return false;
+      for (var i = 0; i < list1.length; i++) {
+        if (list2.indexOf(list1[i]) === -1) return false;
+      }
+      return true;
+    }
+    // Returns a promise object
+    function getPromise(data) {
+      return $.ajax(data);
+    }
+
+    // Returns the current time as a string like "5:30 pm"
+    function getCurrentTime() {
+      var currentTime = new Date().toLocaleTimeString(navigator.language, { hour: '2-digit', minute: '2-digit' });
+      return currentTime.toLowerCase();
+    }
+
+    // Uses chrome api to retrieve cookie name and value
+    function getCookie() {
+      var cookieInfo = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { domain: "", name: "" };
+
+
+      if (cookieInfo.domain === "" && cookieInfo.name === "") return;
+
+      var p = new Promise(function (resolve, reject) {
+        // Gets Cookies
+        if (getBrowser() === "chrome") {
+          chrome.cookies.getAll(cookieInfo, function (res) {
+            // If cookie exists pass value into exists callback
+            if (res.length > 0 && typeof res[0].value !== 'undefined') {
+              var catFromCookie = JSON.stringify([res[0].value]);
+              resolve(catFromCookie);
+              // if(typeof exists === "function") exists(catFromCookie);
+            }
+            // If it doesn't call absent() callback
+            else {
+                resolve("");
+                // if(typeof absent === "function") absent();
+              }
+          });
+        }
+        // Requires to be on same domain
+        else {
+            var name = cookieInfo.name + "=";
+            var ca = document.cookie.split(';');
+            var val;
+            for (var i = 0; i < ca.length; i++) {
+              var c = ca[i];
+              while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+              }
+              if (c.indexOf(name) == 0) {
+                val = c.substring(name.length, c.length);
+                resolve(val);
+              }
+            }
+            val = "";
+            resolve(val);
+          }
+      });
+
+      return p;
+    }
+
+    function getParameterByName(name) {
+      var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
+      if (match !== null) {
+        if (typeof match[1] !== "undefined") return decodeURIComponent(match[1].replace(/\+/g, ' '));
+      }
+    }
+
+    function getBrowser() {
+      var ua = window.navigator.userAgent || "";
+      if (ua.indexOf("Chrome") > -1) {
+        if (ua.indexOf("Edge") == -1) {
+          return "chrome";
+        } else {
+          return "other";
+        }
+      } else if (ua.indexOf("Firefox") > -1) {
+        return "firefox";
+      } else if (ua.indexOf("MSIE 8.0") > -1) {
+
+        return "ie8";
+      } else {
+
+        // Any other browser logic
+        return "other";
+      }
+    }
+
+    function setBrowserSetting(name, value) {
+      var browser = getBrowser();
+      var background, NTInstance;
+      if (browser === "chrome" && typeof chrome.extension.getBackgroundPage() !== "undefined") {
+        // console.log("ayy", chrome.extension.getBackgroundPage());
+        background = chrome.extension.getBackgroundPage();
+        if (typeof background.NTInstance !== "undefined") {
+          NTInstance = background.NTInstance;
+          NTInstance.setSetting(name, value);
+          // console.log(name, value);
+        }
+      } else {
+        localStorage.setItem(name, value);
+      }
+    }
+    function getBrowserSetting(name, defValue) {
+      var background, NTInstance;
+      var browser = getBrowser();
+      var settingVal;
+      if (browser === "chrome" && typeof chrome.extension.getBackgroundPage() !== "undefined") {
+        background = chrome.extension.getBackgroundPage();
+
+        if (typeof background.NTInstance !== "undefined") {
+          NTInstance = background.NTInstance;
+          settingVal = NTInstance.getSetting(name, defValue);
+        }
+      } else {
+        settingVal = localStorage.getItem(name);
+        if (settingVal === null) settingVal = defValue;
+      }
+      // console.log(name, defValue, settingVal);
+      return settingVal;
+    }
+
+    function jsonp(url, callback) {
+      var callbackName = 'jsonp_callback_' + Math.round(100000 * Math.random());
+      window[callbackName] = function (data) {
+        delete window[callbackName];
+        document.head.removeChild(script);
+        callback(data);
+      };
+
+      var script = document.createElement('script');
+      script.src = url + (url.indexOf('?') >= 0 ? '&' : '?') + 'callback=' + callbackName;
+      document.head.appendChild(script);
+    }
+
+    function validateURL(url) {
       // var regex = "";
       // console.log(typeof regex, url.match(regex));
       if (url.match(/(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \&\.\-]*)*\/?/) === null) {
         return false;
       } else return true;
-    };
+    }
 
-    var addHttp = function addHttp(url) {
+    function addHttp(url) {
       var newUrl;
       if (url.match(/^(https?:\/\/)/) === null) {
         var addHttp = "http://";
         newUrl = addHttp.concat(url);
         return newUrl;
       }
-
       return url;
-    };
-
-    module.exports = {
-      getPromise: getPromise,
-      validateURL: validateURL,
-      addHttp: addHttp
     };
   }, {}] }, {}, [4]);
 //# sourceMappingURL=newtab.js.map

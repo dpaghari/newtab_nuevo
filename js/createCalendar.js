@@ -58,12 +58,11 @@ for(c = 0;c < 7; c++) {
 
 // Start counting days of the month
 var count = 1;
-console.log(c);
+
 for(; c < 7; c++) {
   var td = document.createElement("td");
 
   td.innerHTML = "<span>" + count + "</span>";
-  console.log(count, today);
   if(count === today){
     td.classList.add("currentDay");
   }

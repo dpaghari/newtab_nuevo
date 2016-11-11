@@ -1,4 +1,5 @@
 const Util = require("./util.js");
+// const $ = require("jquery");
 // let NTInstance;
 // let init = function(NT) {
 //   NTInstance = NT;
@@ -96,7 +97,8 @@ let loadDefaultFavorites = function (NTInstance) {
 
 let createDefaultFavs = function (favorites, NTInstance) {
     var list = favorites.default_favorites;
-    // console.log(list);
+    let savedFavorites = NTInstance.getSetting("savedFavorites", null);
+    console.log(savedFavorites);
     for(var i = 0; i < list.length; i++){
       var entry = {
         "title" : list[i].title,
@@ -104,6 +106,7 @@ let createDefaultFavs = function (favorites, NTInstance) {
         "bgImg" : list[i].bgImg,
       };
       // console.log(entry);
+      if(savedFavorites.indexOf(entry) > -1)
       saveFavorite(entry, NTInstance);
     }
 };

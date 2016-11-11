@@ -22,7 +22,7 @@ var b = watchify(browserify({
 }));
 
 b.on("update", bundle);
-// b.on("log", gutil.log);
+b.on("log", gutil.log);  
 
 gulp.task("watchify", bundle);
 gulp.task('scripts', function () {

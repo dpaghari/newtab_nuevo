@@ -1,3 +1,5 @@
+// const $ = require("jquery");
+
 // Prompt user for image to use for bookmark
 // and also the url.  Append to favorites
 let triggerModal = function(modal) {
@@ -22,9 +24,12 @@ let triggerEditMode = function () {
 };
 
 let processEditedList = function (NTInstance) {
-    var reorderedList = $("#favorites").children();
+    var reorderedList = [].slice.call($("#favorites").children(), 0);
+
+
     var processedList = [];
     for (var i = 0; i < reorderedList.length; i++) {
+      // console.log(reorderedList[i].childNodes[0].dataset.title);
       var newEntry = {
         "title": reorderedList[i].childNodes[0].dataset.title,
         "url": reorderedList[i].childNodes[0].href,
