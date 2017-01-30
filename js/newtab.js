@@ -16,12 +16,11 @@ chrome.storage.local.get(function(res){
   console.log(res);
 });
 
-console.log(NTInstance.getSetting("savedFavorites"));
-
 const ActionsManager = require("./actions.js");
 const Calendar = require("./createCalendar.js");
 const FavoritesManager = require("./favorites.js");
 const Util = require("./util.js");
+const Todos = require("./todos.js");
 
 
 $(document).ready(function() {
@@ -44,6 +43,13 @@ $(document).ready(function() {
       ActionsManager.triggerModal($(".onboardingModal"));
       $("#obInputTitle").focus();
     }
+    else {
+      let $todoList = $(".todos");
+      var savedTodos = Todos.getSavedTodos();
+      savedTodos.forEach((el, idx) => {
+        Todos.addNewTodoToDOM(el, $todoList);
+      });
+    }
 
     // Hide edit icons
     $(".favorite").children().hide();
@@ -65,7 +71,7 @@ $(document).ready(function() {
   $(document).on("click", ".userAction", function(e) {
      e.preventDefault();
      var clickElement = $(this).attr('id');
-     //console.log(clickElement);
+
      switch(clickElement) {
         case "addFavorite":
           if($(".addModal .popularFavs").children().length === 0 || $(".onboardingModal .popularFavs").children().length === 0){
@@ -78,10 +84,10 @@ $(document).ready(function() {
 
         case 'editMode':
           e.preventDefault();
-          NTInstance.editing = !NTInstance.editing;
           $(".favorite").toggleClass("editing");
           $(".favorite").children().toggle();
           if(!NTInstance.editing){
+            NTInstance.editing = !NTInstance.editing;
             ActionsManager.triggerEditMode();
           }
           else{
@@ -133,9 +139,7 @@ $(document).ready(function() {
       return $(el).data("url") === urltoAdd;
     });
     $(match).hide();
-    console.log($(".addModal .popularFavs").children().length, $(".onboardingModal .popularFavs").children().length);
     if($(".addModal .popularFavs").children().length === 0 || $(".onboardingModal .popularFavs").children().length === 0) {
-      // console.log(one);
       $(".addExtra, .popularFavs").hide();
     }
   });
@@ -307,4 +311,28 @@ $(document).ready(function() {
     if($(this).hasClass("editing"))
       e.preventDefault();
   });
+
+  $(".todoForm").on("submit", (e) => {
+    e.preventDefault();
+    let $todoList = $(".todos");
+    let $newTodo = $(".newTodo").val();
+    Todos.addNewTodoToDOM( {"item" : $newTodo, "isDone" : false }, $todoList);
+    Todos.saveTodo($newTodo);
+    $(".newTodo").val("");
+  });
+  $(document).on("click", ".addTodo", () => {
+    $(".todoForm").submit();
+  });
+  $(document).on("click", ".todoItem", function () {
+    $(this).toggleClass("complete");
+    var childCheckbox = $(this).find("input[type='checkbox']");
+    if($(this).hasClass("complete"))
+    childCheckbox.prop("checked", true);
+    else
+    childCheckbox.prop("checked", false);
+
+
+    Todos.saveTodoList();
+  });
+
 });

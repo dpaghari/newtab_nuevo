@@ -106,7 +106,6 @@ let createDefaultFavs = function (favorites, NTInstance) {
         "bgImg" : list[i].bgImg,
       };
       // console.log(entry);
-      if(savedFavorites.indexOf(entry) > -1)
       saveFavorite(entry, NTInstance);
     }
 };
@@ -135,7 +134,6 @@ let createPopularFavs = function (favorites, NTInstance) {
 };
 
 module.exports = {
-
   addFavorite,
   saveFavorite,
   getPopularFavorites,

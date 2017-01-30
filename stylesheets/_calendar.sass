@@ -9,3 +9,46 @@
       width: 50px
       padding: 10px
       border: 1px solid black
+
+.todoList
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+  .todoList-head
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    margin: 10px 0
+    .todoForm
+      display: flex
+      justify-content: space-between
+      align-items: center
+      .newTodo
+        align-self: center
+        margin: 0
+      .addTodo
+        display: block
+        padding: 10px 20px
+        text-decoration: none
+        margin-left: 5px
+        color: white
+        background: $addButton
+        text-align: center
+        border-radius: 5px
+
+  .todoList-body
+    display: flex
+    flex-direction: column
+    width: 100%
+    .todos
+      overflow-y: auto
+      width: 100%
+      .todoItem
+        box-sizing: border-box
+        border-bottom: 1px solid #eee
+        padding: 5px
+        margin: 5px
+        &.complete
+          text-decoration: line-through

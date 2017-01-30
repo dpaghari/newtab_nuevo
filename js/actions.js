@@ -194,6 +194,7 @@ let setBGStyle = function(styleVal, NTInstance) {
   }
   // let cardSizeStr = sizeVal + "px " + (parseInt(sizeVal) + 40) + "px";
 };
+
 module.exports = {
   triggerModal,
   closeModal,

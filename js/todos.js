@@ -1,0 +1,45 @@
+const Util = require("./util.js");
+
+function addNewTodoToDOM(todo, location) {
+  let { item, isDone } = todo;
+  let isChecked = isDone ? "checked" : "";
+  let complete = isDone ? "complete" : "";
+  let todoHTML = `<li class="todoItem ${complete}"><input type="checkbox" ${isChecked}/><span>${item}</span></li>`;
+  $(location).append(todoHTML);
+}
+
+function saveTodo(todo) {
+  var newTodoItem = {
+    item: todo,
+    isDone: false
+  };
+  var existingTodos = Util.getBrowserSetting("todos", []);
+  existingTodos.push(newTodoItem);
+  Util.setBrowserSetting("todos", existingTodos);
+}
+
+function getSavedTodos() {
+  var savedTodos = Util.getBrowserSetting("todos", []);
+  return savedTodos;
+}
+
+function saveTodoList() {
+  let currentTodos = [].slice.call($("li.todoItem"));
+  let updatedTodos = [];
+  currentTodos.forEach(function(el) {
+    let todoEntry = {
+      "item" : $(el).find("span").text(),
+      "isDone" : $(el).find("input").prop("checked")
+    };
+    updatedTodos.push(todoEntry);
+  });
+  console.log(updatedTodos);
+  Util.setBrowserSetting("todos", updatedTodos);
+}
+
+module.exports = {
+  addNewTodoToDOM,
+  saveTodo,
+  getSavedTodos,
+  saveTodoList
+};

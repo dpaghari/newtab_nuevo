@@ -199,6 +199,7 @@
       }
       // let cardSizeStr = sizeVal + "px " + (parseInt(sizeVal) + 40) + "px";
     };
+
     module.exports = {
       triggerModal: triggerModal,
       closeModal: closeModal,
@@ -409,7 +410,7 @@
           "bgImg": list[i].bgImg
         };
         // console.log(entry);
-        if (savedFavorites.indexOf(entry) > -1) saveFavorite(entry, NTInstance);
+        saveFavorite(entry, NTInstance);
       }
     };
 
@@ -437,7 +438,6 @@
     };
 
     module.exports = {
-
       addFavorite: addFavorite,
       saveFavorite: saveFavorite,
       getPopularFavorites: getPopularFavorites,
@@ -448,7 +448,7 @@
       createDefaultFavs: createDefaultFavs,
       createPopularFavs: createPopularFavs
     };
-  }, { "./util.js": 5 }], 4: [function (require, module, exports) {
+  }, { "./util.js": 6 }], 4: [function (require, module, exports) {
 
     // const $ = require("jquery");
 
@@ -467,12 +467,11 @@
       console.log(res);
     });
 
-    console.log(NTInstance.getSetting("savedFavorites"));
-
     var ActionsManager = require("./actions.js");
     var Calendar = require("./createCalendar.js");
     var FavoritesManager = require("./favorites.js");
     var Util = require("./util.js");
+    var Todos = require("./todos.js");
 
     $(document).ready(function () {
 
@@ -493,6 +492,17 @@
           FavoritesManager.loadDefaultFavorites(NTInstance);
           ActionsManager.triggerModal($(".onboardingModal"));
           $("#obInputTitle").focus();
+        } else {
+          var savedTodos;
+
+          (function () {
+            var $todoList = $(".todos");
+            savedTodos = Todos.getSavedTodos();
+
+            savedTodos.forEach(function (el, idx) {
+              Todos.addNewTodoToDOM(el, $todoList);
+            });
+          })();
         }
 
         // Hide edit icons
@@ -515,7 +525,7 @@
       $(document).on("click", ".userAction", function (e) {
         e.preventDefault();
         var clickElement = $(this).attr('id');
-        //console.log(clickElement);
+
         switch (clickElement) {
           case "addFavorite":
             if ($(".addModal .popularFavs").children().length === 0 || $(".onboardingModal .popularFavs").children().length === 0) {
@@ -528,10 +538,10 @@
 
           case 'editMode':
             e.preventDefault();
-            NTInstance.editing = !NTInstance.editing;
             $(".favorite").toggleClass("editing");
             $(".favorite").children().toggle();
             if (!NTInstance.editing) {
+              NTInstance.editing = !NTInstance.editing;
               ActionsManager.triggerEditMode();
             } else {
               ActionsManager.processEditedList(NTInstance);
@@ -582,9 +592,7 @@
           return $(el).data("url") === urltoAdd;
         });
         $(match).hide();
-        console.log($(".addModal .popularFavs").children().length, $(".onboardingModal .popularFavs").children().length);
         if ($(".addModal .popularFavs").children().length === 0 || $(".onboardingModal .popularFavs").children().length === 0) {
-          // console.log(one);
           $(".addExtra, .popularFavs").hide();
         }
       });
@@ -747,8 +755,75 @@
       $(document).on("click", ".favorite", function (e) {
         if ($(this).hasClass("editing")) e.preventDefault();
       });
+
+      $(".todoForm").on("submit", function (e) {
+        e.preventDefault();
+        var $todoList = $(".todos");
+        var $newTodo = $(".newTodo").val();
+        Todos.addNewTodoToDOM({ "item": $newTodo, "isDone": false }, $todoList);
+        Todos.saveTodo($newTodo);
+        $(".newTodo").val("");
+      });
+      $(document).on("click", ".addTodo", function () {
+        $(".todoForm").submit();
+      });
+      $(document).on("click", ".todoItem", function () {
+        $(this).toggleClass("complete");
+        var childCheckbox = $(this).find("input[type='checkbox']");
+        if ($(this).hasClass("complete")) childCheckbox.prop("checked", true);else childCheckbox.prop("checked", false);
+
+        Todos.saveTodoList();
+      });
     });
-  }, { "./actions.js": 1, "./createCalendar.js": 2, "./favorites.js": 3, "./util.js": 5 }], 5: [function (require, module, exports) {
+  }, { "./actions.js": 1, "./createCalendar.js": 2, "./favorites.js": 3, "./todos.js": 5, "./util.js": 6 }], 5: [function (require, module, exports) {
+    var Util = require("./util.js");
+
+    function addNewTodoToDOM(todo, location) {
+      var item = todo.item,
+          isDone = todo.isDone;
+
+      var isChecked = isDone ? "checked" : "";
+      var complete = isDone ? "complete" : "";
+      var todoHTML = "<li class=\"todoItem " + complete + "\"><input type=\"checkbox\" " + isChecked + "/><span>" + item + "</span></li>";
+      $(location).append(todoHTML);
+    }
+
+    function saveTodo(todo) {
+      var newTodoItem = {
+        item: todo,
+        isDone: false
+      };
+      var existingTodos = Util.getBrowserSetting("todos", []);
+      existingTodos.push(newTodoItem);
+      Util.setBrowserSetting("todos", existingTodos);
+    }
+
+    function getSavedTodos() {
+      var savedTodos = Util.getBrowserSetting("todos", []);
+      return savedTodos;
+    }
+
+    function saveTodoList() {
+      var currentTodos = [].slice.call($("li.todoItem"));
+      var updatedTodos = [];
+      currentTodos.forEach(function (el) {
+        var todoEntry = {
+          "item": $(el).find("span").text(),
+          "isDone": $(el).find("input").prop("checked")
+        };
+        updatedTodos.push(todoEntry);
+      });
+      console.log(updatedTodos);
+      Util.setBrowserSetting("todos", updatedTodos);
+    }
+
+    module.exports = {
+      addNewTodoToDOM: addNewTodoToDOM,
+      saveTodo: saveTodo,
+      getSavedTodos: getSavedTodos,
+      saveTodoList: saveTodoList
+    };
+  }, { "./util.js": 6 }], 6: [function (require, module, exports) {
     // const $ = require("jquery");
     module.exports = {
       getCookie: getCookie,

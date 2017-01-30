@@ -22,7 +22,7 @@ var b = watchify(browserify({
 }));
 
 b.on("update", bundle);
-b.on("log", gutil.log);  
+b.on("log", gutil.log);
 
 gulp.task("watchify", bundle);
 gulp.task('scripts', function () {
@@ -48,7 +48,7 @@ gulp.task('scripts:watch', function() {
 });
 
 gulp.task('styles', function () {
-  gulp.src('stylesheets/*.scss')
+  gulp.src('stylesheets/*.sass')
     .pipe(sass().on('error', sass.logError))
     // .pipe(uncss({ html : ["crx_wallpapersfmv1.0/newtab/blank.html"]}))
     .pipe(cssnano())
@@ -58,7 +58,7 @@ gulp.task('styles', function () {
 
 gulp.task('sass:watch', function () {
   // livereload.listen();
-  gulp.watch('stylesheets/*.scss', ['styles']);
+  gulp.watch('stylesheets/*.sass', ['styles']);
 });
 
 gulp.task('imagemin', function () {
