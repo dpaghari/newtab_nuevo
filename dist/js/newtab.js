@@ -17,44 +17,27 @@
 
     // Prompt user for image to use for bookmark
     // and also the url.  Append to favorites
-    var triggerModal = function triggerModal(modal) {
+    function triggerModal(modal) {
       $('.lightbox').fadeIn();
       // modal.fadeIn();
       modal.animate({
         "right": "0px"
       }, 400, "swing");
-    };
+    }
 
-    var closeModal = function closeModal(modal) {
+    function closeModal(modal) {
       $('.lightbox').fadeOut();
       // modal.fadeOut();
       modal.animate({
         "right": "-400px"
       }, 300, "swing");
-    };
+    }
 
-    var triggerEditMode = function triggerEditMode() {
+    function triggerEditMode() {
       $("#favorites").sortable("enable");
-    };
+    }
 
-    var processEditedList = function processEditedList(NTInstance) {
-      var reorderedList = [].slice.call($("#favorites").children(), 0);
-
-      var processedList = [];
-      for (var i = 0; i < reorderedList.length; i++) {
-        // console.log(reorderedList[i].childNodes[0].dataset.title);
-        var newEntry = {
-          "title": reorderedList[i].childNodes[0].dataset.title,
-          "url": reorderedList[i].childNodes[0].href,
-          "bgImg": reorderedList[i].childNodes[0].dataset.bgImg
-        };
-        processedList.push(newEntry);
-      }
-      NTInstance.setSetting("savedFavorites", processedList);
-      $("#favorites").sortable("disable");
-    };
-
-    var loadUserSettings = function loadUserSettings(NTInstance) {
+    function loadUserSettings(NTInstance) {
       var userTheme = NTInstance.getSetting("userTheme", "light");
       var userFont = NTInstance.getSetting("userFont", "Work Sans");
       var userHover = NTInstance.getSetting("userHover", "hoverPop");
@@ -70,8 +53,8 @@
         "bgStyle": userBGStyle
       };
       // console.log(NTInstance.currentSettings);
-    };
-    var setUserSettings = function setUserSettings(settings) {
+    }
+    function setUserSettings(settings) {
       var cardSizeStr = settings.faveSize + "px " + (parseInt(settings.faveSize) + 40) + "px";
 
       // Set Theme Styles
@@ -127,42 +110,15 @@
       $(".favoriteSize").val(settings.faveSize);
       $("select.fontOption").val(settings.font);
       $("select.hoverOption").val(settings.hover);
-    };
+    }
 
-    // TO-DO: Could probably be implemented better
-    var showInitialLoad = function showInitialLoad() {
-      var $onboarding = $(".onboardingModal");
-      var temp = $onboarding.html();
-      // $onboarding.html("<img class='onboardLoad' src='/newtab/images/cubeload.svg'/><p class='onboardGreeting'>Setting up DashTab</p>");
-      // setTimeout(function() {
-      //   $onboarding.children().fadeOut("slow");
-      // }, 3000);
-      // setTimeout(function() {
-      //   $onboarding.html("<img class='onboardLoad' src='/newtab/images/logo.jpg'/ alt='Dashtab Logo'><p class='onboardGreeting'>Welcome to DashTab!</p>");
-      // }, 3500);
-      // setTimeout(function() {
-      //   $(".onboardGreeting, .onboardLoad").fadeOut("slow");
-      //   // $onboarding.html(temp).children(".modalWrapper").hide();
-      //   // $(".modalWrapper").fadeOut("slow");
-      // }, 6000);
-      // setTimeout(function() {
-      //   // $(".onboardGreeting, .onboardLoad").fadeOut("slow");
-      //   $onboarding.html(temp).children(".modalWrapper").hide();
-      //   // $(".modalWrapper").fadeOut("slow");
-      // }, 6500);
-      // setTimeout(function() {
-      //   $(".modalWrapper").fadeIn("slow");
-      //   // $(".onboardGreeting").fadeOut("slow");
-      // }, 7000);
-    };
-
-    var setFont = function setFont(fontName, NTInstance) {
+    function setFont(fontName, NTInstance) {
       var newFontStack = fontName;
       NTInstance.setSetting("userFont", newFontStack);
       $("*").not("i").css("font-family", newFontStack);
-    };
+    }
 
-    var setHover = function setHover(hoverName, NTInstance) {
+    function setHover(hoverName, NTInstance) {
       NTInstance.setSetting("userHover", hoverName);
       switch (hoverName) {
 
@@ -179,17 +135,17 @@
           break;
       }
       //$(".favorite").addClass(hoverName).removeClass("hoverNone hoverHighlight");
-    };
+    }
 
-    var setSize = function setSize(sizeVal, NTInstance) {
+    function setSize(sizeVal, NTInstance) {
       NTInstance.setSetting("userFaveSize", sizeVal);
       var cardSizeStr = sizeVal + "px " + (parseInt(sizeVal) + 40) + "px";
       $(".favorite").css({
         "padding": cardSizeStr,
         "transition": "0.4s padding, 0.3s transform, 0.3s margin"
       });
-    };
-    var setBGStyle = function setBGStyle(styleVal, NTInstance) {
+    }
+    function setBGStyle(styleVal, NTInstance) {
       NTInstance.setSetting("userBGStyle", styleVal);
       if (styleVal === "cover") {
         $("body").css("background-size", styleVal);
@@ -198,16 +154,14 @@
         $("body").css("background-size", "auto");
       }
       // let cardSizeStr = sizeVal + "px " + (parseInt(sizeVal) + 40) + "px";
-    };
+    }
 
     module.exports = {
       triggerModal: triggerModal,
       closeModal: closeModal,
       triggerEditMode: triggerEditMode,
-      processEditedList: processEditedList,
       loadUserSettings: loadUserSettings,
       setUserSettings: setUserSettings,
-      showInitialLoad: showInitialLoad,
       setFont: setFont,
       setHover: setHover,
       setSize: setSize,
@@ -306,13 +260,14 @@
     };
   }, {}], 3: [function (require, module, exports) {
     var Util = require("./util.js");
+    var ActionsManager = require("./actions.js");
     // const $ = require("jquery");
     // let NTInstance;
     // let init = function(NT) {
     //   NTInstance = NT;
     // };
     // Add a new favorite to the favorites grid
-    var addFavorite = function addFavorite(title, url, imageUrl, NTInstance) {
+    function addFavorite(title, url, imageUrl, NTInstance) {
       var newListEntry = document.createElement("LI");
       var newFavorite = document.createElement("A");
       newFavorite.href = url;
@@ -336,11 +291,13 @@
       // newFavorite.appendChild(optEdit);
       newListEntry.appendChild(newFavorite);
       $("#favorites").append(newListEntry);
+      var savedFaveSize = NTInstance.getSetting("userFaveSize", "60");
+      ActionsManager.setSize(savedFaveSize, NTInstance);
       $(".favorite").children().hide();
-    };
+    }
 
     // Save favorite to local storage
-    var saveFavorite = function saveFavorite(entry, NTInstance) {
+    function saveFavorite(entry, NTInstance) {
       var currentSaved = [];
       var savedFavorites = NTInstance.getSetting("savedFavorites", null);
       if (savedFavorites !== null) {
@@ -351,29 +308,27 @@
       addFavorite(entry.title, entry.url, entry.bgImg, NTInstance);
       $("#inputUrl").val("");
       $("#inputImage").val("");
-    };
+    }
 
-    var getPopularFavorites = function getPopularFavorites() {
+    function getPopularFavorites() {
       return $.ajax({
         url: "./popularFavs.json",
         method: "GET"
       });
-    };
+    }
 
-    var deleteFavorite = function deleteFavorite(delUrl, NTInstance) {
+    function deleteFavorite(delUrl, NTInstance) {
       var savedFavorites = NTInstance.getSetting("savedFavorites", null);
       if (savedFavorites !== null) {
-        savedFavorites.forEach(function (item, index) {
-          if (item.url === delUrl) {
-            savedFavorites.splice(index, 1);
-          }
+        var filteredFavorites = savedFavorites.filter(function (item) {
+          if (item.url !== delUrl) return true;
         });
-        NTInstance.setSetting("savedFavorites", savedFavorites);
+        NTInstance.setSetting("savedFavorites", filteredFavorites);
       }
-    };
+    }
 
     // Load saved favorites onload
-    var loadSavedFavorites = function loadSavedFavorites(NTInstance) {
+    function loadSavedFavorites(NTInstance) {
       var savedItems = [];
       var savedFavorites = NTInstance.getSetting("savedFavorites", null);
       if (savedFavorites !== null) {
@@ -382,52 +337,48 @@
           addFavorite(item.title, item.url, item.bgImg, NTInstance);
         });
       }
-    };
+    }
 
-    var loadPopularFavorites = function loadPopularFavorites(NTInstance) {
+    function loadPopularFavorites(NTInstance) {
       var popFavs = getPopularFavorites();
       popFavs.then(function (res) {
         var response = JSON.parse(res);
         createPopularFavs(response, NTInstance);
       });
-    };
-    var loadDefaultFavorites = function loadDefaultFavorites(NTInstance) {
+    }
+    function loadDefaultFavorites(NTInstance) {
       var popFavs = Util.getPromise("/newtab/defaultFavs.json");
       popFavs.then(function (res) {
         var response = JSON.parse(res);
         createDefaultFavs(response, NTInstance);
       });
-    };
+    }
 
-    var createDefaultFavs = function createDefaultFavs(favorites, NTInstance) {
+    function createDefaultFavs(favorites, NTInstance) {
       var list = favorites.default_favorites;
-      var savedFavorites = NTInstance.getSetting("savedFavorites", null);
-      console.log(savedFavorites);
+
       for (var i = 0; i < list.length; i++) {
         var entry = {
           "title": list[i].title,
           "url": list[i].url,
           "bgImg": list[i].bgImg
         };
-        // console.log(entry);
         saveFavorite(entry, NTInstance);
       }
-    };
+    }
 
-    var createPopularFavs = function createPopularFavs(favorites, NTInstance) {
-      // console.log(NTInstance, favorites);
+    function createPopularFavs(favorites, NTInstance) {
+
       var list = favorites.popular_favorites;
       var savedFavorites = NTInstance.getSetting("savedFavorites", null);
-      // console.log("saved", savedFavorites, "list", list);
+
       var match = [];
-      //console.log(NTInstance);
+
       for (var i = 0; i < list.length; i++) {
         if (savedFavorites !== null) {
           match = savedFavorites.filter(function (el) {
-            // console.log("curr", el.url, "list", list[i].url);
             return el.url === list[i].url;
           });
-          // console.log(match);
         }
 
         if (match.length === 0) {
@@ -435,7 +386,7 @@
           $(".popularFavs").append(favHTML);
         }
       }
-    };
+    }
 
     module.exports = {
       addFavorite: addFavorite,
@@ -448,7 +399,7 @@
       createDefaultFavs: createDefaultFavs,
       createPopularFavs: createPopularFavs
     };
-  }, { "./util.js": 6 }], 4: [function (require, module, exports) {
+  }, { "./actions.js": 1, "./util.js": 6 }], 4: [function (require, module, exports) {
 
     // const $ = require("jquery");
 
@@ -460,7 +411,7 @@
       "font": "Work Sans",
       "hover": "hoverPop",
       "background": null,
-      "faveSize": "80"
+      "faveSize": "60"
     };
 
     chrome.storage.local.get(function (res) {
@@ -544,7 +495,25 @@
               NTInstance.editing = !NTInstance.editing;
               ActionsManager.triggerEditMode();
             } else {
-              ActionsManager.processEditedList(NTInstance);
+              (function () {
+                $("#favorites").sortable("disable");
+                var newFaves = [].slice.call($(".favorite"), 0);
+                var reorderedFaves = [];
+                newFaves.forEach(function (el) {
+                  var _el$dataset = el.dataset,
+                      title = _el$dataset.title,
+                      bgImg = _el$dataset.bgImg;
+
+                  var newFave = {
+                    "title": title,
+                    "url": el.href,
+                    "bgImg": bgImg
+                  };
+                  reorderedFaves.push(newFave);
+                });
+
+                NTInstance.setSetting("savedFavorites", reorderedFaves);
+              })();
             }
             break;
 
@@ -736,8 +705,9 @@
       */
       $(document).on("click", ".optDel", function (e) {
         e.preventDefault();
-        var favorite = $(this).parent();
-        var linkToDelete = favorite.attr("href");
+
+        var linkToDelete = $(this).parent().attr("href");
+        console.log(linkToDelete);
         FavoritesManager.deleteFavorite(linkToDelete, NTInstance);
         $(this).parent().remove();
       });

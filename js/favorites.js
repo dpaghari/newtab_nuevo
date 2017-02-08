@@ -1,11 +1,12 @@
 const Util = require("./util.js");
+const ActionsManager = require("./actions.js");
 // const $ = require("jquery");
 // let NTInstance;
 // let init = function(NT) {
 //   NTInstance = NT;
 // };
 // Add a new favorite to the favorites grid
-let addFavorite = function (title, url, imageUrl, NTInstance) {
+function addFavorite (title, url, imageUrl, NTInstance) {
     var newListEntry = document.createElement("LI");
     var newFavorite = document.createElement("A");
     newFavorite.href = url;
@@ -30,12 +31,14 @@ let addFavorite = function (title, url, imageUrl, NTInstance) {
     // newFavorite.appendChild(optEdit);
     newListEntry.appendChild(newFavorite);
     $("#favorites").append(newListEntry);
+    let savedFaveSize = NTInstance.getSetting("userFaveSize", "60");
+    ActionsManager.setSize(savedFaveSize, NTInstance);
     $(".favorite").children().hide();
-};
+}
 
 
   // Save favorite to local storage
-let saveFavorite = function(entry, NTInstance) {
+function saveFavorite(entry, NTInstance) {
     var currentSaved = [];
     var savedFavorites = NTInstance.getSetting("savedFavorites", null);
     if(savedFavorites !== null){
@@ -46,30 +49,27 @@ let saveFavorite = function(entry, NTInstance) {
     addFavorite(entry.title, entry.url, entry.bgImg, NTInstance);
     $("#inputUrl").val("");
     $("#inputImage").val("");
-  };
+  }
 
-let getPopularFavorites = function () {
+function getPopularFavorites () {
     return $.ajax({
       url: "./popularFavs.json",
       method: "GET"
     });
-};
+}
 
-let deleteFavorite = function (delUrl, NTInstance) {
+function deleteFavorite (delUrl, NTInstance) {
     var savedFavorites = NTInstance.getSetting("savedFavorites", null);
     if(savedFavorites !== null){
-    savedFavorites.forEach(function(item, index) {
-      if(item.url === delUrl) {
-        savedFavorites.splice(index, 1);
-      }
-
+    let filteredFavorites = savedFavorites.filter((item) => {
+      if(item.url !== delUrl) return true;
     });
-    NTInstance.setSetting("savedFavorites", savedFavorites);
+    NTInstance.setSetting("savedFavorites", filteredFavorites);
     }
-};
+}
 
   // Load saved favorites onload
-let loadSavedFavorites = function(NTInstance) {
+function loadSavedFavorites(NTInstance) {
     var savedItems = [];
       var savedFavorites = NTInstance.getSetting("savedFavorites", null);
       if(savedFavorites !== null){
@@ -78,52 +78,48 @@ let loadSavedFavorites = function(NTInstance) {
         addFavorite(item.title, item.url, item.bgImg, NTInstance);
       });
       }
-};
+}
 
-let loadPopularFavorites = function (NTInstance) {
+function loadPopularFavorites (NTInstance) {
     var popFavs = getPopularFavorites();
     popFavs.then(function(res) {
       var response = JSON.parse(res);
       createPopularFavs(response, NTInstance);
     });
-};
-let loadDefaultFavorites = function (NTInstance) {
+}
+function loadDefaultFavorites (NTInstance) {
     var popFavs = Util.getPromise("/newtab/defaultFavs.json");
     popFavs.then(function(res) {
       var response = JSON.parse(res);
       createDefaultFavs(response, NTInstance);
     });
-};
+}
 
-let createDefaultFavs = function (favorites, NTInstance) {
+function createDefaultFavs (favorites, NTInstance) {
     var list = favorites.default_favorites;
-    let savedFavorites = NTInstance.getSetting("savedFavorites", null);
-    console.log(savedFavorites);
+
     for(var i = 0; i < list.length; i++){
       var entry = {
         "title" : list[i].title,
         "url" : list[i].url,
         "bgImg" : list[i].bgImg,
       };
-      // console.log(entry);
       saveFavorite(entry, NTInstance);
     }
-};
+}
 
-let createPopularFavs = function (favorites, NTInstance) {
-    // console.log(NTInstance, favorites);
+function createPopularFavs (favorites, NTInstance) {
+
     var list = favorites.popular_favorites;
     var savedFavorites = NTInstance.getSetting("savedFavorites", null);
-    // console.log("saved", savedFavorites, "list", list);
+
     var match = [];
-    //console.log(NTInstance);
+
     for(var i = 0; i < list.length; i++){
       if(savedFavorites !== null){
-      match = savedFavorites.filter(function(el) {
-        // console.log("curr", el.url, "list", list[i].url);
-        return el.url === list[i].url;
-      });
-      // console.log(match);
+        match = savedFavorites.filter((el) => {
+          return el.url === list[i].url;
+        });
       }
 
       if(match.length === 0){
@@ -131,7 +127,7 @@ let createPopularFavs = function (favorites, NTInstance) {
         $(".popularFavs").append(favHTML);
       }
     }
-};
+}
 
 module.exports = {
   addFavorite,

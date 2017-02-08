@@ -2,46 +2,30 @@
 
 // Prompt user for image to use for bookmark
 // and also the url.  Append to favorites
-let triggerModal = function(modal) {
+function triggerModal(modal) {
     $('.lightbox').fadeIn();
     // modal.fadeIn();
     modal.animate({
       "right" : "0px"
     }, 400, "swing");
 
-};
+}
 
-let closeModal = function (modal) {
+function closeModal (modal) {
     $('.lightbox').fadeOut();
     // modal.fadeOut();
     modal.animate({
       "right" : "-400px"
     }, 300, "swing");
-};
+}
 
-let triggerEditMode = function () {
+function triggerEditMode () {
     $("#favorites").sortable("enable");
-};
-
-let processEditedList = function (NTInstance) {
-    var reorderedList = [].slice.call($("#favorites").children(), 0);
+}
 
 
-    var processedList = [];
-    for (var i = 0; i < reorderedList.length; i++) {
-      // console.log(reorderedList[i].childNodes[0].dataset.title);
-      var newEntry = {
-        "title": reorderedList[i].childNodes[0].dataset.title,
-        "url": reorderedList[i].childNodes[0].href,
-        "bgImg": reorderedList[i].childNodes[0].dataset.bgImg
-      };
-      processedList.push(newEntry);
-    }
-    NTInstance.setSetting("savedFavorites", processedList);
-    $("#favorites").sortable("disable");
-};
 
-let loadUserSettings = function(NTInstance) {
+function loadUserSettings(NTInstance) {
     var userTheme = NTInstance.getSetting("userTheme", "light");
     var userFont = NTInstance.getSetting("userFont", "Work Sans");
     var userHover = NTInstance.getSetting("userHover", "hoverPop");
@@ -57,8 +41,8 @@ let loadUserSettings = function(NTInstance) {
       "bgStyle" : userBGStyle
     };
     // console.log(NTInstance.currentSettings);
-};
-let setUserSettings = function (settings) {
+}
+function setUserSettings (settings) {
     let cardSizeStr = settings.faveSize + "px " + (parseInt(settings.faveSize) + 40) + "px";
 
     // Set Theme Styles
@@ -121,42 +105,15 @@ let setUserSettings = function (settings) {
     $("select.hoverOption").val(settings.hover);
 
 
-  };
+  }
 
-  // TO-DO: Could probably be implemented better
-let showInitialLoad = function () {
-    var $onboarding = $(".onboardingModal");
-    var temp = $onboarding.html();
-    // $onboarding.html("<img class='onboardLoad' src='/newtab/images/cubeload.svg'/><p class='onboardGreeting'>Setting up DashTab</p>");
-    // setTimeout(function() {
-    //   $onboarding.children().fadeOut("slow");
-    // }, 3000);
-    // setTimeout(function() {
-    //   $onboarding.html("<img class='onboardLoad' src='/newtab/images/logo.jpg'/ alt='Dashtab Logo'><p class='onboardGreeting'>Welcome to DashTab!</p>");
-    // }, 3500);
-    // setTimeout(function() {
-    //   $(".onboardGreeting, .onboardLoad").fadeOut("slow");
-    //   // $onboarding.html(temp).children(".modalWrapper").hide();
-    //   // $(".modalWrapper").fadeOut("slow");
-    // }, 6000);
-    // setTimeout(function() {
-    //   // $(".onboardGreeting, .onboardLoad").fadeOut("slow");
-    //   $onboarding.html(temp).children(".modalWrapper").hide();
-    //   // $(".modalWrapper").fadeOut("slow");
-    // }, 6500);
-    // setTimeout(function() {
-    //   $(".modalWrapper").fadeIn("slow");
-    //   // $(".onboardGreeting").fadeOut("slow");
-    // }, 7000);
-  };
-
-let setFont = function(fontName, NTInstance) {
+function setFont(fontName, NTInstance) {
     let newFontStack = fontName;
     NTInstance.setSetting("userFont", newFontStack);
     $("*").not("i").css("font-family", newFontStack);
-};
+}
 
-let setHover = function(hoverName, NTInstance) {
+function setHover(hoverName, NTInstance) {
   NTInstance.setSetting("userHover", hoverName);
   switch(hoverName) {
 
@@ -173,17 +130,17 @@ let setHover = function(hoverName, NTInstance) {
     break;
   }
   //$(".favorite").addClass(hoverName).removeClass("hoverNone hoverHighlight");
-};
+}
 
-let setSize = function(sizeVal, NTInstance) {
+function setSize(sizeVal, NTInstance) {
   NTInstance.setSetting("userFaveSize", sizeVal);
   let cardSizeStr = sizeVal + "px " + (parseInt(sizeVal) + 40) + "px";
   $(".favorite").css({
     "padding" : cardSizeStr,
     "transition" : "0.4s padding, 0.3s transform, 0.3s margin"
   });
-};
-let setBGStyle = function(styleVal, NTInstance) {
+}
+ function setBGStyle(styleVal, NTInstance) {
   NTInstance.setSetting("userBGStyle", styleVal);
   if(styleVal === "cover"){
     $("body").css("background-size", styleVal);
@@ -193,16 +150,14 @@ let setBGStyle = function(styleVal, NTInstance) {
     $("body").css("background-size", "auto");
   }
   // let cardSizeStr = sizeVal + "px " + (parseInt(sizeVal) + 40) + "px";
-};
+}
 
 module.exports = {
   triggerModal,
   closeModal,
   triggerEditMode,
-  processEditedList,
   loadUserSettings,
   setUserSettings,
-  showInitialLoad,
   setFont,
   setHover,
   setSize,

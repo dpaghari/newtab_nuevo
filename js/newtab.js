@@ -9,7 +9,7 @@ NTInstance.currentSettings = {
   "font" : "Work Sans",
   "hover" : "hoverPop",
   "background" : null,
-  "faveSize" : "80"
+  "faveSize" : "60"
 };
 
 chrome.storage.local.get(function(res){
@@ -91,7 +91,20 @@ $(document).ready(function() {
             ActionsManager.triggerEditMode();
           }
           else{
-            ActionsManager.processEditedList(NTInstance);
+            $("#favorites").sortable("disable");
+            let newFaves = [].slice.call($(".favorite"),0);
+            let reorderedFaves = [];
+              newFaves.forEach((el) => {
+              let { title, bgImg } = el.dataset;
+              let newFave = {
+                "title" : title,
+                "url" : el.href,
+                "bgImg" : bgImg
+              };
+              reorderedFaves.push(newFave);
+            });
+
+            NTInstance.setSetting("savedFavorites", reorderedFaves);
           }
           break;
 
@@ -291,8 +304,10 @@ $(document).ready(function() {
   */
   $(document).on("click", ".optDel", function(e) {
     e.preventDefault();
-    var favorite = $(this).parent();
-    var linkToDelete = favorite.attr("href");
+
+
+    var linkToDelete = $(this).parent().attr("href");
+    console.log(linkToDelete);
     FavoritesManager.deleteFavorite(linkToDelete, NTInstance);
     $(this).parent().remove();
   });
