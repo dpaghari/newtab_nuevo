@@ -111,12 +111,10 @@ function setBrowserSetting(name, value) {
   var browser = getBrowser();
   var background, NTInstance;
   if(browser === "chrome" && typeof chrome.extension.getBackgroundPage() !== "undefined"){
-    // console.log("ayy", chrome.extension.getBackgroundPage());
     background = chrome.extension.getBackgroundPage();
     if(typeof background.NTInstance !== "undefined"){
       NTInstance = background.NTInstance;
       NTInstance.setSetting(name, value);
-      // console.log(name, value);
     }
   }
   else {
@@ -140,7 +138,6 @@ function getBrowserSetting(name, defValue) {
     settingVal = localStorage.getItem(name);
     if(settingVal === null) settingVal = defValue;
   }
-  // console.log(name, defValue, settingVal);
   return settingVal;
 }
 
@@ -158,8 +155,6 @@ function jsonp(url, callback) {
 }
 
 function validateURL (url) {
-  // var regex = "";
-  // console.log(typeof regex, url.match(regex));
   if(url.match(/(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \&\.\-]*)*\/?/) === null){
     return false;
   }

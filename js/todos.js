@@ -33,7 +33,7 @@ function saveTodoList() {
     };
     updatedTodos.push(todoEntry);
   });
-  console.log(updatedTodos);
+  
   Util.setBrowserSetting("todos", updatedTodos);
 }
 

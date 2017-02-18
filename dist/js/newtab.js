@@ -539,7 +539,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         switch (clickElement) {
           case "addFavorite":
-            if ($(".addModal .popularFavs").children().length === 0 || $(".onboardingModal .popularFavs").children().length === 0) {
+            if ($(".addModal .popularFavs").children().length === 0) {
               $(".addExtra").hide();
             }
             var modalToOpen = $(".addModal");
@@ -673,6 +673,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             closeModal($(".modal"));
           }
           $(".addFormError").hide();
+          $(".addFavForm input").val("");
         } else {
           $(".addFormError").show();
         }
@@ -889,7 +890,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         };
         updatedTodos.push(todoEntry);
       });
-      console.log(updatedTodos);
+
       Util.setBrowserSetting("todos", updatedTodos);
     }
 
@@ -1019,12 +1020,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       var browser = getBrowser();
       var background, NTInstance;
       if (browser === "chrome" && typeof chrome.extension.getBackgroundPage() !== "undefined") {
-        // console.log("ayy", chrome.extension.getBackgroundPage());
         background = chrome.extension.getBackgroundPage();
         if (typeof background.NTInstance !== "undefined") {
           NTInstance = background.NTInstance;
           NTInstance.setSetting(name, value);
-          // console.log(name, value);
         }
       } else {
         localStorage.setItem(name, value);
@@ -1045,7 +1044,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         settingVal = localStorage.getItem(name);
         if (settingVal === null) settingVal = defValue;
       }
-      // console.log(name, defValue, settingVal);
       return settingVal;
     }
 
@@ -1063,8 +1061,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     }
 
     function validateURL(url) {
-      // var regex = "";
-      // console.log(typeof regex, url.match(regex));
       if (url.match(/(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \&\.\-]*)*\/?/) === null) {
         return false;
       } else return true;

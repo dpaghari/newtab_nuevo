@@ -74,7 +74,7 @@ $(document).ready(function() {
 
      switch(clickElement) {
         case "addFavorite":
-          if($(".addModal .popularFavs").children().length === 0 || $(".onboardingModal .popularFavs").children().length === 0){
+          if($(".addModal .popularFavs").children().length === 0){
             $(".addExtra").hide();
           }
           var modalToOpen = $(".addModal");
@@ -204,6 +204,7 @@ $(document).ready(function() {
         closeModal($(".modal"));
       }
       $(".addFormError").hide();
+      $(".addFavForm input").val("");
     }
     else {
       $(".addFormError").show();
