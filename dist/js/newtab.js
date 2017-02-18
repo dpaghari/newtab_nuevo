@@ -539,6 +539,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
         switch (clickElement) {
           case "addFavorite":
+            e.preventDefault();
             if ($(".addModal .popularFavs").children().length === 0) {
               $(".addExtra").hide();
             }
@@ -582,13 +583,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             triggerModal(settingsModal);
 
             break;
-
-          case 'openOnboarding':
-            e.preventDefault();
-            var onBoardingModal = $(".onboardingModal");
-            triggerModal(onBoardingModal);
-            break;
-
           case 'openCalendar':
             e.preventDefault();
             var calendarModal = $(".calendarModal");
@@ -835,22 +829,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     function triggerModal(modal) {
       $('.lightbox').fadeIn();
-      // modal.fadeIn();
-      modal.animate({
+
+      modal.css({
         "right": "0px"
-      }, 300);
+      });
     }
 
     function closeModal(modal) {
       $('.lightbox').fadeOut();
-      // modal.fadeOut();
-      modal.animate({
+      modal.css({
         "right": "-425px"
-      }, 300);
-    }
-
-    function triggerEditMode() {
-      $("#favorites").sortable("enable");
+      });
     }
   }, { "./FavoritesManager.js": 1, "./SettingsManager.js": 2, "./ThemeManager.js": 3, "./createCalendar.js": 4, "./todos.js": 6, "./util.js": 7 }], 6: [function (require, module, exports) {
     var Util = require("./util.js");

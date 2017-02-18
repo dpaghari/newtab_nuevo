@@ -8,14 +8,16 @@
   font-size: 1em
   font-family: $font-stack
   padding: 30px
-  position: fixed
+  position: absolute
   right: -400px
   top: 0
   bottom: 0
   width: 400px
   z-index: 100
-  display: block
+  display: flex
+  flex-direction: column
   background: white
+  transition : 0.4s all
   .closeBtn
     color: black
     position: absolute
@@ -24,11 +26,9 @@
 
 
 .addModal
-  display: flex
-  flex-direction: column
   align-items: center
-  font-family: $font-stack
-  width: 400px
+  z-index: 2
+  // font-family: $font-stack
   h3
     font-size: 16px
   .addFavForm
@@ -84,8 +84,9 @@
 
 
 .settingsModal
-  display: flex
-  flex-direction: column
+  // display: flex
+  // flex-direction: column
+  z-index: 3
   align-items: center
   font-size: 1em
   i
@@ -118,6 +119,7 @@
     color: red
 
 .calendarModal
+  z-index: 4
   display: flex
   flex-direction: column
   align-items: center

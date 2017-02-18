@@ -74,6 +74,7 @@ $(document).ready(function() {
 
      switch(clickElement) {
         case "addFavorite":
+          e.preventDefault();
           if($(".addModal .popularFavs").children().length === 0){
             $(".addExtra").hide();
           }
@@ -113,13 +114,6 @@ $(document).ready(function() {
           triggerModal(settingsModal);
 
           break;
-
-        case 'openOnboarding':
-          e.preventDefault();
-          var onBoardingModal = $(".onboardingModal");
-          triggerModal(onBoardingModal);
-          break;
-
         case 'openCalendar':
           e.preventDefault();
           var calendarModal = $(".calendarModal");
@@ -376,21 +370,16 @@ $(document).ready(function() {
 
 function triggerModal(modal) {
     $('.lightbox').fadeIn();
-    // modal.fadeIn();
-    modal.animate({
+
+    modal.css({
       "right" : "0px"
-    }, 300);
+    });
 
 }
 
 function closeModal (modal) {
     $('.lightbox').fadeOut();
-    // modal.fadeOut();
-    modal.animate({
+    modal.css({
       "right" : "-425px"
-    }, 300);
-}
-
-function triggerEditMode () {
-    $("#favorites").sortable("enable");
+    });
 }

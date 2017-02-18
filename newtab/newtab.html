@@ -30,129 +30,116 @@
           <a id="openSettings" class="userAction" href="#"><i class="fa fa-gear fa-lg fa-fw"></i></a>
         </div>
     </div>
-      <!-- <form class="search" action="" method="get">
-        <input class="searchbox" type="text" name="searchbox" value=""/>
-        <i class="fa fa-search fa-lg fa-fw"></i>
-      </form> -->
       <div class="favorites-wrapper"><ul id="favorites"></ul></div>
     </div>
   </div>
 
-  <div class="lightbox"></div>
-  <div class="addModal modal">
-    <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
-    <h3>Add a New Favorite</h3>
-    <p class="addFormError"> Please fill out the missing fields </p>
-    <form class="addFavForm">
-      <label for="faveTitle">Title</label>
-      <input type="text" name="faveTitle" id="inputTitle" placeholder="Cool Website"/><br>
-      <label for="faveUrl">Url</label>
-      <input type="text" name="faveUrl" id="inputUrl" placeholder="http://example.com"/><br>
-      <label for="faveImg">Image Url</label>
-      <input type="text" name="faveImg" id="inputImage" placeholder="http://somewebsite.com/picture.jpg"/><br>
-      <a href="#" class="addBtn">Add</a>
-    </form>
-    <div class="addExtra">
-      <p style="text-align:center">Or</p>
-      <p>Select from a list of popular favorites</p>
-    </div>
-    <div class="popularFavs"></div>
-  </div>
-  <!-- <div class="editModal modal">
-    <a href="#" class="closeEdit"><i class="fa fa-times fa-lg fa-fw"></i></a>
-    <p>Edit <span class="editedItem"></span></p>
-    <form>
-      <label for="faveUrl">Url:</label>
-      <input type="text" name="faveUrl" id="editInputUrl"/><br>
-      <label for="faveImg">Image Url:</label>
-      <input type="text" name="faveImg" id="editInputImage"/><br>
-      <a href="#" class="editBtn">Accept Changes</a>
-    </form>
-  </div> -->
-
-  <div class="settingsModal modal">
-    <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
-    <i class="fa fa-gear fa-lg fa-fw"></i>
-    <form>
-      <fieldset><label for="theme-select">Theme</label>
-        Light
-        <input type="radio" name="theme-select" value="light"/>
-        Dark
-        <input type="radio" name="theme-select" value="dark"/>
-        Fade
-        <input type="radio" name="theme-select" value="fade"/>
-      </fieldset>
-      <fieldset><label for="hoverOption">Hover Effect</label>
-        <select class="hoverOption">
-          <option>--Select--</option>
-          <option value="hoverPop">Pop</option>
-          <option value="hoverHighlight">Highlight</option>
-          <option value="hoverNone">None</option>
-        </select>
-      </fieldset>
-      <fieldset><label for="fontOption">Font</label>
-        <select class="fontOption">
-          <option>--Select--</option>
-          <option value="Montserrat">Montserrat</option>
-          <option value="Roboto Mono">Roboto Mono</option>
-          <option value="BebasNeue">Bebas Neue</option>
-          <option value="Raleway">Raleway</option>
-          <option value="Pridi">Pridi</option>
-          <option value="Work Sans">Work Sans</option>
-          <option value="Mitr">Mitr</option>
-          <option value="Museo Sans">Museo Sans</option>
-        </select>
-      </fieldset>
-      <fieldset>
-        <label for="themeBGImage">Background Image(url) </label>
-        <input type="text" name="themeBGImage" value="" placeholder="http://example.com/image.jpg"/>
-        <p class="bgURLError">Not a Valid Image Url</p>
-        <label for="themeBGImageRepeat">Background Style</label>
-        <select class="themeBGImageRepeat">
-          <option value="">--Select--</option>
-          <option value="cover">Cover</option>
-          <option value="repeat">Tile</option>
-        </select>
-        <a href="#" class="settingsBtn updateBtn">Update Background</a>
-        <a href="#" class="settingsBtn removeBtn">Remove Background</a>
-      </fieldset>
-      <fieldset>
-        <label for="favoriteSize">Card Link Size</label>
-        <input class="favoriteSize" type="range" min="30" max="120" step="10" name="favoriteSize" value="80"/>
-      </fieldset>
-    </form>
-  </div>
-
-  <div class="calendarModal modal">
-    <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
-    <!-- <h1>May 22 | Hanging out with the gang.</h1> -->
-    <div class="calendar-display">
-      <i class="fa fa-calendar fa-lg fa-fw"></i>
-      <div class="calendar-head"></div>
-      <div class="calendar"></div>
-    </div>
-  </div>
-
-  <div class="todosModal modal">
-
-    <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
-
-    <div class="todoList">
-      <i class="fa fa-check fa-lg fa-fw"></i>
-      <div class="todoList-head">
-        <h1>Reminders</h1>
-        <form action="" class="todoForm">
-          <input name="newTodo" class="newTodo" type="text"/>
-          <a href="#" class="addTodo"><i class="fa fa-plus fa-lg fa-fw"></i></a>
-        </form>
+  <div class="lightbox">
+    <div class="addModal modal">
+      <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
+      <h3>Add a New Favorite</h3>
+      <p class="addFormError"> Please fill out the missing fields </p>
+      <form class="addFavForm">
+        <label for="faveTitle">Title</label>
+        <input type="text" name="faveTitle" id="inputTitle" placeholder="Cool Website"/><br>
+        <label for="faveUrl">Url</label>
+        <input type="text" name="faveUrl" id="inputUrl" placeholder="http://example.com"/><br>
+        <label for="faveImg">Image Url</label>
+        <input type="text" name="faveImg" id="inputImage" placeholder="http://somewebsite.com/picture.jpg"/><br>
+        <a href="#" class="addBtn">Add</a>
+      </form>
+      <div class="addExtra">
+        <p style="text-align:center">Or</p>
+        <p>Select from a list of popular favorites</p>
       </div>
-      <div class="todoList-body">
-        <ul class="todos">
-        </ul>
+      <div class="popularFavs"></div>
+    </div>
+
+    <div class="settingsModal modal">
+      <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
+      <i class="fa fa-gear fa-lg fa-fw"></i>
+      <form>
+        <fieldset><label for="theme-select">Theme</label>
+          Light
+          <input type="radio" name="theme-select" value="light"/>
+          Dark
+          <input type="radio" name="theme-select" value="dark"/>
+          Fade
+          <input type="radio" name="theme-select" value="fade"/>
+        </fieldset>
+        <fieldset><label for="hoverOption">Hover Effect</label>
+          <select class="hoverOption">
+            <option>--Select--</option>
+            <option value="hoverPop">Pop</option>
+            <option value="hoverHighlight">Highlight</option>
+            <option value="hoverNone">None</option>
+          </select>
+        </fieldset>
+        <fieldset><label for="fontOption">Font</label>
+          <select class="fontOption">
+            <option>--Select--</option>
+            <option value="Montserrat">Montserrat</option>
+            <option value="Roboto Mono">Roboto Mono</option>
+            <option value="BebasNeue">Bebas Neue</option>
+            <option value="Raleway">Raleway</option>
+            <option value="Pridi">Pridi</option>
+            <option value="Work Sans">Work Sans</option>
+            <option value="Mitr">Mitr</option>
+            <option value="Museo Sans">Museo Sans</option>
+          </select>
+        </fieldset>
+        <fieldset>
+          <label for="themeBGImage">Background Image(url) </label>
+          <input type="text" name="themeBGImage" value="" placeholder="http://example.com/image.jpg"/>
+          <p class="bgURLError">Not a Valid Image Url</p>
+          <label for="themeBGImageRepeat">Background Style</label>
+          <select class="themeBGImageRepeat">
+            <option value="">--Select--</option>
+            <option value="cover">Cover</option>
+            <option value="repeat">Tile</option>
+          </select>
+          <a href="#" class="settingsBtn updateBtn">Update Background</a>
+          <a href="#" class="settingsBtn removeBtn">Remove Background</a>
+        </fieldset>
+        <fieldset>
+          <label for="favoriteSize">Card Link Size</label>
+          <input class="favoriteSize" type="range" min="30" max="120" step="10" name="favoriteSize" value="80"/>
+        </fieldset>
+      </form>
+    </div>
+
+    <div class="calendarModal modal">
+      <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
+      <!-- <h1>May 22 | Hanging out with the gang.</h1> -->
+      <div class="calendar-display">
+        <i class="fa fa-calendar fa-lg fa-fw"></i>
+        <div class="calendar-head"></div>
+        <div class="calendar"></div>
       </div>
     </div>
-    <a href="#" class="clearBtn">Clear List</a>
+
+    <div class="todosModal modal">
+
+      <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
+
+      <div class="todoList">
+        <i class="fa fa-check fa-lg fa-fw"></i>
+        <div class="todoList-head">
+          <h1>Reminders</h1>
+          <form action="" class="todoForm">
+            <input name="newTodo" class="newTodo" type="text"/>
+            <a href="#" class="addTodo"><i class="fa fa-plus fa-lg fa-fw"></i></a>
+          </form>
+        </div>
+        <div class="todoList-body">
+          <ul class="todos">
+          </ul>
+        </div>
+      </div>
+      <a href="#" class="clearBtn">Clear List</a>
+    </div>
+
   </div>
-  <script type="text/javascript" src="/dist/js/newtab.js"></script>
+    <script type="text/javascript" src="/dist/js/newtab.js"></script>
 </body>
 </html>
