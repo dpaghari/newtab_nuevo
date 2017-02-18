@@ -32,26 +32,17 @@
     text-align: center
   .addFormError
     display: none
-    color: red
+    color: rgb(195, 10, 32)
 
   input[type="text"]
     border: 1px solid black
     padding: 10px
     margin: 10px 0px
+    @include theme_input()
 
   .addBtn
-    display: block
-    padding: 10px 20px
-    background: $addButton
-    text-decoration: none
-    text-align: center
+    @include theme_button($addButton)
     color: white
-    box-shadow: 0px 2px 1px #999
-    transition: 0.2s all
-    margin-bottom: 20px
-    &:hover
-      background: $addButtonHover
-
 
   .popularFavs
     display: flex
@@ -75,9 +66,22 @@
         background: $popFavHover
         transform: scale(1.1, 1.1)
 
+    .hidePopFaves
+      display: block
+      clear: both
+      padding: 10px
+
 
 .settingsModal
+  display: flex
+  flex-direction: column
+  align-items: center
   font-size: 1em
+  i
+    font-size: 1.5em
+  h3
+    border-bottom: 1px solid #cdcdcd
+    padding: 10px
   fieldset
     margin: 30px auto
   input[type=radio]
@@ -88,23 +92,15 @@
     padding: 10px
     margin: 5px 0
   .settingsBtn
+    @include theme_button($addButton)
+    color: white
     font-size: 0.8em
     display: inline-block
-    text-align: center
-    padding: 10px 15px
-    text-decoration: none
-    background: $addButton
-    transition: 0.2s all
-    color: white
-    box-shadow: 0px 2px 1px #999
-    &:hover
-      background: $addButtonHover
-      box-shadow: none
   .removeBtn
-    background: #a73f3f
-    transition: 0.2s all
-    &:hover
-      background: darken(#a73f3f, 10%)
+    @include theme_button(#a73f3f)
+    color: white
+    font-size: 0.8em
+    display: inline-block
   .bgURLError
     display: none
     color: red
@@ -132,6 +128,8 @@
     transform: translate(-50%, -65%)
 
 .calendarModal
+  i
+    font-size: 1.5em
   overflow: auto
   .calendar-display
     width: 300px

@@ -1,33 +1,14 @@
 // const $ = require("jquery");
-
+const ThemeManager = require("./ThemeManager.js");
 // Prompt user for image to use for bookmark
 // and also the url.  Append to favorites
-function triggerModal(modal) {
-    $('.lightbox').fadeIn();
-    // modal.fadeIn();
-    modal.animate({
-      "right" : "0px"
-    }, 400, "swing");
 
-}
-
-function closeModal (modal) {
-    $('.lightbox').fadeOut();
-    // modal.fadeOut();
-    modal.animate({
-      "right" : "-400px"
-    }, 300, "swing");
-}
-
-function triggerEditMode () {
-    $("#favorites").sortable("enable");
-}
 
 
 
 function loadUserSettings(NTInstance) {
-    var userTheme = NTInstance.getSetting("userTheme", "light");
-    var userFont = NTInstance.getSetting("userFont", "Work Sans");
+    var userTheme = NTInstance.getSetting("userTheme", "fade");
+    var userFont = NTInstance.getSetting("userFont", "Montserrat");
     var userHover = NTInstance.getSetting("userHover", "hoverPop");
     var userBGImg = NTInstance.getSetting("userThemeBG", null);
     var userFaveSize = NTInstance.getSetting("userFaveSize", "80");
@@ -46,36 +27,37 @@ function setUserSettings (settings) {
     let cardSizeStr = settings.faveSize + "px " + (parseInt(settings.faveSize) + 40) + "px";
 
     // Set Theme Styles
-    if (settings.theme === 'light') {
-      $("body, .modal").css("background", "white");
-      $("*").not(".addBtn, .settingsBtn, .bgURLError, .currentDay span").css("color", "black");
-      $(".favorite").css({
-        "border" : "1.5px solid black",
-        "padding" : cardSizeStr,
-        "transition" : "0.3s transform, 0.3s margin"
-      });
-      $(".favorite i, .popFav").css("color", "white");
-    }
-    else if (settings.theme === 'dark') {
-      $("body, .modal").css("background", "#3c3c3c");
-      $("*").not(".bgURLError").css("color", "white");
-      $("input, select, option").css("color", "black");
-      $(".favorite").css({
-        "border" : "1.5px solid #d4d6e9",
-        "padding" : cardSizeStr,
-        "transition" : "0.3s transform, 0.3s margin"
-      });
-    }
-    else if (settings.theme === "fade") {
-      $(".modal, .headerPanel").css("background", "rgba(0,0,0,0.4)");
-      $("*").not(".bgURLError").css("color", "white");
-      $("input, select, option").css("color", "black");
-      $(".headerPanel").css("border", "none");
-      $(".favorite").css({
-        "padding" : cardSizeStr,
-        "transition" : "0.3s transform, 0.3s margin"
-      });
-    }
+    ThemeManager.setTheme(settings.theme);
+    // if (settings.theme === 'light') {
+    //   $("body, .modal").css("background", "white");
+    //   $("*").not(".addBtn, .settingsBtn, .bgURLError, .currentDay span, .addTodo").css("color", "black");
+    //   $(".favorite").css({
+    //     "border" : "1.5px solid black",
+    //     "padding" : cardSizeStr,
+    //     "transition" : "0.3s transform, 0.3s margin"
+    //   });
+    //   $(".favorite i, .popFav").css("color", "white");
+    // }
+    // else if (settings.theme === 'dark') {
+    //   $("body, .modal").css("background", "#3c3c3c");
+    //   $("*").not(".bgURLError").css("color", "white");
+    //   $("input, select, option").css("color", "black");
+    //   $(".favorite").css({
+    //     "border" : "1.5px solid #d4d6e9",
+    //     "padding" : cardSizeStr,
+    //     "transition" : "0.3s transform, 0.3s margin"
+    //   });
+    // }
+    // else if (settings.theme === "fade") {
+    //   $(".modal, .headerPanel").css("background", "rgba(0,0,0,0.4)");
+    //   $("*").not(".bgURLError").css("color", "white");
+    //   $("input, select, option").css("color", "black");
+    //   $(".headerPanel").css("border", "none");
+    //   $(".favorite").css({
+    //     "padding" : cardSizeStr,
+    //     "transition" : "0.3s transform, 0.3s margin"
+    //   });
+    // }
     // Set BG Image Style
     if(settings.bgStyle === "cover"){
       $("body").css("background-size", settings.bgStyle);
@@ -153,9 +135,6 @@ function setSize(sizeVal, NTInstance) {
 }
 
 module.exports = {
-  triggerModal,
-  closeModal,
-  triggerEditMode,
   loadUserSettings,
   setUserSettings,
   setFont,

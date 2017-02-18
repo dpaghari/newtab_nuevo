@@ -1,0 +1,15 @@
+@mixin theme_button($btnColor)
+  display: block
+  padding: 10px 20px
+  text-align: center
+  text-decoration: none
+  background: $btnColor
+  box-shadow: 0px 1px 1px 0px darken($btnColor, 10%)
+  transition: 0.2s all
+  &:hover
+    background: darken($btnColor, 10%)
+    box-shadow: none
+
+@mixin theme_input
+  border-width: 0
+  box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.7)

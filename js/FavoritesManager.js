@@ -1,16 +1,11 @@
 const Util = require("./util.js");
-const ActionsManager = require("./actions.js");
-// const $ = require("jquery");
-// let NTInstance;
-// let init = function(NT) {
-//   NTInstance = NT;
-// };
+const SettingsManager = require("./SettingsManager.js");
+
 // Add a new favorite to the favorites grid
 function addFavorite (title, url, imageUrl, NTInstance) {
     var newListEntry = document.createElement("LI");
     var newFavorite = document.createElement("A");
     newFavorite.href = url;
-    // console.log(imageExists(imageUrl));
     $.get(imageUrl)
       .done(function() {
         newFavorite.style.backgroundImage = "url(" + imageUrl + ")";
@@ -32,7 +27,7 @@ function addFavorite (title, url, imageUrl, NTInstance) {
     newListEntry.appendChild(newFavorite);
     $("#favorites").append(newListEntry);
     let savedFaveSize = NTInstance.getSetting("userFaveSize", "60");
-    ActionsManager.setSize(savedFaveSize, NTInstance);
+    SettingsManager.setSize(savedFaveSize, NTInstance);
     $(".favorite").children().hide();
 }
 
@@ -113,20 +108,20 @@ function createPopularFavs (favorites, NTInstance) {
     var list = favorites.popular_favorites;
     var savedFavorites = NTInstance.getSetting("savedFavorites", null);
 
-    var match = [];
-
+    var match;
     for(var i = 0; i < list.length; i++){
       if(savedFavorites !== null){
-        match = savedFavorites.filter((el) => {
+        match = savedFavorites.find((el) => {
           return el.url === list[i].url;
         });
       }
-
-      if(match.length === 0){
+      if(match === undefined){
         var favHTML = "<a href='#' class='popFav' data-title=" + list[i].title + " data-url=" + list[i].url + " data-imgurl=" + list[i].bgImg +">" + list[i].title + "</a>";
         $(".popularFavs").append(favHTML);
+
       }
     }
+    $(".popularFavs").append(`<a href="#" class="hidePopFaves">Never Show Again</a>`);
 }
 
 module.exports = {

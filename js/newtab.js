@@ -1,34 +1,32 @@
-
-// const $ = require("jquery");
-
 const background = chrome.extension.getBackgroundPage();
 const NTInstance = background.NTInstance;
 NTInstance.editing = false;
 NTInstance.currentSettings = {
   "theme" : "light",
-  "font" : "Work Sans",
+  "font" : "Montserrat",
   "hover" : "hoverPop",
   "background" : null,
   "faveSize" : "60"
 };
 
+
 chrome.storage.local.get(function(res){
   console.log(res);
 });
 
-const ActionsManager = require("./actions.js");
+const SettingsManager = require("./SettingsManager.js");
 const Calendar = require("./createCalendar.js");
-const FavoritesManager = require("./favorites.js");
+const FavoritesManager = require("./FavoritesManager.js");
 const Util = require("./util.js");
 const Todos = require("./todos.js");
+const ThemeManager = require("./ThemeManager.js");
 
 
 $(document).ready(function() {
-
-  ActionsManager.loadUserSettings(NTInstance);
+  SettingsManager.loadUserSettings(NTInstance);
   FavoritesManager.loadSavedFavorites(NTInstance);
   FavoritesManager.loadPopularFavorites(NTInstance);
-  ActionsManager.setUserSettings(NTInstance.currentSettings);
+  SettingsManager.setUserSettings(NTInstance.currentSettings);
   var calendar = Calendar.theCalendar;
   // console.log(Calendar);
   $(".calendar-head").html("<span>" + Calendar.month_name[Calendar.month] + " " + Calendar.year + "</span");
@@ -38,9 +36,9 @@ $(document).ready(function() {
 
   chrome.runtime.sendMessage({task: "checkFirstRun"}, function(res) {
     if(res.firstRun){
-      // ActionsManager.showInitialLoad();
+      // SettingsManager.showInitialLoad();
       FavoritesManager.loadDefaultFavorites(NTInstance);
-      ActionsManager.triggerModal($(".onboardingModal"));
+      triggerModal($(".onboardingModal"));
       $("#obInputTitle").focus();
     }
     else {
@@ -49,6 +47,11 @@ $(document).ready(function() {
       savedTodos.forEach((el, idx) => {
         Todos.addNewTodoToDOM(el, $todoList);
       });
+      let hidePopFaves = NTInstance.getSetting("hidePopFaves", false);
+
+      if(hidePopFaves) {
+        $(".popularFavs, .addExtra, .hidePopFaves").hide();
+      }
     }
 
     // Hide edit icons
@@ -78,7 +81,7 @@ $(document).ready(function() {
             $(".addExtra").hide();
           }
           var modalToOpen = $(".addModal");
-          ActionsManager.triggerModal(modalToOpen);
+          triggerModal(modalToOpen);
           $("#inputTitle").focus();
           break;
 
@@ -88,7 +91,7 @@ $(document).ready(function() {
           $(".favorite").children().toggle();
           if(!NTInstance.editing){
             NTInstance.editing = !NTInstance.editing;
-            ActionsManager.triggerEditMode();
+            triggerEditMode();
           }
           else{
             $("#favorites").sortable("disable");
@@ -111,20 +114,25 @@ $(document).ready(function() {
         case 'openSettings':
           e.preventDefault();
           var settingsModal = $(".settingsModal");
-          ActionsManager.triggerModal(settingsModal);
+          triggerModal(settingsModal);
 
           break;
 
         case 'openOnboarding':
           e.preventDefault();
           var onBoardingModal = $(".onboardingModal");
-          ActionsManager.triggerModal(onBoardingModal);
+          triggerModal(onBoardingModal);
           break;
 
         case 'openCalendar':
           e.preventDefault();
           var calendarModal = $(".calendarModal");
-          ActionsManager.triggerModal(calendarModal);
+          triggerModal(calendarModal);
+          break;
+        case 'openTodos':
+          e.preventDefault();
+          var todosModal = $(".todosModal");
+          triggerModal(todosModal);
           break;
      }
   });
@@ -162,7 +170,7 @@ $(document).ready(function() {
   $(document).on("click", ".closeBtn", function(e) {
     e.preventDefault();
     var modalToClose = $(this).closest(".modal");
-    ActionsManager.closeModal(modalToClose);
+    closeModal(modalToClose);
   });
 
   /*
@@ -196,7 +204,7 @@ $(document).ready(function() {
       FavoritesManager.saveFavorite(newEntry, NTInstance);
 
       if ($(".modal").length !== null) {
-        ActionsManager.closeModal($(".modal"));
+        closeModal($(".modal"));
       }
       $(".addFormError").hide();
     }
@@ -259,45 +267,49 @@ $(document).ready(function() {
 
   $('input[type=radio][name=theme-select]').change(function() {
     NTInstance.setSetting("userTheme", this.value);
-    if (this.value === 'light') {
-      $("body, .modal").css("background", "white");
-      $("*").not(".addBtn, .settingsBtn, .bgURLError, .currentDay span, .addFormError").css("color", "black");
-      $(".favorite").css("border", "1.5px solid black");
-      $(".favorite i, .popFav").css("color", "white");
 
-    }
-    else if (this.value === 'dark') {
-      $("body, .modal").css("background", "#3c3c3c");
-      $("*").not(".bgURLError").css("color", "white");
-      $("input, select, option").css("color", "black");
-      $(".favorite").css("border", "1.5px solid #d4d6e9");
+    ThemeManager.setTheme(this.value);
 
-    }
-
-    else if (this.value === "fade") {
-      $(".modal, .headerPanel").css("background", "rgba(0,0,0,0.4)");
-      $("*").not(".bgURLError").css("color", "white");
-      $("input, select, option").css("color", "black");
-      $(".headerPanel").css("border", "none");
-    }
+    // if (this.value === 'light') {
+    //   $("body, .modal, .headerPanel").css({"background" : "white"});
+    //   $("*").not(".addBtn, .settingsBtn, .bgURLError, .currentDay span, .addFormError, .addTodo").css("color", "black");
+    //   $(".favorite").css({"border" : "1.5px solid black"});
+    //   $(".favorite i, .popFav").css("color", "white");
+    //
+    // }
+    // else if (this.value === 'dark') {
+    //   $("body, .modal, .headerPanel").css({"background": "#3c3c3c", "boxShadow": "0px 1px 1px 1px #666"});
+    //   $("*").not(".bgURLError").css("color", "white");
+    //   $("input, select, option").css("color", "black");
+    //   $(".favorite").css({"border": "1.5px solid #999", "boxShadow" : "0px 1px 1px 1px #666"});
+    //
+    // }
+    //
+    // else if (this.value === "fade") {
+    //
+    //   $(".modal, .headerPanel").css("background", "rgba(0,0,0,0.4)");
+    //   $("*").not(".bgURLError").css("color", "white");
+    //   $("input, select, option").css("color", "black");
+    //   $(".headerPanel").css("border", "none");
+    // }
   });
 
 
   $(document).on("change", ".hoverOption", function() {
     var hoverSelected = $(this).val();
-    ActionsManager.setHover(hoverSelected, NTInstance);
+    SettingsManager.setHover(hoverSelected, NTInstance);
   });
   $(document).on("change", ".fontOption", function() {
     var fontSelected = $(this).val();
-    ActionsManager.setFont(fontSelected, NTInstance);
+    SettingsManager.setFont(fontSelected, NTInstance);
   });
   $(document).on("change", ".favoriteSize", function() {
     var sizeSelected = $(this).val();
-    ActionsManager.setSize(sizeSelected, NTInstance);
+    SettingsManager.setSize(sizeSelected, NTInstance);
   });
   $(document).on("change", ".themeBGImageRepeat", function() {
     var bgStyleSelected = $(this).val();
-    ActionsManager.setBGStyle(bgStyleSelected, NTInstance);
+    SettingsManager.setBGStyle(bgStyleSelected, NTInstance);
   });
   /*
     Handlers for edit mode options on each of the favorites
@@ -307,7 +319,6 @@ $(document).ready(function() {
 
 
     var linkToDelete = $(this).parent().attr("href");
-    console.log(linkToDelete);
     FavoritesManager.deleteFavorite(linkToDelete, NTInstance);
     $(this).parent().remove();
   });
@@ -350,4 +361,30 @@ $(document).ready(function() {
     Todos.saveTodoList();
   });
 
+  $(document).on("click", ".hidePopFaves", function() {
+    $(".popularFavs, .addExtra").hide();
+    NTInstance.setSetting("hidePopFaves", true);
+  });
+
 });
+
+function triggerModal(modal) {
+    $('.lightbox').fadeIn();
+    // modal.fadeIn();
+    modal.animate({
+      "right" : "0px"
+    }, 400);
+
+}
+
+function closeModal (modal) {
+    $('.lightbox').fadeOut();
+    // modal.fadeOut();
+    modal.animate({
+      "right" : "-400px"
+    }, 300);
+}
+
+function triggerEditMode () {
+    $("#favorites").sortable("enable");
+}

@@ -1,0 +1,45 @@
+.todosModal
+  .clearBtn
+    @include theme_button(rgb(144, 50, 50))
+    color: white
+  .todoList
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
+    .todoList-head
+      display: flex
+      flex-direction: column
+      align-items: center
+      justify-content: center
+      margin: 10px 0
+      .todoForm
+        display: flex
+        justify-content: space-between
+        align-items: center
+        .newTodo
+          align-self: center
+          margin: 0
+        .addTodo
+          @include theme_button($addButton)
+          padding: 7px 10px
+          margin-left: 5px
+          i
+            color: white
+
+    .todoList-body
+      display: flex
+      flex-direction: column
+      width: 100%
+      .todos
+        overflow-y: auto
+        width: 100%
+        .todoItem
+          box-sizing: border-box
+          border-bottom: 1px solid #eee
+          padding: 5px
+          margin: 5px
+          width: 300px
+          word-wrap: break-word
+          &.complete
+            text-decoration: line-through

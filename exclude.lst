@@ -1,0 +1,8 @@
+node_modules/*
+*.DS_Store
+*.zip
+README.md
+gulpfile.js
+exclude.lst
+package.json
+
