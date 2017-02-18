@@ -25,9 +25,9 @@
         <div class="headerPanel options">
           <a id="addFavorite" class="userAction" href="#"><i class="fa fa-plus fa-lg fa-fw"></i></a>
           <a id="editMode" class="userAction" href="#"><i class="fa fa-pencil-square-o fa-lg fa-fw"></i></a>
-          <a id="openSettings" class="userAction" href="#"><i class="fa fa-gear fa-lg fa-fw"></i></a>
-          <a id="openCalendar" class="userAction" href="#"><i class="fa fa-calendar fa-lg fa-fw"></i></a>
           <a id="openTodos" class="userAction" href="#"><i class="fa fa-check fa-lg fa-fw"></i></a>
+          <a id="openCalendar" class="userAction" href="#"><i class="fa fa-calendar fa-lg fa-fw"></i></a>
+          <a id="openSettings" class="userAction" href="#"><i class="fa fa-gear fa-lg fa-fw"></i></a>
         </div>
     </div>
       <!-- <form class="search" action="" method="get">
@@ -123,30 +123,6 @@
     </form>
   </div>
 
-  <!-- Onboarding modal HTML -->
-  <div class="onboardingModal modal">
-    <div class="modalWrapper">
-    <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
-    <h2>Let's Set a Few Things Up!</h2>
-    <p>Add one of your favorite websites below by providing the url and the image you want to use for it.</p>
-    <p class="addFormError"> Please fill out the missing fields </p>
-    <form class="addFavForm">
-      <label for="faveTitle">Title:</label>
-      <input type="text" name="faveTitle" id="obInputTitle" placeholder="Cool Website"/><br>
-      <label for="faveUrl">Url:</label>
-      <input type="text" name="faveUrl" id="obInputUrl" placeholder="http://example.com, example.com"/><br>
-      <label for="faveImg">Image Url:</label>
-      <input type="text" name="faveImg" id="obInputImage" placeholder="http://somewebsite.com/picture.jpg"/><br>
-      <a href="#" class="addBtn">Add</a>
-    </form>
-    <div class="addExtra">
-      <p style="text-align: center"> Or </p>
-      <p>Select from a list of popular favorites:</p>
-    </div>
-    <div class="popularFavs"></div>
-    </div>
-  </div>
-
   <div class="calendarModal modal">
     <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
     <!-- <h1>May 22 | Hanging out with the gang.</h1> -->
@@ -158,8 +134,11 @@
   </div>
 
   <div class="todosModal modal">
+
     <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
+
     <div class="todoList">
+      <i class="fa fa-check fa-lg fa-fw"></i>
       <div class="todoList-head">
         <h1>Reminders</h1>
         <form action="" class="todoForm">

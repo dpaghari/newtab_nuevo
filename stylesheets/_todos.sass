@@ -34,12 +34,18 @@
       .todos
         overflow-y: auto
         width: 100%
+
+        .todoItem:first-child
+          border-bottom: none
+
         .todoItem
           box-sizing: border-box
           border-bottom: 1px solid #eee
           padding: 5px
           margin: 5px
-          width: 300px
+          width: 100%
           word-wrap: break-word
           &.complete
             text-decoration: line-through
+          i
+            cursor: pointer

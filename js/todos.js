@@ -4,7 +4,7 @@ function addNewTodoToDOM(todo, location) {
   let { item, isDone } = todo;
   let isChecked = isDone ? "checked" : "";
   let complete = isDone ? "complete" : "";
-  let todoHTML = `<li class="todoItem ${complete}"><input type="checkbox" ${isChecked}/><span>${item}</span></li>`;
+  let todoHTML = `<li class="todoItem ${complete}"><i class="fa fa-trash-o fa-fw delTodo"></i><input type="checkbox" ${isChecked}/><span>${item}</span></li>`;
   $(location).append(todoHTML);
 }
 
@@ -37,9 +37,16 @@ function saveTodoList() {
   Util.setBrowserSetting("todos", updatedTodos);
 }
 
+function clearAllTodos() {
+  $("li.todoItem").remove();
+  saveTodoList();
+
+}
+
 module.exports = {
   addNewTodoToDOM,
   saveTodo,
   getSavedTodos,
-  saveTodoList
+  saveTodoList,
+  clearAllTodos
 };

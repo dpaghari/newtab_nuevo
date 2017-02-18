@@ -3,23 +3,6 @@ const SettingsManager = require("./SettingsManager.js");
 
 // Add a new favorite to the favorites grid
 function addFavorite (title, url, imageUrl, NTInstance) {
-
-  // let result = $.get(imageUrl);
-  // result.then((res) => {
-  //   console.log(res);
-  // });
-
-    // let newFavorite = `
-    // <li>
-    //   <a data-title=${title} data-bgImg=${imageUrl} class="favorite ${NTInstance.currentSettings.hover}" href="${url}" style="background-image=url('${imageUrl}');backgroundSize=cover;backgroundPosition=center center;backgroundRepeat=no-repeat">
-    //     <i class="fa fa-trash-o fa-lg fa-fw optDel"></i>
-    //     <i class="fa fa-tags-o fa-lg fa-fw optTag"></i>
-    //   </a>
-    // </li>
-    // `;
-
-
-
     var newListEntry = document.createElement("LI");
     var newFavorite = document.createElement("A");
     newFavorite.href = url;
@@ -37,10 +20,10 @@ function addFavorite (title, url, imageUrl, NTInstance) {
     newFavorite.dataset.bgImg = imageUrl;
     var optDel = document.createElement("I");
     optDel.classList.add("fa", "fa-trash-o", "fa-lg", "fa-fw", "optDel");
-    var optTag = document.createElement("I");
-    optTag.classList.add("fa", "fa-tag", "fa-lg", "fa-fw", "optTag");
+    // var optTag = document.createElement("I");
+    // optTag.classList.add("fa", "fa-tag", "fa-lg", "fa-fw", "optTag");
     newFavorite.appendChild(optDel);
-    // newFavorite.appendChild(optEdit);
+    // newFavorite.appendChild(optTag);
     newListEntry.appendChild(newFavorite);
     $("#favorites").append(newListEntry);
     let savedFaveSize = NTInstance.getSetting("userFaveSize", "60");
@@ -138,7 +121,7 @@ function createPopularFavs (favorites, NTInstance) {
 
       }
     }
-    $(".popularFavs").append(`<a href="#" class="hidePopFaves">Never Show Again</a>`);
+    $(".popularFavs").after(`<a href="#" class="hidePopFaves">Never Show Again</a>`);
 }
 
 module.exports = {

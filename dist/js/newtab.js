@@ -22,22 +22,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     // Add a new favorite to the favorites grid
     function addFavorite(title, url, imageUrl, NTInstance) {
-
-      // let result = $.get(imageUrl);
-      // result.then((res) => {
-      //   console.log(res);
-      // });
-
-      // let newFavorite = `
-      // <li>
-      //   <a data-title=${title} data-bgImg=${imageUrl} class="favorite ${NTInstance.currentSettings.hover}" href="${url}" style="background-image=url('${imageUrl}');backgroundSize=cover;backgroundPosition=center center;backgroundRepeat=no-repeat">
-      //     <i class="fa fa-trash-o fa-lg fa-fw optDel"></i>
-      //     <i class="fa fa-tags-o fa-lg fa-fw optTag"></i>
-      //   </a>
-      // </li>
-      // `;
-
-
       var newListEntry = document.createElement("LI");
       var newFavorite = document.createElement("A");
       newFavorite.href = url;
@@ -54,10 +38,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       newFavorite.dataset.bgImg = imageUrl;
       var optDel = document.createElement("I");
       optDel.classList.add("fa", "fa-trash-o", "fa-lg", "fa-fw", "optDel");
-      var optTag = document.createElement("I");
-      optTag.classList.add("fa", "fa-tag", "fa-lg", "fa-fw", "optTag");
+      // var optTag = document.createElement("I");
+      // optTag.classList.add("fa", "fa-tag", "fa-lg", "fa-fw", "optTag");
       newFavorite.appendChild(optDel);
-      // newFavorite.appendChild(optEdit);
+      // newFavorite.appendChild(optTag);
       newListEntry.appendChild(newFavorite);
       $("#favorites").append(newListEntry);
       var savedFaveSize = NTInstance.getSetting("userFaveSize", "60");
@@ -153,7 +137,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           $(".popularFavs").append(favHTML);
         }
       }
-      $(".popularFavs").append("<a href=\"#\" class=\"hidePopFaves\">Never Show Again</a>");
+      $(".popularFavs").after("<a href=\"#\" class=\"hidePopFaves\">Never Show Again</a>");
     }
 
     module.exports = {
@@ -511,9 +495,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       $("#favorites").sortable("disable");
       chrome.runtime.sendMessage({ task: "checkFirstRun" }, function (res) {
         if (res.firstRun) {
-          // SettingsManager.showInitialLoad();
           FavoritesManager.loadDefaultFavorites(NTInstance);
-          triggerModal($(".onboardingModal"));
+          triggerModal($(".addModal"));
+          // triggerModal($(".onboardingModal"));
           $("#obInputTitle").focus();
         } else {
           var savedTodos;
@@ -843,8 +827,16 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       });
 
       $(document).on("click", ".hidePopFaves", function () {
-        $(".popularFavs, .addExtra").hide();
         NTInstance.setSetting("hidePopFaves", true);
+        $(".popularFavs, .addExtra, .hidePopFaves").hide();
+      });
+      $(document).on("click", ".clearBtn", function () {
+        Todos.clearAllTodos();
+      });
+
+      $(document).on("click", ".delTodo", function () {
+        $(this).parent().remove();
+        Todos.saveTodoList();
       });
     });
 
@@ -853,14 +845,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       // modal.fadeIn();
       modal.animate({
         "right": "0px"
-      }, 400);
+      }, 300);
     }
 
     function closeModal(modal) {
       $('.lightbox').fadeOut();
       // modal.fadeOut();
       modal.animate({
-        "right": "-400px"
+        "right": "-425px"
       }, 300);
     }
 
@@ -876,7 +868,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
       var isChecked = isDone ? "checked" : "";
       var complete = isDone ? "complete" : "";
-      var todoHTML = "<li class=\"todoItem " + complete + "\"><input type=\"checkbox\" " + isChecked + "/><span>" + item + "</span></li>";
+      var todoHTML = "<li class=\"todoItem " + complete + "\"><i class=\"fa fa-trash-o fa-fw delTodo\"></i><input type=\"checkbox\" " + isChecked + "/><span>" + item + "</span></li>";
       $(location).append(todoHTML);
     }
 
@@ -909,11 +901,17 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       Util.setBrowserSetting("todos", updatedTodos);
     }
 
+    function clearAllTodos() {
+      $("li.todoItem").remove();
+      saveTodoList();
+    }
+
     module.exports = {
       addNewTodoToDOM: addNewTodoToDOM,
       saveTodo: saveTodo,
       getSavedTodos: getSavedTodos,
-      saveTodoList: saveTodoList
+      saveTodoList: saveTodoList,
+      clearAllTodos: clearAllTodos
     };
   }, { "./util.js": 7 }], 7: [function (require, module, exports) {
     // const $ = require("jquery");

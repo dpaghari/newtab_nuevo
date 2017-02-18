@@ -34,9 +34,9 @@ $(document).ready(function() {
   $("#favorites").sortable("disable");
   chrome.runtime.sendMessage({task: "checkFirstRun"}, function(res) {
     if(res.firstRun){
-      // SettingsManager.showInitialLoad();
       FavoritesManager.loadDefaultFavorites(NTInstance);
-      triggerModal($(".onboardingModal"));
+      triggerModal($(".addModal"));
+      // triggerModal($(".onboardingModal"));
       $("#obInputTitle").focus();
     }
     else {
@@ -367,8 +367,16 @@ $(document).ready(function() {
   });
 
   $(document).on("click", ".hidePopFaves", function() {
-    $(".popularFavs, .addExtra").hide();
     NTInstance.setSetting("hidePopFaves", true);
+    $(".popularFavs, .addExtra, .hidePopFaves").hide();
+  });
+  $(document).on("click", ".clearBtn", function() {
+    Todos.clearAllTodos();
+  });
+
+  $(document).on("click", ".delTodo", function() {
+    $(this).parent().remove();
+    Todos.saveTodoList();
   });
 
 });
@@ -378,7 +386,7 @@ function triggerModal(modal) {
     // modal.fadeIn();
     modal.animate({
       "right" : "0px"
-    }, 400);
+    }, 300);
 
 }
 
@@ -386,7 +394,7 @@ function closeModal (modal) {
     $('.lightbox').fadeOut();
     // modal.fadeOut();
     modal.animate({
-      "right" : "-400px"
+      "right" : "-425px"
     }, 300);
 }
 
