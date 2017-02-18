@@ -65,15 +65,6 @@ $(document).ready(function() {
     currentTime = new Date().toLocaleTimeString(navigator.language, { hour : '2-digit', minute: '2-digit'} );
     $('#time').html(currentTime);
   }, 1000);
-
-  $(".searchbox").focus();
-  $(".search").on("submit", function(e) {
-    e.preventDefault();
-    console.log("hey");
-    let q = $(".searchbox").val();
-    window.location = `https://www.google.com/search?q=${q}`;
-  });
-
   /*
     Handlers for the top right main user actions menu
   */
@@ -165,8 +156,9 @@ $(document).ready(function() {
       return $(el).data("url") === urltoAdd;
     });
     $(match).hide();
-    if($(".addModal .popularFavs").children().length === 0 || $(".onboardingModal .popularFavs").children().length === 0) {
-      $(".addExtra, .popularFavs").hide();
+    if($(".addModal .popularFavs").children().length === 0) {
+      NTInstance.setSetting("hidePopFaves", true);
+      $(".addExtra, .popularFavs, .hidePopFaves").hide();
     }
   });
 /*

@@ -61,6 +61,16 @@
         "bgImg" : "/newtab/images/photos.png"
       },
       {
+        "title" : "Google Maps",
+        "url" : "http://maps.google.com",
+        "bgImg" : "/newtab/images/maps.png"
+      },
+      {
+        "title" : "Pinterest",
+        "url" : "http://pinterest.com",
+        "bgImg" : "/newtab/images/pinterest.png"
+      },
+      {
         "title" : "Polygon",
         "url" : "http://polygon.com",
         "bgImg" : "/newtab/images/polygon.jpg"

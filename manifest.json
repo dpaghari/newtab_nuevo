@@ -1,14 +1,8 @@
 {
-  "name": "Dashtab",
+  "name": "Newtab Nuevo",
   "short_name" : "My Personal New Tab",
   "description": "My Personal New Tab",
   "version": "1.0.0",
-  "icons": {
-    "16": "icons/16.png",
-    "48": "icons/48.png",
-    "32": "icons/32.png",
-    "128": "icons/128.png"
-  },
   "chrome_url_overrides": {
     "newtab": "newtab/newtab.html"
   },
