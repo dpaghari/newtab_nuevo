@@ -13,7 +13,7 @@
 @import "themes/theme-dir"
 
 body
-  position: fixed
+  position: absolute
   top: 0
   bottom: 0
   right: 0
@@ -32,6 +32,9 @@ body, ul, ol
     display: flex
     flex-direction: column
     justify-content: center
+    .searchbox
+      width: 640px
+      margin: 20px auto
     .container
       width: 960px
       margin: 0 auto
@@ -86,19 +89,20 @@ body, ul, ol
 
 
   // Scrollbar
-::-webkit-scrollbar
-  width: 12px
-  background: white
-  border: 1px solid rgba(0,0,0,0.8)
+// ::-webkit-scrollbar
+//   width: 12px
+//   // background: #cdcdcd
+//   border: 1px solid rgba(0,0,0,0.8)
 
 
 ::-webkit-scrollbar-track
   -webkit-box-shadow: inset 1px 1px 1px rgba(0,0,0,0.8)
-  background: #ccc
+  background: #aaa
   // border-radius: 10px
 
 
 ::-webkit-scrollbar-thumb
   // border-radius: 10px
+  background: white
   border: 1px solid rgba(0,0,0,0.8)
   // -webkit-box-shadow: inset 1px 1px 1px rgba(0,0,0,0.8)

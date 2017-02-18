@@ -10,9 +10,9 @@ NTInstance.currentSettings = {
 };
 
 
-chrome.storage.local.get(function(res){
-  console.log(res);
-});
+// chrome.storage.local.get(function(res){
+//   console.log(res);
+// });
 
 const SettingsManager = require("./SettingsManager.js");
 const Calendar = require("./createCalendar.js");
@@ -28,12 +28,10 @@ $(document).ready(function() {
   FavoritesManager.loadPopularFavorites(NTInstance);
   SettingsManager.setUserSettings(NTInstance.currentSettings);
   var calendar = Calendar.theCalendar;
-  // console.log(Calendar);
   $(".calendar-head").html("<span>" + Calendar.month_name[Calendar.month] + " " + Calendar.year + "</span");
   $(".calendar").append(calendar);
   $("#favorites").sortable();
   $("#favorites").sortable("disable");
-
   chrome.runtime.sendMessage({task: "checkFirstRun"}, function(res) {
     if(res.firstRun){
       // SettingsManager.showInitialLoad();
@@ -68,6 +66,14 @@ $(document).ready(function() {
     $('#time').html(currentTime);
   }, 1000);
 
+  $(".searchbox").focus();
+  $(".search").on("submit", function(e) {
+    e.preventDefault();
+    console.log("hey");
+    let q = $(".searchbox").val();
+    window.location = `https://www.google.com/search?q=${q}`;
+  });
+
   /*
     Handlers for the top right main user actions menu
   */
@@ -90,8 +96,7 @@ $(document).ready(function() {
           $(".favorite").toggleClass("editing");
           $(".favorite").children().toggle();
           if(!NTInstance.editing){
-            NTInstance.editing = !NTInstance.editing;
-            triggerEditMode();
+            $("#favorites").sortable("enable");
           }
           else{
             $("#favorites").sortable("disable");
@@ -106,9 +111,9 @@ $(document).ready(function() {
               };
               reorderedFaves.push(newFave);
             });
-
             NTInstance.setSetting("savedFavorites", reorderedFaves);
           }
+          NTInstance.editing = !NTInstance.editing;
           break;
 
         case 'openSettings':

@@ -59,12 +59,6 @@ var NTInstance = new NewtabNuevo();
 window.NTInstance=NTInstance;
 NTInstance.loadSettings();
 
-
-
-
-
-
-
 chrome.runtime.onStartup.addListener(function(){
 	var intervalId=setInterval(function(){
 

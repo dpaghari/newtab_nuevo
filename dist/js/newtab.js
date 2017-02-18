@@ -22,6 +22,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     // Add a new favorite to the favorites grid
     function addFavorite(title, url, imageUrl, NTInstance) {
+
+      // let result = $.get(imageUrl);
+      // result.then((res) => {
+      //   console.log(res);
+      // });
+
+      // let newFavorite = `
+      // <li>
+      //   <a data-title=${title} data-bgImg=${imageUrl} class="favorite ${NTInstance.currentSettings.hover}" href="${url}" style="background-image=url('${imageUrl}');backgroundSize=cover;backgroundPosition=center center;backgroundRepeat=no-repeat">
+      //     <i class="fa fa-trash-o fa-lg fa-fw optDel"></i>
+      //     <i class="fa fa-tags-o fa-lg fa-fw optTag"></i>
+      //   </a>
+      // </li>
+      // `;
+
+
       var newListEntry = document.createElement("LI");
       var newFavorite = document.createElement("A");
       newFavorite.href = url;
@@ -38,8 +54,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       newFavorite.dataset.bgImg = imageUrl;
       var optDel = document.createElement("I");
       optDel.classList.add("fa", "fa-trash-o", "fa-lg", "fa-fw", "optDel");
-      // var optEdit = document.createElement("I");
-      // optEdit.classList.add("fa", "fa-pencil", "fa-lg", "fa-fw", "optEdit");
+      var optTag = document.createElement("I");
+      optTag.classList.add("fa", "fa-tag", "fa-lg", "fa-fw", "optTag");
       newFavorite.appendChild(optDel);
       // newFavorite.appendChild(optEdit);
       newListEntry.appendChild(newFavorite);
@@ -472,9 +488,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       "faveSize": "60"
     };
 
-    chrome.storage.local.get(function (res) {
-      console.log(res);
-    });
+    // chrome.storage.local.get(function(res){
+    //   console.log(res);
+    // });
 
     var SettingsManager = require("./SettingsManager.js");
     var Calendar = require("./createCalendar.js");
@@ -489,12 +505,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       FavoritesManager.loadPopularFavorites(NTInstance);
       SettingsManager.setUserSettings(NTInstance.currentSettings);
       var calendar = Calendar.theCalendar;
-      // console.log(Calendar);
       $(".calendar-head").html("<span>" + Calendar.month_name[Calendar.month] + " " + Calendar.year + "</span");
       $(".calendar").append(calendar);
       $("#favorites").sortable();
       $("#favorites").sortable("disable");
-
       chrome.runtime.sendMessage({ task: "checkFirstRun" }, function (res) {
         if (res.firstRun) {
           // SettingsManager.showInitialLoad();
@@ -533,6 +547,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         $('#time').html(currentTime);
       }, 1000);
 
+      $(".searchbox").focus();
+      $(".search").on("submit", function (e) {
+        e.preventDefault();
+        console.log("hey");
+        var q = $(".searchbox").val();
+        window.location = "https://www.google.com/search?q=" + q;
+      });
+
       /*
         Handlers for the top right main user actions menu
       */
@@ -555,8 +577,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             $(".favorite").toggleClass("editing");
             $(".favorite").children().toggle();
             if (!NTInstance.editing) {
-              NTInstance.editing = !NTInstance.editing;
-              triggerEditMode();
+              $("#favorites").sortable("enable");
             } else {
               (function () {
                 $("#favorites").sortable("disable");
@@ -574,10 +595,10 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
                   };
                   reorderedFaves.push(newFave);
                 });
-
                 NTInstance.setSetting("savedFavorites", reorderedFaves);
               })();
             }
+            NTInstance.editing = !NTInstance.editing;
             break;
 
           case 'openSettings':

@@ -5,4 +5,5 @@ README.md
 gulpfile.js
 exclude.lst
 package.json
-
+stylesheets/*
+js/*
