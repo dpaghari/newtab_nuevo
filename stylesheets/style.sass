@@ -1,6 +1,6 @@
 // Vendor
-@import "bourbon/bourbon"
-@import "base/base"
+// @import "bourbon/bourbon"
+// @import "base/base"
 // Partials
 @import "vars"
 @import "mixins"
@@ -12,6 +12,11 @@
 @import "todos"
 @import "themes/theme-dir"
 
+*
+  box-sizing: border-box
+  padding: 0
+  margin: 0
+
 body
   position: absolute
   top: 0
@@ -20,8 +25,6 @@ body
   left: 0
 
 body, ul, ol
-  padding: 0
-  margin: 0
   font-family: $font-stack
 .wrapper
   display: flex
@@ -78,6 +81,8 @@ body, ul, ol
           &:hover
             color: black
             transform: scale(1.2)
+          i
+            padding-top: 10px
         .arrowContainer
           font-size: 4.5em
           width: 22%

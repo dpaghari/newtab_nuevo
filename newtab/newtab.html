@@ -4,11 +4,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-<title>My New Tab</title>
+<title>New Tab</title>
 <script type="text/javascript" src="./vendor/jquery/jquery-2.2.3.min.js"></script>
-<!-- <script type="text/javascript" src="./vendor/lodash/lodash.min.js"></script> -->
 <link rel="stylesheet" href="./vendor/jquery-ui-1.11.4/jquery-ui.min.css">
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css"> -->
 <link rel="stylesheet" href="./vendor/font-awesome-4.7.0/css/font-awesome.min.css">
 <link rel="shortcut icon" href="/assets/favicon.ico" type="image/x-icon" />
 <link rel="stylesheet" href="style.css" type="text/css" />
@@ -37,16 +35,14 @@
   <div class="lightbox">
     <div class="addModal modal">
       <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
-      <h3>Add a New Favorite</h3>
+      <h3><i class="fa fa-plus fa-lg fa-fw"></i> New Bookmark Card</h3>
       <p class="addFormError"> Please fill out the missing fields </p>
       <form class="addFavForm">
-        <label for="faveTitle">Title</label>
-        <input type="text" name="faveTitle" id="inputTitle" placeholder="Cool Website"/><br>
         <label for="faveUrl">Url</label>
         <input type="text" name="faveUrl" id="inputUrl" placeholder="http://example.com"/><br>
         <label for="faveImg">Image Url</label>
         <input type="text" name="faveImg" id="inputImage" placeholder="http://somewebsite.com/picture.jpg"/><br>
-        <a href="#" class="addBtn">Add</a>
+        <a href="#" class="addBtn"><i class="fa fa-plus fa-lg fa-fw"></i>Add</a>
       </form>
       <div class="addExtra">
         <p style="text-align:center">Or</p>
@@ -57,15 +53,16 @@
 
     <div class="settingsModal modal">
       <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
-      <i class="fa fa-gear fa-lg fa-fw"></i>
+      <h3><i class="fa fa-gear fa-lg fa-fw"></i> Settings</h3>
       <form>
-        <fieldset><label for="theme-select">Theme</label>
+        <fieldset>
+          <label for="theme-select">Theme</label><br>
           Light
-          <input type="radio" name="theme-select" value="light"/>
+          <input type="radio" name="theme-select" value="light"/><br>
           Dark
-          <input type="radio" name="theme-select" value="dark"/>
+          <input type="radio" name="theme-select" value="dark"/><br>
           Fade
-          <input type="radio" name="theme-select" value="fade"/>
+          <input type="radio" name="theme-select" value="fade"/><br>
         </fieldset>
         <fieldset><label for="hoverOption">Hover Effect</label>
           <select class="hoverOption">
@@ -102,15 +99,16 @@
           <a href="#" class="settingsBtn removeBtn">Remove Background</a>
         </fieldset>
         <fieldset>
-          <label for="favoriteSize">Card Link Size</label>
+          <label for="favoriteSize">Bookmark card size</label>
           <input class="favoriteSize" type="range" min="30" max="120" step="10" name="favoriteSize" value="80"/>
         </fieldset>
       </form>
     </div>
 
     <div class="calendarModal modal">
+
       <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
-      <!-- <h1>May 22 | Hanging out with the gang.</h1> -->
+      <h3><i class="fa fa-gear fa-lg fa-fw"></i> Calendar</h3>
       <div class="calendar-display">
         <i class="fa fa-calendar fa-lg fa-fw"></i>
         <div class="calendar-head"></div>
@@ -121,11 +119,9 @@
     <div class="todosModal modal">
 
       <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
-
+      <h3><i class="fa fa-check fa-lg fa-fw"></i> Reminders</h3>
       <div class="todoList">
-        <i class="fa fa-check fa-lg fa-fw"></i>
         <div class="todoList-head">
-          <h1>Reminders</h1>
           <form action="" class="todoForm">
             <input name="newTodo" class="newTodo" type="text"/>
             <a href="#" class="addTodo"><i class="fa fa-plus fa-lg fa-fw"></i></a>
@@ -136,7 +132,7 @@
           </ul>
         </div>
       </div>
-      <a href="#" class="clearBtn">Clear List</a>
+      <a href="#" class="clearBtn"><i class="fa fa-trash fa-lg fa-fw"></i>Clear List</a>
     </div>
 
   </div>

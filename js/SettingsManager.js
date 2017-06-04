@@ -28,36 +28,6 @@ function setUserSettings (settings) {
 
     // Set Theme Styles
     ThemeManager.setTheme(settings.theme);
-    // if (settings.theme === 'light') {
-    //   $("body, .modal").css("background", "white");
-    //   $("*").not(".addBtn, .settingsBtn, .bgURLError, .currentDay span, .addTodo").css("color", "black");
-    //   $(".favorite").css({
-    //     "border" : "1.5px solid black",
-    //     "padding" : cardSizeStr,
-    //     "transition" : "0.3s transform, 0.3s margin"
-    //   });
-    //   $(".favorite i, .popFav").css("color", "white");
-    // }
-    // else if (settings.theme === 'dark') {
-    //   $("body, .modal").css("background", "#3c3c3c");
-    //   $("*").not(".bgURLError").css("color", "white");
-    //   $("input, select, option").css("color", "black");
-    //   $(".favorite").css({
-    //     "border" : "1.5px solid #d4d6e9",
-    //     "padding" : cardSizeStr,
-    //     "transition" : "0.3s transform, 0.3s margin"
-    //   });
-    // }
-    // else if (settings.theme === "fade") {
-    //   $(".modal, .headerPanel").css("background", "rgba(0,0,0,0.4)");
-    //   $("*").not(".bgURLError").css("color", "white");
-    //   $("input, select, option").css("color", "black");
-    //   $(".headerPanel").css("border", "none");
-    //   $(".favorite").css({
-    //     "padding" : cardSizeStr,
-    //     "transition" : "0.3s transform, 0.3s margin"
-    //   });
-    // }
     // Set BG Image Style
     if(settings.bgStyle === "cover"){
       $("body").css("background-size", settings.bgStyle);
@@ -68,7 +38,7 @@ function setUserSettings (settings) {
 
     }
     // Set Font
-    $("*").not("i").css("font-family", settings.font);
+    $("*").not("i, h3, label").css("font-family", settings.font);
 
     var radios = $("input[name=theme-select]");
     $(radios).each(function(i, el) {
@@ -92,7 +62,8 @@ function setUserSettings (settings) {
 function setFont(fontName, NTInstance) {
     let newFontStack = fontName;
     NTInstance.setSetting("userFont", newFontStack);
-    $("*").not("i").css("font-family", newFontStack);
+    console.log(newFontStack);
+    $("*").not("i, .settingsBtn, .removeBtn, .addBtn, .clearBtn").css("font-family", newFontStack);
 }
 
 function setHover(hoverName, NTInstance) {

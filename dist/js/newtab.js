@@ -180,36 +180,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
       // Set Theme Styles
       ThemeManager.setTheme(settings.theme);
-      // if (settings.theme === 'light') {
-      //   $("body, .modal").css("background", "white");
-      //   $("*").not(".addBtn, .settingsBtn, .bgURLError, .currentDay span, .addTodo").css("color", "black");
-      //   $(".favorite").css({
-      //     "border" : "1.5px solid black",
-      //     "padding" : cardSizeStr,
-      //     "transition" : "0.3s transform, 0.3s margin"
-      //   });
-      //   $(".favorite i, .popFav").css("color", "white");
-      // }
-      // else if (settings.theme === 'dark') {
-      //   $("body, .modal").css("background", "#3c3c3c");
-      //   $("*").not(".bgURLError").css("color", "white");
-      //   $("input, select, option").css("color", "black");
-      //   $(".favorite").css({
-      //     "border" : "1.5px solid #d4d6e9",
-      //     "padding" : cardSizeStr,
-      //     "transition" : "0.3s transform, 0.3s margin"
-      //   });
-      // }
-      // else if (settings.theme === "fade") {
-      //   $(".modal, .headerPanel").css("background", "rgba(0,0,0,0.4)");
-      //   $("*").not(".bgURLError").css("color", "white");
-      //   $("input, select, option").css("color", "black");
-      //   $(".headerPanel").css("border", "none");
-      //   $(".favorite").css({
-      //     "padding" : cardSizeStr,
-      //     "transition" : "0.3s transform, 0.3s margin"
-      //   });
-      // }
       // Set BG Image Style
       if (settings.bgStyle === "cover") {
         $("body").css("background-size", settings.bgStyle);
@@ -218,7 +188,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         $("body").css("background-size", "auto");
       }
       // Set Font
-      $("*").not("i").css("font-family", settings.font);
+      $("*").not("i, h3, label").css("font-family", settings.font);
 
       var radios = $("input[name=theme-select]");
       $(radios).each(function (i, el) {
@@ -239,7 +209,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
     function setFont(fontName, NTInstance) {
       var newFontStack = fontName;
       NTInstance.setSetting("userFont", newFontStack);
-      $("*").not("i").css("font-family", newFontStack);
+      console.log(newFontStack);
+      $("*").not("i, .settingsBtn, .removeBtn, .addBtn, .clearBtn").css("font-family", newFontStack);
     }
 
     function setHover(hoverName, NTInstance) {
@@ -331,25 +302,28 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         value: function setFadeTheme() {
           $("body").css({ "background": "white" });
           $(".modal, .headerPanel").css("background", "rgba(0,0,0,0.4)");
-          $("*").not(".bgURLError").css("color", "white");
-          $("input, select, option").css("color", "black");
+          $("*").not(".bgURLError, h3, i, .clearBtn, .addBtn, .settingsBtn, .removeBtn").css("color", "white");
+          $("h3").css("color", "#333");
+          // $("input, select, option").css("color", "white");
+          $(".favorite").css({ "border": ".5px solid black" });
           $(".headerPanel").css("border", "none");
         }
       }, {
         key: "setLightTheme",
         value: function setLightTheme() {
           $("body, .modal, .headerPanel").css({ "background": "white" });
-          $("*").not(".addBtn, .settingsBtn, .bgURLError, .currentDay span, .addFormError, .addTodo, .clearBtn").css("color", "black");
-          $(".favorite").css({ "border": "1.5px solid black" });
+          $("*").not(".addBtn, .settingsBtn, .bgURLError, .currentDay span, .addFormError, .addTodo, .clearBtn, input").css("color", "black");
+          $(".favorite").css({ "border": ".5px solid black" });
           $(".favorite i, .popFav, .addTodo i").css("color", "white");
         }
       }, {
         key: "setDarkTheme",
         value: function setDarkTheme() {
-          $("body, .modal, .headerPanel").css({ "background": "#3c3c3c", "boxShadow": "0px 1px 1px 1px #666" });
+          $("body, .modal, .headerPanel").css({ "background": "#3c3c3c" });
           $("*").not(".bgURLError").css("color", "white");
           $("input, select, option").css("color", "black");
-          $(".favorite").css({ "border": "1.5px solid #999", "boxShadow": "0px 1px 1px 1px #666" });
+          $(".favorite").css({ "border": "none" });
+          // $(".favorite").css({"border": "1.5px solid #999", "boxShadow" : "0px 1px 1px 1px #666"});
         }
       }, {
         key: "saveTheme",
@@ -471,7 +445,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       "background": null,
       "faveSize": "60"
     };
-
     // chrome.storage.local.get(function(res){
     //   console.log(res);
     // });
@@ -497,24 +470,18 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         if (res.firstRun) {
           FavoritesManager.loadDefaultFavorites(NTInstance);
           triggerModal($(".addModal"));
-          // triggerModal($(".onboardingModal"));
           $("#obInputTitle").focus();
         } else {
-          var savedTodos;
+          var $todoList = $(".todos");
+          var savedTodos = Todos.getSavedTodos();
+          savedTodos.forEach(function (el) {
+            Todos.addNewTodoToDOM(el, $todoList);
+          });
+          var hidePopFaves = NTInstance.getSetting("hidePopFaves", false);
 
-          (function () {
-            var $todoList = $(".todos");
-            savedTodos = Todos.getSavedTodos();
-
-            savedTodos.forEach(function (el, idx) {
-              Todos.addNewTodoToDOM(el, $todoList);
-            });
-            var hidePopFaves = NTInstance.getSetting("hidePopFaves", false);
-
-            if (hidePopFaves) {
-              $(".popularFavs, .addExtra, .hidePopFaves").hide();
-            }
-          })();
+          if (hidePopFaves) {
+            $(".popularFavs, .addExtra, .hidePopFaves").hide();
+          }
         }
 
         // Hide edit icons
@@ -555,24 +522,22 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
             if (!NTInstance.editing) {
               $("#favorites").sortable("enable");
             } else {
-              (function () {
-                $("#favorites").sortable("disable");
-                var newFaves = [].slice.call($(".favorite"), 0);
-                var reorderedFaves = [];
-                newFaves.forEach(function (el) {
-                  var _el$dataset = el.dataset,
-                      title = _el$dataset.title,
-                      bgImg = _el$dataset.bgImg;
+              $("#favorites").sortable("disable");
+              var newFaves = [].slice.call($(".favorite"), 0);
+              var reorderedFaves = [];
+              newFaves.forEach(function (el) {
+                var _el$dataset = el.dataset,
+                    title = _el$dataset.title,
+                    bgImg = _el$dataset.bgImg;
 
-                  var newFave = {
-                    "title": title,
-                    "url": el.href,
-                    "bgImg": bgImg
-                  };
-                  reorderedFaves.push(newFave);
-                });
-                NTInstance.setSetting("savedFavorites", reorderedFaves);
-              })();
+                var newFave = {
+                  "title": title,
+                  "url": el.href,
+                  "bgImg": bgImg
+                };
+                reorderedFaves.push(newFave);
+              });
+              NTInstance.setSetting("savedFavorites", reorderedFaves);
             }
             NTInstance.editing = !NTInstance.editing;
             break;
@@ -672,38 +637,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           $(".addFormError").show();
         }
       });
-      /*
-        Handler for the accept changes in edit favorite menu
-      */
-      // $(document).on("click", ".editBtn", function(e){
-      //   var itemToEdit = NTInstance.editedItem;
-      //   console.log(itemToEdit);
-      //   e.preventDefault();
-      //   var titleVal = itemToEdit[0].dataset.title;
-      //   var urlVal = $("#editInputUrl").val();
-      //   var imageVal = $("#editInputImage").val();
-      //   var newEntry = {
-      //     "title" : titleVal,
-      //     "url" : urlVal,
-      //     "bgImg" : imageVal
-      //   };
-      //   saveFavorite(newEntry);
-      //
-      //   var savedFavorites = NTInstance.getSetting("savedFavorites", null);
-      //   for (var i = 0; i < savedFavorites.length; i++) {
-      //     if(savedFavorites[i].url === itemToEdit.url) {
-      //       savedFavorites.splice(i, 1);
-      //     }
-      //   }
-      //   NTInstance.setSetting("savedFavorites", savedFavorites);
-      //   if ($(".modal").length !== null) {
-      //     closeModal($(".modal"));
-      //   }
-      //   $(itemToEdit).remove();
-      //   NTInstance.editedItem = null;
-      // });
-
-
       $(document).on("click", ".updateBtn", function () {
         var newImageURL = $("input[name=themeBGImage]").val();
         var isValidURL = Util.validateURL(newImageURL);
@@ -716,41 +649,14 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       });
       $(document).on("click", ".removeBtn", function () {
         $("input[name=themeBGImage]").val("");
-        // var isValidURL = validateURL(newImageURL);
-        // if(isValidURL) {
         NTInstance.setSetting("userThemeBG", null);
         $("body").css("background-image", "none");
         $(".bgURLError").hide();
-        // }
       });
 
       $('input[type=radio][name=theme-select]').change(function () {
         NTInstance.setSetting("userTheme", this.value);
-
         ThemeManager.setTheme(this.value);
-
-        // if (this.value === 'light') {
-        //   $("body, .modal, .headerPanel").css({"background" : "white"});
-        //   $("*").not(".addBtn, .settingsBtn, .bgURLError, .currentDay span, .addFormError, .addTodo").css("color", "black");
-        //   $(".favorite").css({"border" : "1.5px solid black"});
-        //   $(".favorite i, .popFav").css("color", "white");
-        //
-        // }
-        // else if (this.value === 'dark') {
-        //   $("body, .modal, .headerPanel").css({"background": "#3c3c3c", "boxShadow": "0px 1px 1px 1px #666"});
-        //   $("*").not(".bgURLError").css("color", "white");
-        //   $("input, select, option").css("color", "black");
-        //   $(".favorite").css({"border": "1.5px solid #999", "boxShadow" : "0px 1px 1px 1px #666"});
-        //
-        // }
-        //
-        // else if (this.value === "fade") {
-        //
-        //   $(".modal, .headerPanel").css("background", "rgba(0,0,0,0.4)");
-        //   $("*").not(".bgURLError").css("color", "white");
-        //   $("input, select, option").css("color", "black");
-        //   $(".headerPanel").css("border", "none");
-        // }
       });
 
       $(document).on("change", ".hoverOption", function () {
@@ -779,21 +685,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         FavoritesManager.deleteFavorite(linkToDelete, NTInstance);
         $(this).parent().remove();
       });
-      // $(document).on("click", ".optEdit", function(e) {
-      //   e.preventDefault();
-      //   // Open Edit Modal
-      //   NTInstance.editedItem = $(this).parent();
-      //   var favorite = $(this).parent();
-      //   $(".editedItem").text(favorite[0].dataset.title);
-      //   favorite.addClass("changingVals");
-      //   triggerModal($(".editModal"));
-      //   $("#editInputUrl").focus();
-      //
-      // });
       $(document).on("click", ".favorite", function (e) {
         if ($(this).hasClass("editing")) e.preventDefault();
       });
-
       $(".todoForm").on("submit", function (e) {
         e.preventDefault();
         var $todoList = $(".todos");
@@ -809,7 +703,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         $(this).toggleClass("complete");
         var childCheckbox = $(this).find("input[type='checkbox']");
         if ($(this).hasClass("complete")) childCheckbox.prop("checked", true);else childCheckbox.prop("checked", false);
-
         Todos.saveTodoList();
       });
 
@@ -829,7 +722,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
     function triggerModal(modal) {
       $('.lightbox').fadeIn();
-
       modal.css({
         "right": "0px"
       });

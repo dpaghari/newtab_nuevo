@@ -1,7 +1,16 @@
 .todosModal
   .clearBtn
     @include theme_button(rgb(144, 50, 50))
-    color: white
+    // color: white
+    color: darken(rgb(144, 50, 50), 15%)
+    text-transform: uppercase
+    font-family: 'Archivo Black'
+    font-size: 24px
+    font-weight: bolder
+    
+    &:hover
+      color: white
+
   .todoList
     display: flex
     flex-direction: column
@@ -26,8 +35,9 @@
           @include theme_button($addButton)
           padding: 7px 10px
           margin-left: 5px
+          font-size: 24px
           i
-            color: white
+            color: darken($addButton, 15%)
 
     .todoList-body
       display: flex

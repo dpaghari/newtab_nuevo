@@ -8,8 +8,6 @@ NTInstance.currentSettings = {
   "background" : null,
   "faveSize" : "60"
 };
-
-
 // chrome.storage.local.get(function(res){
 //   console.log(res);
 // });
@@ -36,13 +34,12 @@ $(document).ready(function() {
     if(res.firstRun){
       FavoritesManager.loadDefaultFavorites(NTInstance);
       triggerModal($(".addModal"));
-      // triggerModal($(".onboardingModal"));
       $("#obInputTitle").focus();
     }
     else {
       let $todoList = $(".todos");
       var savedTodos = Todos.getSavedTodos();
-      savedTodos.forEach((el, idx) => {
+      savedTodos.forEach((el) => {
         Todos.addNewTodoToDOM(el, $todoList);
       });
       let hidePopFaves = NTInstance.getSetting("hidePopFaves", false);
@@ -204,38 +201,6 @@ $(document).ready(function() {
       $(".addFormError").show();
     }
   });
-  /*
-    Handler for the accept changes in edit favorite menu
-  */
-  // $(document).on("click", ".editBtn", function(e){
-  //   var itemToEdit = NTInstance.editedItem;
-  //   console.log(itemToEdit);
-  //   e.preventDefault();
-  //   var titleVal = itemToEdit[0].dataset.title;
-  //   var urlVal = $("#editInputUrl").val();
-  //   var imageVal = $("#editInputImage").val();
-  //   var newEntry = {
-  //     "title" : titleVal,
-  //     "url" : urlVal,
-  //     "bgImg" : imageVal
-  //   };
-  //   saveFavorite(newEntry);
-  //
-  //   var savedFavorites = NTInstance.getSetting("savedFavorites", null);
-  //   for (var i = 0; i < savedFavorites.length; i++) {
-  //     if(savedFavorites[i].url === itemToEdit.url) {
-  //       savedFavorites.splice(i, 1);
-  //     }
-  //   }
-  //   NTInstance.setSetting("savedFavorites", savedFavorites);
-  //   if ($(".modal").length !== null) {
-  //     closeModal($(".modal"));
-  //   }
-  //   $(itemToEdit).remove();
-  //   NTInstance.editedItem = null;
-  // });
-
-
   $(document).on("click", ".updateBtn", function() {
     var newImageURL = $("input[name=themeBGImage]").val();
     var isValidURL = Util.validateURL(newImageURL);
@@ -249,41 +214,14 @@ $(document).ready(function() {
   });
   $(document).on("click", ".removeBtn", function() {
     $("input[name=themeBGImage]").val("");
-    // var isValidURL = validateURL(newImageURL);
-    // if(isValidURL) {
-      NTInstance.setSetting("userThemeBG", null);
-      $("body").css("background-image", "none");
-      $(".bgURLError").hide();
-    // }
+    NTInstance.setSetting("userThemeBG", null);
+    $("body").css("background-image", "none");
+    $(".bgURLError").hide();
   });
 
   $('input[type=radio][name=theme-select]').change(function() {
     NTInstance.setSetting("userTheme", this.value);
-
     ThemeManager.setTheme(this.value);
-
-    // if (this.value === 'light') {
-    //   $("body, .modal, .headerPanel").css({"background" : "white"});
-    //   $("*").not(".addBtn, .settingsBtn, .bgURLError, .currentDay span, .addFormError, .addTodo").css("color", "black");
-    //   $(".favorite").css({"border" : "1.5px solid black"});
-    //   $(".favorite i, .popFav").css("color", "white");
-    //
-    // }
-    // else if (this.value === 'dark') {
-    //   $("body, .modal, .headerPanel").css({"background": "#3c3c3c", "boxShadow": "0px 1px 1px 1px #666"});
-    //   $("*").not(".bgURLError").css("color", "white");
-    //   $("input, select, option").css("color", "black");
-    //   $(".favorite").css({"border": "1.5px solid #999", "boxShadow" : "0px 1px 1px 1px #666"});
-    //
-    // }
-    //
-    // else if (this.value === "fade") {
-    //
-    //   $(".modal, .headerPanel").css("background", "rgba(0,0,0,0.4)");
-    //   $("*").not(".bgURLError").css("color", "white");
-    //   $("input, select, option").css("color", "black");
-    //   $(".headerPanel").css("border", "none");
-    // }
   });
 
 
@@ -314,22 +252,10 @@ $(document).ready(function() {
     FavoritesManager.deleteFavorite(linkToDelete, NTInstance);
     $(this).parent().remove();
   });
-  // $(document).on("click", ".optEdit", function(e) {
-  //   e.preventDefault();
-  //   // Open Edit Modal
-  //   NTInstance.editedItem = $(this).parent();
-  //   var favorite = $(this).parent();
-  //   $(".editedItem").text(favorite[0].dataset.title);
-  //   favorite.addClass("changingVals");
-  //   triggerModal($(".editModal"));
-  //   $("#editInputUrl").focus();
-  //
-  // });
   $(document).on("click", ".favorite", function(e) {
     if($(this).hasClass("editing"))
       e.preventDefault();
   });
-
   $(".todoForm").on("submit", (e) => {
     e.preventDefault();
     let $todoList = $(".todos");
@@ -348,8 +274,6 @@ $(document).ready(function() {
     childCheckbox.prop("checked", true);
     else
     childCheckbox.prop("checked", false);
-
-
     Todos.saveTodoList();
   });
 
@@ -370,7 +294,6 @@ $(document).ready(function() {
 
 function triggerModal(modal) {
     $('.lightbox').fadeIn();
-
     modal.css({
       "right" : "0px"
     });

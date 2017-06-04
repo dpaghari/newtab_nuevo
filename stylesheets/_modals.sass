@@ -1,56 +1,93 @@
 .lightbox
   display: none
   background: rgba(0, 0, 0, 0.6)
-  +position(fixed, 0 0 0 0)
+  position: fixed
+  top: 0
+  left: 0
+  bottom: 0
+  right: 0
+  width: 100%
+  height: 100%
 
 .modal
   text-align: left
   font-size: 1em
   font-family: $font-stack
-  padding: 30px
   position: absolute
   right: -400px
   top: 0
-  bottom: 0
   width: 400px
   z-index: 100
   display: flex
   flex-direction: column
   background: white
   transition : 0.4s all
+  form
+    padding: 24px
+  input[type="text"]
+    box-sizing: border-box
+    -webkit-box-sizing: border-box
+    -moz-box-sizing: border-box
+    outline: none
+    display: block
+    width: 100%
+    padding: 7px
+    border: none
+    border-bottom: 1px solid #ddd
+    background: transparent
+    margin-bottom: 10px
+    font: 16px Helvetica, sans-serif
+    height: 45px
+    color: white
+
+  fieldset
+    border: none
   .closeBtn
     color: black
     position: absolute
     top: 15px
     right: 10px
-
+  h3
+    font-family: 'Archivo Black'
+    font-size: 24px
+    display: block
+    background: #666
+    width: 100%
+    padding: 20px
+    color: #333
+    // font-weight: 800
+    text-transform: uppercase
+    i
+      color: #333
+  label
+    text-transform: uppercase
+    font-family: 'Archivo Black'
+    font-size: 20px
 
 .addModal
   align-items: center
   z-index: 2
   // font-family: $font-stack
-  h3
-    font-size: 16px
+
   .addFavForm
     width: 100%
+    padding: 24px
   p
     font-family: $font-stack
     text-align: center
   .addFormError
     display: none
     color: rgb(195, 10, 32)
-
-  input[type="text"]
-
-    border: 1px solid black
-    padding: 10px
-    margin: 10px 0px
-    @include theme_input()
-
   .addBtn
     @include theme_button($addButton)
     margin: 10px auto 25px
-    color: white
+    color: darken($addButton, 15%)
+    text-transform: uppercase
+    font-family: 'Archivo Black'
+    font-size: 24px
+    font-weight: bolder
+    &:hover
+      color: white
 
   .popularFavs
     display: flex
@@ -91,9 +128,6 @@
   font-size: 1em
   i
     font-size: 1.5em
-  h3
-    border-bottom: 1px solid #cdcdcd
-    padding: 10px
   fieldset
     margin: 30px auto
   input[type=radio]
@@ -104,16 +138,26 @@
     margin: 5px 0
   .settingsBtn
     @include theme_button($addButton)
-    color: white
+    color: darken($addButton, 15%)
     font-size: 0.8em
-    display: inline-block
+    display: block
     margin: 15px
-    width: 40%
+    text-transform: uppercase
+    font-size: 16px
+    font-weight: bolder
+    &:hover
+      color: white
+
   .removeBtn
     @include theme_button(#a73f3f)
-    color: white
+    color: darken(#a73f3f, 15%)
     font-size: 0.8em
-    display: inline-block
+    display: block
+    text-transform: uppercase
+    font-size: 16px
+    font-weight: bolder
+    &:hover
+      color: white
   .bgURLError
     display: none
     color: red
