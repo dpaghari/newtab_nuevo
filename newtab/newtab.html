@@ -35,7 +35,7 @@
   <div class="lightbox">
     <div class="addModal modal">
       <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
-      <h3><i class="fa fa-plus fa-lg fa-fw"></i> New Bookmark Card</h3>
+      <h3><i class="fa fa-plus fa-lg fa-fw"></i> New Bookmark</h3>
       <p class="addFormError"> Please fill out the missing fields </p>
       <form class="addFavForm">
         <label for="faveUrl">Url</label>
@@ -57,14 +57,15 @@
       <form>
         <fieldset>
           <label for="theme-select">Theme</label><br>
-          Light
+          <label for="theme-select-light">Light</label>
           <input type="radio" name="theme-select" value="light"/><br>
-          Dark
+          <label for="theme-select-dark">Dark</label>
           <input type="radio" name="theme-select" value="dark"/><br>
-          Fade
+          <label for="theme-select-fade">Fade</label>
           <input type="radio" name="theme-select" value="fade"/><br>
         </fieldset>
-        <fieldset><label for="hoverOption">Hover Effect</label>
+        <fieldset>
+          <label for="hoverOption">Hover Effect</label><br>
           <select class="hoverOption">
             <option>--Select--</option>
             <option value="hoverPop">Pop</option>
@@ -72,7 +73,8 @@
             <option value="hoverNone">None</option>
           </select>
         </fieldset>
-        <fieldset><label for="fontOption">Font</label>
+        <fieldset>
+          <label for="fontOption">Font</label><br>
           <select class="fontOption">
             <option>--Select--</option>
             <option value="Montserrat">Montserrat</option>
@@ -89,7 +91,7 @@
           <label for="themeBGImage">Background Image(url) </label>
           <input type="text" name="themeBGImage" value="" placeholder="http://example.com/image.jpg"/>
           <p class="bgURLError">Not a Valid Image Url</p>
-          <label for="themeBGImageRepeat">Background Style</label>
+          <label for="themeBGImageRepeat">Background Style</label><br>
           <select class="themeBGImageRepeat">
             <option value="">--Select--</option>
             <option value="cover">Cover</option>
@@ -99,7 +101,7 @@
           <a href="#" class="settingsBtn removeBtn">Remove Background</a>
         </fieldset>
         <fieldset>
-          <label for="favoriteSize">Bookmark card size</label>
+          <label for="favoriteSize">Bookmark size</label><br>
           <input class="favoriteSize" type="range" min="30" max="120" step="10" name="favoriteSize" value="80"/>
         </fieldset>
       </form>
@@ -108,9 +110,8 @@
     <div class="calendarModal modal">
 
       <a href="#" class="closeBtn"><i class="fa fa-times fa-lg fa-fw"></i></a>
-      <h3><i class="fa fa-gear fa-lg fa-fw"></i> Calendar</h3>
+      <h3><i class="fa fa-calendar fa-lg fa-fw"></i> Calendar</h3>
       <div class="calendar-display">
-        <i class="fa fa-calendar fa-lg fa-fw"></i>
         <div class="calendar-head"></div>
         <div class="calendar"></div>
       </div>

@@ -302,7 +302,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         value: function setFadeTheme() {
           $("body").css({ "background": "white" });
           $(".modal, .headerPanel").css("background", "rgba(0,0,0,0.4)");
-          $("*").not(".bgURLError, h3, i, .clearBtn, .addBtn, .settingsBtn, .removeBtn").css("color", "white");
+          $("*").not(".bgURLError, h3, i, .clearBtn, .addBtn, .settingsBtn, .removeBtn, select").css("color", "white");
           $("h3").css("color", "#333");
           // $("input, select, option").css("color", "white");
           $(".favorite").css({ "border": ".5px solid black" });
