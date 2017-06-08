@@ -7,7 +7,7 @@
     font-family: 'Archivo Black'
     font-size: 24px
     font-weight: bolder
-    
+
     &:hover
       color: white
 
@@ -32,12 +32,12 @@
           align-self: center
           margin: 0
         .addTodo
-          @include theme_button($addButton)
+          // @include theme_button($addButton)
           padding: 7px 10px
           margin-left: 5px
           font-size: 24px
           i
-            color: darken($addButton, 15%)
+            color: white
 
     .todoList-body
       display: flex
@@ -47,17 +47,25 @@
         overflow-y: auto
         width: 100%
 
-        .todoItem:first-child
+        .todoItem:last-child
           border-bottom: none
 
         .todoItem
           box-sizing: border-box
           border-bottom: 1px solid #eee
-          padding: 5px
+          padding: 12px 5px
           margin: 5px
-          width: 100%
+          width: 90%
           word-wrap: break-word
+          font-size: 16px
+          display: flex
+          align-items: center
           &.complete
             text-decoration: line-through
           i
             cursor: pointer
+            font-size: 24px
+          input[type="checkbox"]
+            margin: 5px 12px 0px 4px
+            padding: 10px
+            transform: scale(1.5)

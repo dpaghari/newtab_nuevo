@@ -17,7 +17,7 @@
 	  "default_title": "Newtab Nuevo"
 	},
   "background":{
-    "scripts": ["dist/js/background.js"],
+    "scripts": ["dist/background.min.js"],
     "persistent": true
   },
   "permissions": ["http://*/*", "https://*/*", "cookies", "storage", "tabs"],

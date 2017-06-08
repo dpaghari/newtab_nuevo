@@ -6,14 +6,15 @@ var webpackUglifyJsPlugin = require('webpack-uglify-js-plugin');
 
 module.exports = {
   devtool: 'inline-source-map',
-  entry: [
-    './stylesheets/style.sass',
-    './js/newtab.js'
-  ],
+  entry: {
+  // styles : './stylesheets/style.sass',
+  newtab:   ['./js/newtab.js','./stylesheets/style.sass'],
+  background: './js/background.js'
+  },
   watch: true,
   output: {
     path: path.join(__dirname, 'dist'),
-    filename: 'newtab.min.js'
+    filename: '[name].min.js'
   },
   resolve: {
     alias: {

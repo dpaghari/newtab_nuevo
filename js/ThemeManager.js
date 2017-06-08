@@ -35,18 +35,9 @@ class ThemeManager {
   }
   setLightTheme() {
     $('body').addClass('theme-light').removeClass('theme-fade theme-dark');
-    // $("body, .modal, .headerPanel").css({"background" : "white"});
-    // $("*").not(".addBtn, .settingsBtn, .bgURLError, .currentDay span, .addFormError, .addTodo, .clearBtn, input").css("color", "black");
-    // $(".favorite").css({"border" : ".5px solid black"});
-    // $(".favorite i, .popFav, .addTodo i").css("color", "white");
   }
   setDarkTheme() {
-    // $("body, .modal, .headerPanel").css({"background": "#3c3c3c"});
     $('body').addClass('theme-dark').removeClass('theme-light theme-fade');
-    // $("*").not(".bgURLError").css("color", "white");
-    // $("input, select, option").css("color", "black");
-    // $(".favorite").css({"border" : "none"});
-    // $(".favorite").css({"border": "1.5px solid #999", "boxShadow" : "0px 1px 1px 1px #666"});
   }
 
 

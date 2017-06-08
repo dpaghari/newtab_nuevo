@@ -39,7 +39,6 @@ class NewtabNuevo {
 	// Retrieve all settings from localstorage and map them to session StorageObjects
 	loadSettings() {
 		chrome.storage.local.get(function(storedItems) {
-			console.log(storedItems);
 			window.NTInstance.StorageObjects=new Map();
 			for(var key in storedItems) {
 				window.NTInstance.StorageObjects.set(key,storedItems[key]);
@@ -93,7 +92,6 @@ chrome.runtime.onMessage.addListener(function(req, sender, sendResponse) {
 		break;
 
 		default:
-			console.log("default");
 			break;
 
 	}});
@@ -101,5 +99,5 @@ chrome.runtime.onMessage.addListener(function(req, sender, sendResponse) {
 // Open a new tab when you click on extension icon
 chrome.browserAction.onClicked.addListener(function ()
 {
-	NTInstance.openTab(chrome.extension.getURL("newtab/newtab.html"));
+	NTInstance.openTab();
 });
