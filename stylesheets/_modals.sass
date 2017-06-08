@@ -13,7 +13,7 @@
   text-align: left
   font-size: 1em
   font-family: $font-stack
-  position: absolute
+  position: fixed
   right: -400px
   top: 0
   width: 400px
@@ -22,10 +22,17 @@
   flex-direction: column
   background: white
   transition : 0.4s all
+  overflow: auto
   select
     color: black
   form
+    display: block
     padding: 24px
+    width: 100%
+    overflow: auto
+    max-height: 90vh
+    fieldset
+      overflow: auto
   input[type="text"]
     box-sizing: border-box
     -webkit-box-sizing: border-box
@@ -40,7 +47,7 @@
     margin-bottom: 10px
     font: 16px Helvetica, sans-serif
     height: 45px
-    color: white
+    // color: white
 
   fieldset
     border: none
