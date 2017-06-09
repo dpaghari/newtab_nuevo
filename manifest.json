@@ -18,7 +18,7 @@
 	},
   "background":{
     "scripts": ["dist/background.min.js"],
-    "persistent": true
+    "persistent": false
   },
   "permissions": ["http://*/*", "https://*/*", "cookies", "storage", "tabs"],
   "content_security_policy": "script-src https://*.googleapis.com https://maxcdn.bootstrapcdn.com https://cdn.jsdelivr.net 'self'; object-src 'self';child-src http://*/*;",

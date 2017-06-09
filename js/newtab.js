@@ -1,26 +1,27 @@
-const background = chrome.extension.getBackgroundPage();
-const NTInstance = background.NTInstance;
-NTInstance.editing = false;
-NTInstance.currentSettings = {
-  "theme" : "light",
-  "font" : "Montserrat",
-  "hover" : "hoverPop",
-  "background" : null,
-  "faveSize" : "60"
-};
-// chrome.storage.local.get(function(res){
-//   console.log(res);
-// });
-
-const SettingsManager = require("./SettingsManager.js");
-const Calendar = require("./createCalendar.js");
-const FavoritesManager = require("./FavoritesManager.js");
-const Util = require("./util.js");
-const Todos = require("./todos.js");
-const ThemeManager = require("./ThemeManager.js");
 
 
 $(document).ready(function() {
+  const background = chrome.extension.getBackgroundPage();
+  const NTInstance = background.NTInstance;
+  NTInstance.editing = false;
+  NTInstance.currentSettings = {
+    "theme" : "light",
+    "font" : "Montserrat",
+    "hover" : "hoverPop",
+    "background" : null,
+    "faveSize" : "60"
+  };
+  // chrome.storage.local.get(function(res){
+  //   console.log(res);
+  // });
+
+  const SettingsManager = require("./SettingsManager.js");
+  const Calendar = require("./createCalendar.js");
+  const FavoritesManager = require("./FavoritesManager.js");
+  const Util = require("./util.js");
+  const Todos = require("./todos.js");
+  const ThemeManager = require("./ThemeManager.js");
+
   SettingsManager.loadUserSettings(NTInstance);
   FavoritesManager.loadSavedFavorites(NTInstance);
   FavoritesManager.loadPopularFavorites(NTInstance);

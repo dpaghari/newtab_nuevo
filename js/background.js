@@ -38,12 +38,17 @@ class NewtabNuevo {
 	}
 	// Retrieve all settings from localstorage and map them to session StorageObjects
 	loadSettings() {
-		chrome.storage.local.get(function(storedItems) {
-			window.NTInstance.StorageObjects=new Map();
-			for(var key in storedItems) {
-				window.NTInstance.StorageObjects.set(key,storedItems[key]);
-			}
+		var p = new Promise((resolve) => {
+			chrome.storage.local.get(function(storedItems) {
+				window.NTInstance.StorageObjects=new Map();
+				for(var key in storedItems) {
+					window.NTInstance.StorageObjects.set(key,storedItems[key]);
+				}
+				resolve(true);
+			});
 		});
+
+		return p;
 	}
 
 	// Open a new tab
@@ -56,17 +61,21 @@ class NewtabNuevo {
 
 var NTInstance = new NewtabNuevo();
 window.NTInstance=NTInstance;
-NTInstance.loadSettings();
+const settingsLoaded = NTInstance.loadSettings();
 
 chrome.runtime.onStartup.addListener(function(){
-	var intervalId=setInterval(function(){
-
-		if (window.NTInstance.StorageObjects !== null)
-		{
-			clearInterval(intervalId);
-			NTInstance.startup();
-		}
-	},500);
+	settingsLoaded.then((response) => {
+		if(response)
+		NTInstance.startup();
+	});
+	// var intervalId=setInterval(function(){
+	//
+	// 	if (window.NTInstance.StorageObjects !== null)
+	// 	{
+	// 		clearInterval(intervalId);
+	// 		NTInstance.startup();
+	// 	}
+	// },500);
 });
 chrome.runtime.onInstalled.addListener(function(){
     chrome.tabs.create({url: chrome.extension.getURL("newtab/newtab.html")});
