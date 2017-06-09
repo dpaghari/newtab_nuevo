@@ -291,6 +291,7 @@ $(document).ready(function() {
     Todos.saveTodoList();
   });
 
+
 });
 
 function triggerModal(modal) {

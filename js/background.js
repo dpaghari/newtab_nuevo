@@ -68,23 +68,15 @@ chrome.runtime.onStartup.addListener(function(){
 		if(response)
 		NTInstance.startup();
 	});
-	// var intervalId=setInterval(function(){
-	//
-	// 	if (window.NTInstance.StorageObjects !== null)
-	// 	{
-	// 		clearInterval(intervalId);
-	// 		NTInstance.startup();
-	// 	}
-	// },500);
 });
 chrome.runtime.onInstalled.addListener(function(){
     chrome.tabs.create({url: chrome.extension.getURL("newtab/newtab.html")});
 });
-chrome.tabs.onCreated.addListener(function created(tab){
-	if (tab.url=="chrome://newtab/") {
-		chrome.tabs.update(tab.id, {url: chrome.extension.getURL("newtab/newtab.html")});
-	}
-});
+// chrome.tabs.onCreated.addListener(function created(tab){
+// 	if (tab.url=="chrome://newtab/") {
+// 		chrome.tabs.update(tab.id, {url: chrome.extension.getURL("newtab/newtab.html")});
+// 	}
+// });
 
 // Messaging Event Listeners
 chrome.runtime.onMessage.addListener(function(req, sender, sendResponse) {

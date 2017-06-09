@@ -1,5 +1,8 @@
-node_modules/*
 *.DS_Store
+.git
+.gitignore
+.jshintrc
+node_modules/*
 *.zip
 README.md
 gulpfile.js
@@ -7,3 +10,5 @@ exclude.lst
 package.json
 stylesheets/*
 js/*
+webpack.config.js
+dist/cached_uglify/*

@@ -1,0 +1,8 @@
+1. Open Chrome
+2. Click More Settings > Extensions
+3. Click Developer Mode Checkbox
+4. Load Unpacked Extension
+5. Navigate to Downloaded Zip File
+6. Unzip 
+7. Select unzipped folder
+8. Woo
