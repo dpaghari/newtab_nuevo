@@ -291,6 +291,20 @@ $(document).ready(function() {
     Todos.saveTodoList();
   });
 
+  $('#inputImage').on('blur', function() {
+
+    let currImgUrl = $(this).val();
+    console.log(currImgUrl);
+    if(currImgUrl !== '') {
+      $('.bookmark-preview').css({
+        'backgroundImage': `url('${currImgUrl}')`,
+        'backgroundSize' : 'cover',
+        'backgroundRepeat' : 'no-repeat',
+        'backgroundPosition' : 'center'
+      });
+    }
+  });
+
 
 });
 

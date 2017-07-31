@@ -72,11 +72,11 @@ chrome.runtime.onStartup.addListener(function(){
 chrome.runtime.onInstalled.addListener(function(){
     chrome.tabs.create({url: chrome.extension.getURL("newtab/newtab.html")});
 });
-// chrome.tabs.onCreated.addListener(function created(tab){
-// 	if (tab.url=="chrome://newtab/") {
-// 		chrome.tabs.update(tab.id, {url: chrome.extension.getURL("newtab/newtab.html")});
-// 	}
-// });
+chrome.tabs.onCreated.addListener(function created(tab){
+	if (tab.url=="chrome://newtab/") {
+		chrome.tabs.update(tab.id, {url: chrome.extension.getURL("newtab/newtab.html")});
+	}
+});
 
 // Messaging Event Listeners
 chrome.runtime.onMessage.addListener(function(req, sender, sendResponse) {
