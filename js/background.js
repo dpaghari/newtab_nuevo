@@ -32,7 +32,7 @@ class NewtabNuevo {
 		var firstRun = this.getSetting("FirstRun",true);
 		if(firstRun){
 				this.setSetting("FirstRun", false);
-				this.openTab(chrome.extension.getURL("newtab/newtab.html#newTab"));
+				this.openTab();
 		}
 
 	}
@@ -52,8 +52,9 @@ class NewtabNuevo {
 	}
 
 	// Open a new tab
-	openTab(tabURL) {
-		chrome.tabs.create({url: tabURL});
+	openTab() {
+		// chrome.tabs.create({url: tabURL});
+		chrome.tabs.create({url: ""});
 	}
 
 }

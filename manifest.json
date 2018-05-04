@@ -4,7 +4,7 @@
   "description": "New tab page with custom bookmarks, calendar, to-do list and themes",
   "version": "1.0.0",
   "chrome_url_overrides": {
-    "newtab": "newtab/newtab.html"
+    "newtab": "/newtab/newtab.html"
   },
   "icons": {
     "128": "icons/128.png"
