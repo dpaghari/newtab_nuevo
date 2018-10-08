@@ -78,7 +78,7 @@ function loadSavedFavorites(NTInstance) {
 function loadPopularFavorites (NTInstance) {
     var popFavs = getPopularFavorites();
     popFavs.then(function(res) {
-      var response = JSON.parse(res);
+      var response = res;
       createPopularFavs(response, NTInstance);
     });
 }
