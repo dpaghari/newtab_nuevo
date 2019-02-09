@@ -73,15 +73,19 @@ function setHover(hoverName, NTInstance) {
   switch(hoverName) {
 
     case "hoverPop":
-    $(".favorite").addClass("hoverPop").removeClass("hoverNone hoverHighlight");
+    $(".favorite").addClass("hoverPop").removeClass("hoverNone hoverHighlight hoverShine");
     break;
 
     case "hoverHighlight":
-    $(".favorite").addClass("hoverHighlight").removeClass("hoverNone hoverPop");
+    $(".favorite").addClass("hoverHighlight").removeClass("hoverNone hoverPop hoverShine");
     break;
 
     case "hoverNone":
-    $(".favorite").addClass("hoverNone").removeClass("hoverPop hoverHighlight");
+    $(".favorite").addClass("hoverNone").removeClass("hoverPop hoverHighlight hoverShine");
+    break;
+    
+    case "hoverShine":
+    $(".favorite").addClass("hoverShine").removeClass("hoverPop hoverHighlight hoverNone");
     break;
   }
   //$(".favorite").addClass(hoverName).removeClass("hoverNone hoverHighlight");

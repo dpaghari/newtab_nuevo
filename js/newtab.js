@@ -66,6 +66,11 @@ $(document).ready(function() {
     $(".favorite").children().hide();
   });
 
+  chrome.browserAction.onClicked.addListener(function () {
+    chrome.tabs.create();
+  });
+
+
   // Refresh time every second
   var currentTime = new Date().toLocaleTimeString(navigator.language, { hour : '2-digit', minute: '2-digit'} );
   $('#time').html(currentTime);
@@ -340,6 +345,6 @@ function triggerModal(modal) {
 function closeModal (modal) {
     $('.lightbox').fadeOut();
     modal.css({
-      "right" : "-425px"
+      "right" : "-100%"
     });
 }

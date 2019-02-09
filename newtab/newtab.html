@@ -57,7 +57,7 @@
       <h3><i class="fa fa-gear fa-lg fa-fw"></i> Settings</h3>
       <form>
         <fieldset>
-          <label for="theme-select">Theme</label><br>
+          <label for="theme-select">Panel Theme</label><br>
           <label for="theme-select-light">Light</label>
           <input type="radio" name="theme-select" value="light"/><br>
           <label for="theme-select-dark">Dark</label>
@@ -89,8 +89,9 @@
           </select>
         </fieldset>
         <fieldset>
+          <label for="fontOption">Background Color</label><br>
           <div class="bgColorPicker"></div>
-          <button type="button" class="rmBgColor">Remove Background Color</button>
+          <a class="removeBtn" href="#" class="rmBgColor">Remove Background Color</a>
           <label for="themeBGImage">Background Image(url) </label>
           <input type="text" name="themeBGImage" value="" placeholder="http://example.com/image.jpg"/>
           <p class="bgURLError">Not a Valid Image Url</p>
@@ -100,8 +101,8 @@
             <option value="cover">Cover</option>
             <option value="repeat">Tile</option>
           </select>
-          <a href="#" class="settingsBtn updateBtn">Update Background</a>
-          <a href="#" class="settingsBtn removeBtn">Remove Background</a>
+          <a href="#" class="settingsBtn updateBtn">Update Background Image</a>
+          <a href="#" class="settingsBtn removeBtn">Remove Background Image</a>
         </fieldset>
         <fieldset>
           <label for="favoriteSize">Bookmark size</label><br>
