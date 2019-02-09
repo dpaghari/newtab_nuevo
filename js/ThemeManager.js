@@ -7,10 +7,16 @@ class ThemeManager {
 
   init() {
     this.loadTheme();
+    const savedBgColor = Util.getBrowserSetting('userBGColor');
+    this.setBgColor(savedBgColor);
   }
 
   getTheme() {
     return this.currentTheme;
+  }
+
+  setBgColor(color) {
+    $('body').css('backgroundColor', color);
   }
 
   setTheme(themeName) {
@@ -49,6 +55,7 @@ class ThemeManager {
     let currentTheme = Util.getBrowserSetting("currentTheme", "fade");
     this.setTheme(currentTheme);
   }
+
 
 }
 

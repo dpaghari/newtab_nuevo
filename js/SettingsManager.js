@@ -13,13 +13,15 @@ function loadUserSettings(NTInstance) {
     var userBGImg = NTInstance.getSetting("userThemeBG", null);
     var userFaveSize = NTInstance.getSetting("userFaveSize", "80");
     var userBGStyle = NTInstance.getSetting("userBGStyle", "repeat");
+    var userBGColor = NTInstance.getSetting("userBGColor");
     NTInstance.currentSettings = {
       "theme" : userTheme,
       "font" : userFont,
       "hover" : userHover,
       "background" : userBGImg,
       "faveSize" : userFaveSize,
-      "bgStyle" : userBGStyle
+      "bgStyle" : userBGStyle,
+      "bgColor" : userBGColor
     };
     // console.log(NTInstance.currentSettings);
 }

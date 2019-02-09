@@ -1,4 +1,4 @@
-
+const AColorPicker = require('a-color-picker');
 
 $(document).ready(function() {
   const background = chrome.extension.getBackgroundPage();
@@ -26,11 +26,23 @@ $(document).ready(function() {
   FavoritesManager.loadSavedFavorites(NTInstance);
   FavoritesManager.loadPopularFavorites(NTInstance);
   SettingsManager.setUserSettings(NTInstance.currentSettings);
+  ThemeManager.init();
+
   var calendar = Calendar.theCalendar;
   $(".calendar-head").html("<span>" + Calendar.month_name[Calendar.month] + " " + Calendar.year + "</span");
   $(".calendar").append(calendar);
   $("#favorites").sortable();
   $("#favorites").sortable("disable");
+  AColorPicker.from('div.bgColorPicker')
+    .on("change", (a, b) => {
+      ThemeManager.setBgColor(b);
+      
+      Util.setBrowserSetting('userBGColor', b);
+      console.log(b);
+    });
+
+
+
   chrome.runtime.sendMessage({task: "checkFirstRun"}, function(res) {
     if(res.firstRun){
       FavoritesManager.loadDefaultFavorites(NTInstance);
@@ -63,6 +75,15 @@ $(document).ready(function() {
     currentTime = new Date().toLocaleTimeString(navigator.language, { hour : '2-digit', minute: '2-digit'} );
     $('#time').html(currentTime);
   }, 1000);
+
+  $(document).on("click", '.rmBgColor', function() {
+    $('body').css('backgroundColor', "initial");
+    Util.setBrowserSetting('userBGColor', undefined);
+    
+  });
+
+
+
   /*
     Handlers for the top right main user actions menu
   */

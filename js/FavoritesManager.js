@@ -85,7 +85,7 @@ function loadPopularFavorites (NTInstance) {
 function loadDefaultFavorites (NTInstance) {
     var popFavs = Util.getPromise("/newtab/defaultFavs.json");
     popFavs.then(function(res) {
-      var response = JSON.parse(res);
+      var response = res;
       createDefaultFavs(response, NTInstance);
     });
 }

@@ -115,6 +115,7 @@ function setBrowserSetting(name, value) {
     if(typeof background.NTInstance !== "undefined"){
       NTInstance = background.NTInstance;
       NTInstance.setSetting(name, value);
+      console.log(`set setting ${name} to value: ${value}`);
     }
   }
   else {
