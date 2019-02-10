@@ -10,7 +10,8 @@ module.exports = {
   setBrowserSetting,
   jsonp,
   validateURL,
-  addHttp
+  addHttp,
+  getUserLocation
 };
 
 // Check if two lists are equal
@@ -171,3 +172,24 @@ function addHttp (url) {
   }
   return url;
 };
+
+function getUserLocation(done) {
+
+  var cachedLocation = getBrowserSetting("userLocation");
+  if(cachedLocation) {
+    return done(cachedLocation);
+  }
+  
+  navigator.geolocation.getCurrentPosition((pos) => {
+    // use geolocation to get lat and lng
+    var location = {
+      latitude: pos.coords.latitude,
+      longitude: pos.coords.longitude
+    };
+
+    setBrowserSetting("userLocation", location);
+
+    done(location);
+
+  });
+}

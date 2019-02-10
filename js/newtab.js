@@ -21,12 +21,38 @@ $(document).ready(function() {
   const Util = require("./util.js");
   const Todos = require("./todos.js");
   const ThemeManager = require("./ThemeManager.js");
+  const { getQuoteOfTheDay } = require("./QuoteManager.js");
+  const { getWeather, getIconUrl } = require("./WeatherManager.js");
 
+  getQuoteOfTheDay().then((res) => {
+    console.log(res);
+    var qotd = res.contents.quotes[0].quote;
+    var author = res.contents.quotes[0].author;
+    $('.qotd__quote').text(qotd);
+    $('.qotd__author').text("-" + author);
+  });
+
+
+  Util.getUserLocation((userLocation) => {
+    
+    getWeather(userLocation).then((res) => {
+      console.log(res);
+      let { temp_max, temp_min, temp } = res.main;
+      $('.tempHigh').text(parseInt(temp_max) + "°");
+      $('.tempLow').text(parseInt(temp_min) + "°");
+      $('.temp').text(parseInt(temp) + "°");
+      $('.city').text(res.name);
+      $('.weatherIcon').attr('src', getIconUrl(res.weather[0].icon));
+    });
+  }, (err) => {
+
+  });
+  
   SettingsManager.loadUserSettings(NTInstance);
   FavoritesManager.loadSavedFavorites(NTInstance);
   FavoritesManager.loadPopularFavorites(NTInstance);
   SettingsManager.setUserSettings(NTInstance.currentSettings);
-  ThemeManager.init();
+  // ThemeManager.init();
 
   var calendar = Calendar.theCalendar;
   $(".calendar-head").html("<span>" + Calendar.month_name[Calendar.month] + " " + Calendar.year + "</span");

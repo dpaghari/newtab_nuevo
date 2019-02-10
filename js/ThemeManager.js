@@ -8,7 +8,10 @@ class ThemeManager {
   init() {
     this.loadTheme();
     const savedBgColor = Util.getBrowserSetting('userBGColor');
-    this.setBgColor(savedBgColor);
+    console.log(savedBgColor);
+    if(savedBgColor) {
+      this.setBgColor(savedBgColor);
+    }
   }
 
   getTheme() {
