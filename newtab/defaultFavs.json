@@ -59,6 +59,11 @@
         "title" : "Reddit",
         "url" : "http://reddit.com",
         "bgImg" : "/newtab/images/reddit.png"
+      },
+      {
+        "title": "Google Calendar",
+        "url": "http://calendar.google.com",
+        "bgImg": "/newtab/images/gcal.jpg"
       }
   ]
 }

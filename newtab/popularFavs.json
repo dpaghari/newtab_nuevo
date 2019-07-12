@@ -1,6 +1,11 @@
 {
   "popular_favorites" : [
       {
+        "title" : "Github",
+        "url" : "http://github.com",
+        "bgImg" : "/newtab/images/github.png"
+      },
+      {
         "title" : "Chase",
         "url" : "http://chase.com",
         "bgImg" : "/newtab/images/chase.jpg"

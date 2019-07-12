@@ -1,5 +1,6 @@
 // const $ = require("jquery");
 module.exports = {
+  setCookie,
   getCookie,
   compareLists,
   getPromise,
@@ -32,6 +33,13 @@ function getPromise(data) {
 function getCurrentTime() {
   var currentTime = new Date().toLocaleTimeString(navigator.language, { hour : '2-digit', minute: '2-digit'} );
   return currentTime.toLowerCase();
+}
+
+function setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
+  var expires = "expires=" + d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
 }
 
 // Uses chrome api to retrieve cookie name and value
@@ -175,19 +183,18 @@ function addHttp (url) {
 
 function getUserLocation(done) {
 
-  var cachedLocation = getBrowserSetting("userLocation");
+  var cachedLocation = getCookie({name: "userLocation"});
   if(cachedLocation) {
-    return done(cachedLocation);
+    return done(JSON.parse(cachedLocation));
   }
-  
+
   navigator.geolocation.getCurrentPosition((pos) => {
     // use geolocation to get lat and lng
     var location = {
       latitude: pos.coords.latitude,
       longitude: pos.coords.longitude
     };
-
-    setBrowserSetting("userLocation", location);
+    setCookie("userLocation", JSON.stringify(location), 1);
 
     done(location);
 
